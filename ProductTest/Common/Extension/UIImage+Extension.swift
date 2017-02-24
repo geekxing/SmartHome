@@ -113,6 +113,17 @@ extension UIImage {
         return newImage!
     }
     
+    class func imageWith(_ color:UIColor) -> UIImage? {
+        let rect =  CGRect(x:0, y:0, width:1, height:1)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 1)
+        let ctx = UIGraphicsGetCurrentContext()
+        ctx?.setFillColor(color.cgColor)
+        ctx?.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
     func base64String() -> String? {
         let data = UIImagePNGRepresentation(self)?.base64EncodedData(options: .lineLength64Characters)
         return data?.base64EncodedString()

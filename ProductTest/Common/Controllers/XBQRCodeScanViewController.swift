@@ -12,12 +12,15 @@ import SnapKit
 
 class XBQRCodeScanViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegate,
 UIAlertViewDelegate {
+    
     var device:AVCaptureDevice!
     var input:AVCaptureDeviceInput!
     var output:AVCaptureMetadataOutput!
     var imageOutput: AVCaptureStillImageOutput!
     var session:AVCaptureSession!
     var preview:AVCaptureVideoPreviewLayer!
+    
+    var returnScan:((String) -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -251,6 +254,10 @@ UIAlertViewDelegate {
         
         print("扫描结果：\(metadataObjects)")
         
+        if self.returnScan != nil {
+            self.returnScan!("\(metadataObjects)")
+        }
+        
         if metadataObjects.count > 0 {
             let metadataObject = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             stringValue = metadataObject.stringValue
@@ -269,6 +276,6 @@ UIAlertViewDelegate {
     //消息框确认后消失
     func alertView(_ alertView: UIAlertView, willDismissWithButtonIndex buttonIndex: Int) {
         //继续扫描
-        self.session.startRunning()
+        self.navigationController!.popViewController(animated: true)
     }
 }

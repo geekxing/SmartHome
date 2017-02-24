@@ -10,23 +10,34 @@ import UIKit
 import SVProgressHUD
 import SwiftyJSON
 import LGAlertView
+import Toast_Swift
 
 class XBRelationNoticeController: UIViewController {
     
-    var tableGroups:[XBTableGroupItem] = []
     private var loginUser:XBUser!
+    private var naviBackground:UIImageView!
+    private var titleLabel:UILabel!
+    private var splitView:XBSplitView!
+    
+    private var currentIndex:Int = -1;
+    var tableGroups:[XBTableGroupItem] = []
+    private var childViews:[UIView] = []
+    
+    private var applyConcernVC:XBApplyConcernViewController!
+    private var concernMeVC:XBConcernMeViewController!
+    private var myConcernMeVC:XBMyConcernViewController!
+    private var scollView:UIScrollView!
     
     fileprivate let StatusApply = "apply"
-    fileprivate let StatusDealApply = "dealApply"
+    fileprivate let StatusAgreeApply = "agreeApply"
+    fileprivate let StatusDisagreeApply = "disagreeApply"
     fileprivate var status:String?
     fileprivate var otherEmail:String?
     fileprivate var tableView:UITableView!
     fileprivate var applyGroup:[XBRelationConcernModel] = []
     fileprivate var myConcern:[XBRelationConcernModel] = []
     fileprivate var concernMe:[XBRelationConcernModel] = []
-    fileprivate var searchResult:[XBRelationConcernModel] = []
-    fileprivate var searchController:UISearchController?
- 
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,48 +48,106 @@ class XBRelationNoticeController: UIViewController {
         }
         self.view.backgroundColor = UIColor.white
         setupNavigation()
+        setupSplitView()
+        setupScrollView()
         setupTableView()
-        setupSearchComponent()
+        //refresh()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     }
+
     
     //MARK: - UI Setting
     private func setupNavigation() {
-        UIApplication.shared.statusBarStyle = .default
-        title = "亲情关注"
-        let backButton = UIBarButtonItem.init(title: "Back", style: .plain, target: self, action: #selector(back))
-        let refreshButton = UIBarButtonItem.init(title: "Refresh", style: .plain, target: self, action: #selector(refresh))
-        navigationItem.leftBarButtonItems = [backButton, refreshButton]
+        naviBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: view.width, height:90*UIRate))
+        naviBackground.image = UIImage(named: "RectHeader")
+        titleLabel = UILabel()
+        titleLabel.text = "亲情关注"
+        titleLabel.textColor = UIColor.black
+        titleLabel.font = UIFontSize(size: 27)
+        titleLabel.sizeToFit()
+        titleLabel.centerX = naviBackground.centerX
+        titleLabel.top = UIRate * 32
+        naviBackground.addSubview(titleLabel)
+        view.addSubview(naviBackground)
+    }
+    
+    private func setupSplitView() {
+        splitView = XBSplitView(frame: CGRect(x: 0, y: naviBackground.bottom, width: view.width, height: 77))
+        splitView.tapSplitButton = { [weak self] (index) in
+            if self?.currentIndex != index {
+                self?.currentIndex = index
+            } else {
+                if index == 2 {
+                    self?.concernMeVC.loadData()
+                }
+            }
+            var offset = self!.scollView.contentOffset
+            offset.x = CGFloat(index) * self!.scollView.width
+            self!.scollView.setContentOffset(offset, animated: true)
+        }
+        view.addSubview(splitView)
     }
     
     private func setupTableView() {
-        tableView = UITableView(frame: view.bounds, style: .grouped)
+        
+        tableView = UITableView(frame: CGRect(x:0, y:splitView.bottom-8, width:view.width, height:view.height-159), style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.sectionFooterHeight = 0
         tableView.sectionHeaderHeight = 20
         tableView.delaysContentTouches = false
         tableView.register(XBApplyConcernCell.self, forCellReuseIdentifier: ApplyConcern)
+        tableView.register(XBMyConcernCell.self, forCellReuseIdentifier: MyConcern)
+        tableView.register(XBConcernMeCell.self, forCellReuseIdentifier: ConcernMe)
         view.addSubview(tableView)
+        tableView.isHidden = true
     }
     
-    private func setupSearchComponent() {
-        searchController = UISearchController(searchResultsController: nil)
-        searchController?.view.backgroundColor = UIColor.clear
-        searchController?.searchResultsUpdater = self
-        searchController?.searchBar.delegate = self
-        searchController?.searchBar.placeholder = "search user by email"
-        searchController?.searchBar.sizeToFit()
-        searchController?.hidesNavigationBarDuringPresentation = false
-        self.tableView.tableHeaderView = searchController?.searchBar
+    private func setupScrollView() {
+        
+        scollView = UIScrollView(frame: CGRect(x:0, y:splitView.bottom-8, width:view.width, height:view.height-159))
+        scollView.delegate = self
+        scollView.backgroundColor = UIColor.white
+        view.addSubview(scollView)
+        
+        setupChildViewControllers()
+        
+        self.childViews = []
+        for i in 0..<self.childViewControllers.count {
+            let childView = self.childViewControllers[i].view
+            self.childViews.append(childView!)
+        }
+        
+        addChildViews()
+        
+    }
+    
+    private func setupChildViewControllers() {
+        applyConcernVC = XBApplyConcernViewController()
+        myConcernMeVC = XBMyConcernViewController()
+        concernMeVC = XBConcernMeViewController()
+        
+        self.addChildViewController(applyConcernVC)
+        self.addChildViewController(myConcernMeVC)
+        self.addChildViewController(concernMeVC)
+    }
+    
+    fileprivate func addChildViews() {
+        let index = Int(scollView.contentOffset.x) / Int(scollView.width)
+        let childView = childViews[index]
+        if childView.window == nil {
+            childView.frame = scollView.bounds
+            scollView.addSubview(childView)
+        }
     }
     
     //MARK: - Action
     @objc private func back() {
-        navigationController?.popViewController(animated: true)
+        navigationController!.popViewController(animated: true)
     }
     
     @objc private func refresh() {
@@ -102,7 +171,7 @@ class XBRelationNoticeController: UIViewController {
             let message = json[Message].stringValue
             if json[Code] == 1 {
                 self?.clear()
-                SVProgressHUD.showSuccess(withStatus: message)
+                self?.view.makeToast(message)
                 self?.makeTableData(json)
                 result = true
             } else {
@@ -115,49 +184,6 @@ class XBRelationNoticeController: UIViewController {
         }
     }
     
-    fileprivate func search(email:String, complete:@escaping ((_ email:String, _ name:String)->())){
-        let params:Dictionary = ["Email":email]
-        let url = baseRequestUrl + "concern/query"
-        XBNetworking.share.postWithPath(path: url, paras: params, success: {[weak self] (result) in
-            let json = result as! JSON
-            debugPrint(json)
-            let message = json[Message].stringValue
-            if json[Code] == 1 {
-                SVProgressHUD.showSuccess(withStatus: message)
-                debugPrint(json[data])
-                let email = json["Email"].stringValue
-                let name = json[data].stringValue
-                self?.checkUserExistInDB(email: email, name: name)
-                complete(email, name)
-            } else {
-                SVProgressHUD.showError(withStatus: message)
-            }
-        }) { (error) in
-            SVProgressHUD.showError(withStatus: error.localizedDescription)
-        }
-    }
-    
-    fileprivate func apply(email:String) {
-        let params:Dictionary = ["myEmail":loginUser.Email!,
-                                "otherEmail":email,
-                                "firstName":loginUser.firstName!,
-                                "middleName":loginUser.middleName ?? "",
-                                "lastName":loginUser.lastName!]
-        let url = baseRequestUrl + "concern/apply"
-        XBNetworking.share.postWithPath(path: url, paras: params, success: { (result) in
-            let json = result as! JSON
-            debugPrint(json)
-            let message = json[Message].stringValue
-            if json[Code].intValue == applyNotice {
-                SVProgressHUD.showSuccess(withStatus: message)
-            } else {
-                SVProgressHUD.showError(withStatus: message)
-            }
-        }) { (error) in
-            SVProgressHUD.showError(withStatus: error.localizedDescription)
-        }
-    }
-    
     fileprivate func agree(otherEmail:String) {
         let other = XBUserManager.shared.user(uid: otherEmail)!
         let params:Dictionary = ["myEmail":loginUser.Email!,
@@ -165,13 +191,52 @@ class XBRelationNoticeController: UIViewController {
                                  "firstName":loginUser.firstName!,
                                  "middleName":loginUser.middleName ?? "",
                                  "lastName":loginUser.lastName!,
-                                 "otherName":other.fullName ?? ""]
+                                 "otherName":other.Name ?? ""]
         let url = baseRequestUrl + "concern/agree"
         XBNetworking.share.postWithPath(path: url, paras: params, success: { [weak self](result) in
             let json = result as! JSON
             debugPrint(json)
             let message = json[Message].stringValue
             if json[Code].intValue == applyPass {
+                SVProgressHUD.showSuccess(withStatus: message)
+                self?.refresh()
+            } else {
+                SVProgressHUD.showError(withStatus: message)
+            }
+        }) { (error) in
+            SVProgressHUD.showError(withStatus: error.localizedDescription)
+        }
+    }
+    
+    fileprivate func disagree(otherEmail:String) {
+        let params:Dictionary = ["myEmail":loginUser.Email!,
+                                 "otherEmail":otherEmail]
+        let url = baseRequestUrl + "concern/disagree"
+        XBNetworking.share.postWithPath(path: url, paras: params, success: { [weak self](result) in
+            let json = result as! JSON
+            debugPrint(json)
+            let message = json[Message].stringValue
+            if json[Code].intValue == applyPass {
+                SVProgressHUD.showSuccess(withStatus: message)
+                self?.refresh()
+            } else {
+                SVProgressHUD.showError(withStatus: message)
+            }
+        }) { (error) in
+            SVProgressHUD.showError(withStatus: error.localizedDescription)
+        }
+    }
+    
+    fileprivate func cancelConcern(otherEmail:String, flag:String) {
+        let params:Dictionary = ["myEmail":loginUser.Email!,
+                                   "otherEmail":otherEmail,
+                                   "flog":flag ]
+        let url = baseRequestUrl + "concern/cancel"
+        XBNetworking.share.postWithPath(path: url, paras: params, success: { [weak self](result) in
+            let json = result as! JSON
+            debugPrint(json)
+            let message = json[Message].stringValue
+            if json[Code].intValue == cancelNotice {
                 SVProgressHUD.showSuccess(withStatus: message)
                 self?.refresh()
             } else {
@@ -201,38 +266,33 @@ class XBRelationNoticeController: UIViewController {
     }
     
     private func deal(dataArary: inout [XBRelationConcernModel], with jsonArray:[JSON], and tag:String) {
+        let groupItem = XBTableGroupItem()
+        groupItem.headerTitle = tag
+        
         for i in 0..<jsonArray.count {
             let json = jsonArray[i]
+            let email = json["Email"].stringValue
+            self.checkUserExistInDB(userJson: json)
+            let user = XBUserManager.shared.user(uid: email)
+            
             let model = XBRelationConcernModel()
-            let user = XBUser()
-            user.Email = json["Email"].stringValue
-            user.fullName = json["Name"].stringValue
-            model.user = user
             model.tag = tag
+            model.user = user
             dataArary.append(model)
-            self.checkUserExistInDB(email: user.Email!, name: user.fullName!)
-            let groupItem = XBTableGroupItem()
-            groupItem.headerTitle = tag
-            groupItem.items = dataArary
-            tableGroups.append(groupItem)
         }
+        groupItem.items = dataArary
+        tableGroups.append(groupItem)
     }
     
-    private func checkUserExistInDB(email: String, name:String) {
-        guard (XBUserManager.shared.user(uid: email) != nil) else {
-            let user = XBUser()
-            user.Email = email
-            user.fullName = name
-            XBUserManager.shared.add(user: user)
-            return
-        }
+    private func checkUserExistInDB(userJson:JSON) {
+        XBUserManager.shared.addUser(userJson: userJson)
     }
     
-    fileprivate func showDealApplyAlert(user:XBUser) {
-        status = StatusDealApply
+    fileprivate func showDealApplyAlert(user:XBUser, status:String) {
+        self.status = status
         otherEmail = user.Email!
         var name = ""
-        if let fullName = user.fullName {
+        if let fullName = user.Name {
             name = fullName
         }
         let alert = LGAlertView(title: "\(name)'s apply\nContinue?", message:nil, style: .alert, buttonTitles: ["Agree"], cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, delegate: self)
@@ -244,43 +304,42 @@ class XBRelationNoticeController: UIViewController {
 extension XBRelationNoticeController: UITableViewDataSource {
     //MARK: - UITableViewDatasource
     func numberOfSections(in tableView: UITableView) -> Int {
-        if searchController!.isActive {
-            return 1
-        } else {
-            return tableGroups.count
-        }
+        return tableGroups.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController!.isActive {
-            return searchResult.count
-        }
         let group = tableGroups[section]
         return group.items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model:XBRelationConcernModel!
-        if searchController!.isActive {
-            model = searchResult[indexPath.row] as XBRelationConcernModel
-        } else {
-            let group = tableGroups[indexPath.section]
-            model = group.items[indexPath.row] as? XBRelationConcernModel
-        }
+        let group = tableGroups[indexPath.section]
+        model = group.items[indexPath.row] as? XBRelationConcernModel
         
         var cell:XBRelationConcernCell! = XBRelationConcernCell()
         switch model.tag {
         case ApplyConcern:
-            let applyCell = XBApplyConcernCell(style: .default, reuseIdentifier: ApplyConcern)
+            let applyCell = tableView.dequeueReusableCell(withIdentifier: ApplyConcern) as! XBApplyConcernCell
             applyCell.clickAgreeButton = {[weak self] user in
-                self?.showDealApplyAlert(user: user)
+                self?.showDealApplyAlert(user: user, status: self!.StatusAgreeApply)
             }
             applyCell.clickRefuseButton = {[weak self] user in
-                self?.showDealApplyAlert(user: user)
+                self?.showDealApplyAlert(user: user, status: self!.StatusDisagreeApply)
             }
             cell = applyCell
-        case MyConcern:break
-        case ConcernMe:break
+        case MyConcern:
+            let myConcernCell = tableView.dequeueReusableCell(withIdentifier: MyConcern) as! XBMyConcernCell
+            myConcernCell.clickCancelButton = {[weak self] user in
+                self?.cancelConcern(otherEmail: user.Email!, flag: "true")
+            }
+            cell = myConcernCell
+        case ConcernMe:
+            let concernMeCell = tableView.dequeueReusableCell(withIdentifier: ConcernMe) as! XBConcernMeCell
+            concernMeCell.clickCancelButton = {[weak self] user in
+                self?.cancelConcern(otherEmail: user.Email!, flag: "false")
+            }
+            cell = concernMeCell
         default:break
         }
         cell.model = model
@@ -300,53 +359,26 @@ extension XBRelationNoticeController: UITableViewDelegate, LGAlertViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if searchController!.isActive {
-            return ""
-        }
         return tableGroups[section].headerTitle
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if searchController!.isActive {
-            return ""
-        }
         return tableGroups[section].footerTitle
+    }
+    
+    //UIScrollViewDelegate
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        self.addChildViews()
     }
     
     //MARK: - LGAlertViewDelegate
     func alertView(_ alertView: LGAlertView, buttonPressedWithTitle title: String?, index: UInt) {
         if index == 0 {
             if status == StatusApply {
-                self.apply(email: otherEmail ?? "")
-            } else if status == StatusDealApply {
+            } else if status == StatusAgreeApply {
                 self.agree(otherEmail: otherEmail!)
-            }
-        }
-    }
-}
-
-extension XBRelationNoticeController: UISearchResultsUpdating, UISearchBarDelegate {
-    //MARK: - UISearchResultsUpdating
-    func updateSearchResults(for searchController: UISearchController) {
-        let allList = applyGroup + myConcern + concernMe
-        let searchText = searchController.searchBar.text!
-        searchResult.removeAll()
-        searchResult = allList.filter { $0.user.Email.contains(searchText) }
-        self.tableView.reloadData()
-    }
-    //MARK: - UISearchBarDelegate
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        search(email: searchBar.text ?? "") { [weak self](email, name) in
-            if let user = XBUserManager.shared.user(uid: email) {
-                self?.otherEmail = email
-                self?.status = self?.StatusApply
-                let model = XBRelationConcernModel()
-                model.user = user
-                model.tag = "1"
-                self?.searchResult.append(model)
-                self?.tableView.reloadData()
-                let alert = LGAlertView(title: "Find!\nEmail:\(email)\nName:\(name)", message: "Continue to apply?", style: .alert, buttonTitles: ["Confirm"], cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, delegate: self)
-                alert.showAnimated()
+            } else if status == StatusDisagreeApply {
+                self.disagree(otherEmail: otherEmail!)
             }
         }
     }

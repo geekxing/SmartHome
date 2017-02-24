@@ -13,7 +13,14 @@ import Toast_Swift
 class XBMainViewController: UIViewController {
     
     var mainView:XBMainView!
-    var loginUser:XBUser?
+    
+    var loginUser:XBUser? {
+        let currentAccount = XBUserManager.shared.currentAccount()!
+        if let user = XBUserManager.shared.user(uid: currentAccount) {
+            return user
+        }
+        return nil
+    }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -21,8 +28,8 @@ class XBMainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = RGBA(r: 127, g: 196, b: 98, a: 1)
 
+        view.backgroundColor = UIColor.white
         setupMainView()
         mainView.tapAvatar = { [weak self](user) in
             let editUserVC = XBEditUserInfoViewController()
@@ -34,6 +41,11 @@ class XBMainViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(onUserInfoUpdated(notification:)), name: NSNotification.Name(rawValue: XBUserInfoHasChangedNotification), object: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNaviItem()
+    }
+    
     public func setupMainView() {
         mainView = XBMainView(frame: view.bounds)
         self.mainView.clickSquare = {[weak self] in
@@ -41,19 +53,37 @@ class XBMainViewController: UIViewController {
             switch $0.tag {
             case 0: self!.smartMattress()
             case 3: self!.relationConcern()
+            case 4: self!.productVersion()
             default: break
             }
             self?.view.makeToast(title!)
         }
     }
     
-    @objc private func onUserInfoUpdated(notification:Notification) {
+    //MARK: - Notification
+    @objc func onUserInfoUpdated(notification:Notification) {
         let uid = notification.object as! String
         let currentAccount = XBUserManager.shared.currentAccount()!
         guard currentAccount == uid else { return }
         if let user = XBUserManager.shared.user(uid: uid) {
             mainView.currentUser = user
         }
+    }
+    
+    //MARK: - Private
+    
+    private func setupNaviItem() {
+        //        let backButton = UIButton.init(image: UIImage(named:"backButton"), color: nil, target: self, sel: #selector(back), title: "注销")
+        //        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: backButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage(named:"settings"), style: .plain, target: self, action: #selector(settings))
+    }
+    
+    @objc private func settings() {
+        
+    }
+    
+    @objc private func back() {
+        navigationController!.popViewController(animated: true)
     }
     
     private func smartMattress() {
@@ -63,6 +93,11 @@ class XBMainViewController: UIViewController {
     
     private func relationConcern() {
         let vc = XBRelationNoticeController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func productVersion() {
+        let vc = XBProductVersionController()
         navigationController?.pushViewController(vc, animated: true)
     }
 }

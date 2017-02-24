@@ -19,7 +19,8 @@ class XBFindPasswordController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: UIView())
+        backButton.layer.cornerRadius = backButton.height * 0.5
+        submitButton.layer.cornerRadius = submitButton.height * 0.5
     }
     
     //MARK: - UITextFieldDelegate
@@ -32,6 +33,10 @@ class XBFindPasswordController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func submit(_ sender: UIButton) {
+        if (email == nil) {
+            self.view.makeToast("Message is not Completed")
+            return
+        }
         let params = ["Email":email!]
         let url = baseRequestUrl + "login/forget"
         emailField.resignFirstResponder()
@@ -55,5 +60,9 @@ class XBFindPasswordController: UIViewController, UITextFieldDelegate {
     
     @IBAction func back(_ sender: UIButton) {
         navigationController!.popViewController(animated: true)
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }

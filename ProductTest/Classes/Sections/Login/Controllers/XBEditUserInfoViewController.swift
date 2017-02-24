@@ -11,39 +11,53 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import IQKeyboardManagerSwift
-import FTPopOverMenu_Swift
-import LGAlertView
 import Toast_Swift
 import SVProgressHUD
+import DropDown
 
-class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, LGAlertViewDelegate, XBPhotoPickerManagerDelegate {
+class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPhotoPickerManagerDelegate {
     
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var backgroundView: UIView!
-    @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var firstnameField: UITextField!
-    @IBOutlet weak var middleNameField: UITextField!
-    @IBOutlet weak var lastnameField: UITextField!
-    @IBOutlet weak var birthField: UITextField!
-    @IBOutlet weak var genderField: UITextField!
-    @IBOutlet weak var phoneNumberField: UITextField!
-    @IBOutlet weak var addressField: UITextField!
-    @IBOutlet weak var pSerialNoField: UITextField!
-    @IBOutlet weak var passwordField: UITextField!
-    @IBOutlet weak var retypePasswordField: UITextField!
+    @IBOutlet weak var usernameTextField: XBTextField!
+    @IBOutlet weak var firstnameField: XBTextField!
+    @IBOutlet weak var middleNameField: XBTextField!
+    @IBOutlet weak var lastnameField: XBTextField!
+    @IBOutlet weak var birthField: XBTextField!
+    @IBOutlet weak var birthButton: UIButton!
+    @IBOutlet weak var genderField: XBTextField!
+    @IBOutlet weak var genderButton: XBTextField!
+    @IBOutlet weak var phoneNumberField: XBTextField!
+    @IBOutlet weak var addressField: XBTextField!
+    @IBOutlet weak var passwordField: XBTextField!
+    @IBOutlet weak var retypePasswordField: XBTextField!
     @IBOutlet weak var avatarView: UIImageView!
     @IBOutlet weak var pickAvatarButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
     
+    let chooseGenderDropDown = DropDown()
+    
     var loginUser:XBUser?
     var fullFilled:Bool = false
-    var datePicker:UIDatePicker? = nil
     var photoManager:XBPhotoPickerManager?
     var avatarImage:UIImage?
     
     lazy var textfields:[UITextField]? = {
         return []
+    }()
+    
+    lazy var datePicker:UIDatePicker? = {
+        let dPicker = UIDatePicker()
+        dPicker.datePickerMode = .date;
+        dPicker.frame = CGRect(x: 0.0, y: 0.0, width: dPicker.width, height: 250.0)
+       return dPicker
+    }()
+    
+    lazy var dateFormatter:DateFormatter? = {
+        let dateFmt = DateFormatter()
+        dateFmt.dateFormat = "dd/MM/yyyy"
+        return dateFmt
     }()
     
     init() {
@@ -62,21 +76,31 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, LGAle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIApplication.shared.setStatusBarStyle(.default, animated:false)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: UIView())
-        scrollView.contentSize = CGSize(width: 0, height: backgroundView.height + CGFloat( margin * 2))
+        scrollView.contentSize = CGSize(width: 0, height: backgroundView.top + backgroundView.height + CGFloat(71))
         self.automaticallyAdjustsScrollViewInsets = false
+        
         photoManager = XBPhotoPickerManager.shared
         photoManager?.delegate = self
         
+        setupDropDown()
+        setupTextField()
+        setupAvatar()
+        
+        backButton.layer.cornerRadius = backButton.height * 0.5
+        submitButton.layer.cornerRadius = submitButton.height * 0.5
+        avatarView.layer.cornerRadius = avatarView.height * 0.5
+        avatarView.layer.masksToBounds = true
+    }
+    
+    //MARK: - Setup
+    private func setupTextField() {
         middleNameField.tag = -1
         addressField.tag = -1
-        pSerialNoField.tag = -1
         
         findTextfield {[weak self] in
             self!.textfields?.append($0)
         }
-
+        
         usernameTextField.text = loginUser?.Email
         firstnameField.text = loginUser?.firstName!
         middleNameField.text = loginUser?.middleName
@@ -85,10 +109,24 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, LGAle
         genderField.text = loginUser?.gender
         phoneNumberField.text = loginUser?.phoneNumber
         addressField.text = loginUser?.address
+        passwordField.text = loginUser?.password
+        retypePasswordField.text = loginUser?.password
+        
+        for tf in self.textfields! {
+            if tf.text != "" {
+                tf.textColor = UIColorHex("8a847f", 1.0)
+            }
+        }
+        
+        
         usernameTextField.isEnabled = false
-        usernameTextField.backgroundColor = UIColor.lightGray
-        usernameTextField.textColor = UIColor.darkGray
+    }
+    
+    private func setupAvatar() {
         avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + loginUser!.image!), placeholderImage: UIImage(named: "avatar_user")?.circleImage())
+        avatarView.isUserInteractionEnabled = true
+        let tapAvatarGR = UITapGestureRecognizer.init(target: self, action: #selector(pickAvatar(_:)))
+        avatarView.addGestureRecognizer(tapAvatarGR)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -97,6 +135,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, LGAle
     
     //MARK: - UITextFieldDelegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        textField.textColor = UIColorHex("333333", 1.0)
         if string == "\n" && textField.returnKeyType == .done {
             submit(submitButton)
             return false
@@ -233,18 +272,15 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, LGAle
     
     //MARK: - Private
     private func showCalendar() {
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date;
-        datePicker.frame = CGRect(x: 0.0, y: 0.0, width: datePicker.width, height: 250.0)
-        self.datePicker = datePicker
-        birthField.inputView = datePicker
+        let date = self.dateFormatter!.date(from: loginUser!.yearOfBirth)
+        self.datePicker!.date = date!
+        birthField.inputView = self.datePicker
         birthField.reloadInputViews()
     }
     
     private func showGenderSelectView() {
         genderField.resignFirstResponder()
-        let genderPicker = LGAlertView(title: nil, message: nil, style: .actionSheet, buttonTitles: ["Male", "Female"], cancelButtonTitle: nil, destructiveButtonTitle: nil, delegate: self)
-        genderPicker.showAnimated()
+        chooseGenderDropDown.show()
     }
     
     private func validatePassword() -> Bool {
@@ -264,7 +300,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, LGAle
     }
     
     private func findTextfield(complete:((_ textfield:UITextField) -> ())?) {
-        for subview in view.subviews[0].subviews {
+        for subview in view.subviews[2].subviews {
             if subview.isKind(of: UITextField.self) {
                 let textField = subview as! UITextField
                 if (complete != nil) {
@@ -298,9 +334,33 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, LGAle
         avatarView.image = avatarImage?.circleImage()
     }
     
-    //MARK: - LGAlertViewDelegate
-    func alertView(_ alertView: LGAlertView, buttonPressedWithTitle title: String?, index: UInt) {
-        genderField.text = title!
+    
+}
+
+extension XBEditUserInfoViewController {
+    
+    func setupDropDown() {
+        setupChooseGenderDropDown()
+    }
+    
+    private func setupChooseGenderDropDown() {
+        configDropDown(chooseGenderDropDown, ["Male", "Female"], genderField)
+    }
+    
+    private func configDropDown(_ dropDown:DropDown, _ datasource:Array<String>, _ anchorField:UITextField) {
+        
+        dropDown.anchorView = anchorField
+        dropDown.bottomOffset = CGPoint(x: 0, y: anchorField.bounds.height)
+        
+        dropDown.dataSource = datasource
+        
+        dropDown.selectionAction = { (index, item) in
+            anchorField.text = item
+        }
+        
+        dropDown.dismissMode = .onTap
+        dropDown.direction = .any
+    
     }
     
 }

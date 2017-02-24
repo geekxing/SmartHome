@@ -38,31 +38,18 @@ class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterVie
         super.viewDidLoad()
         
         if let loginData = XBLoginManager.shared.currentLoginData {
-            let account = loginData.account as NSString
             usernameTextField.text = loginData.account
-            if let token = loginData.token {
-                let myToken = token as NSString
-                if account.length != 0 && myToken.length != 0 {
-                    passwordTextField.text = loginData.token
-                    self.loginData = loginData
-                    doLogin()
-                }
-            }
+            passwordTextField.text = loginData.token
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configStatusBar()
         if usernameTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
             loginButton.isEnabled = false
         } else {
             loginButton.isEnabled = true
         }
-    }
-
-    func configStatusBar() {
-        UIApplication.shared.setStatusBarStyle(.lightContent, animated:false)
     }
     
     //MARK: - UITextFieldDelegate
@@ -95,15 +82,12 @@ class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterVie
     func doLogin() {
         view.endEditing(true)
         
-        let username = loginData?.account ?? usernameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        let password = loginData?.token ?? passwordTextField.text
+        let username = usernameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let password = passwordTextField.text
         
-        XBOperateUtils.shared.login(email: username!, token: password!, success: { (result) in
-            SVProgressHUD.showSuccess(withStatus: result as! String)
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+1.0, execute: {
-                let nav = XBNavigationController(rootViewController: XBMainViewController())
-                UIApplication.shared.keyWindow?.rootViewController = nav
-            })
+        XBOperateUtils.shared.login(email: username!, token: password!, success: { [weak self] (result) in
+            XBLoginManager.shared.currentLoginData = LoginData(account: username, token: password)
+            self?.navigationController!.pushViewController(XBMainViewController(), animated: true)
         }) { (error) in
             SVProgressHUD.showError(withStatus: error.localizedDescription)
         }

@@ -14,11 +14,11 @@ let XBUserInfoHasChangedNotification = "XBUserInfoHasChangedNotification"
 
 class XBUser: Object {
     dynamic var Email:String!
-    dynamic var firstName:String!
-    dynamic var middleName:String?
-    dynamic var lastName:String!
-    dynamic var fullName:String!
-    dynamic var image:String?
+    dynamic var firstName:String! = " "
+    dynamic var middleName:String? = " "
+    dynamic var lastName:String! = " "
+    dynamic var Name:String!
+    dynamic var image:String? = " "
     dynamic var password:String!
     dynamic var phoneNumber:String!
     dynamic var address:String?
@@ -85,7 +85,6 @@ class XBUserManager: NSObject {
         let realm = try! Realm()
         try! realm.write {
             realm.add(user, update: true)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: XBUserInfoHasChangedNotification), object: user.Email)
         }
     }
     

@@ -10,14 +10,15 @@ import UIKit
 
 class XBSquareButton: UIButton {
     
+    //重写enabled
     override var isEnabled: Bool {
         set {
             super.isEnabled = newValue
             if super.isEnabled {
-                self.backgroundColor = SMRandomColor()
+                //self.backgroundColor = UIColorHex("0x77716C", 1.0)
             } else {
-                self.backgroundColor = UIColor.lightGray
-                self.setTitleColor(UIColor.darkGray, for: .normal)
+                //self.backgroundColor = RGBA(r: 174, g: 178, b: 179, a: 1)
+                //self.setTitleColor(UIColor.darkGray, for: .normal)
             }
         }
         get {
@@ -29,7 +30,7 @@ class XBSquareButton: UIButton {
         super.init(frame:frame)
         titleLabel?.font = UIFont.systemFont(ofSize: 15)
         titleLabel?.textAlignment = .center
-        self.backgroundColor = SMRandomColor()
+        self.setTitleColor(UIColorHex("333333", 1.0), for: .normal)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -12,10 +12,11 @@ class XBProductMainView: XBMainView {
     
     override var mainItems:[MainItemModel] {
         let btnTitles = ["实时数据", "健康档案", "添加设备", "删除设备"]
-        let itemEnables = [false, false, true, false]
+        let btnImages = ["RealTimeData", "HealthReport", "AddDevice", "DeleteDevice"]
+        let itemEnables = [true, true, true, true]
         var array = [MainItemModel]()
         for i in 0..<4 {
-            let mainitem = MainItemModel(image: "", title:btnTitles[i], enabled:itemEnables[i])
+            let mainitem = MainItemModel(image: "", title:btnTitles[i], enabled:itemEnables[i], backImage:btnImages[i])
             array.append(mainitem)
         }
         return array
@@ -27,8 +28,16 @@ class XBProductMainView: XBMainView {
         }
     }
     
+    override var buttonW: CGFloat {
+        return 117.0;
+    }
+    
+    override var buttonH: CGFloat {
+        return 117.0;
+    }
+    
     func toggleFunctionEnabled(sn:String?) {
-        if sn != nil {
+        if sn != "" {
             for btn in squareBtns {
                 btn.isEnabled = true
             }

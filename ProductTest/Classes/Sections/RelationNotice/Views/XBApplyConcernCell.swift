@@ -10,30 +10,36 @@ import UIKit
 
 class XBApplyConcernCell: XBRelationConcernCell {
     
+    static let maxNameLen = CGFloat(60.0*UIRate)
+    static let maxEmailLen = CGFloat(80.0*UIRate)
+    
     private var agreeButton:UIButton!
     private var refuseButton:UIButton!
-    override var model:XBRelationConcernModel! {
-        didSet {
-            avatarView.image = nil
-        }
-    }
     
     var clickAgreeButton:((XBUser) -> ())?
     var clickRefuseButton:((XBUser) -> ())?
     
     override func setup() {
         super.setup()
-        agreeButton = pileButton(color: UIColor.green, selector: #selector(clickAgree(_:)), title: "Agree")
-        refuseButton = pileButton(color: UIColor.white, selector: #selector(clickRefuse(_:)), title: "Refuse")
+        agreeButton = pileButton(selector: #selector(clickAgree(_:)), title: "批准")
+        refuseButton = pileButton(selector: #selector(clickRefuse(_:)), title: "拒绝")
+        shadowLineview.isHidden = false
         contentView.addSubview(agreeButton)
         contentView.addSubview(refuseButton)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        refuseButton.right = width - 10
+        
+        nameLabel.width = XBApplyConcernCell.maxNameLen
+        nameLabel.centerY = height * 0.5
+        nameLabel.left = avatarView.right + 8*UIRate
+        emailLabel.width = XBApplyConcernCell.maxEmailLen
+        emailLabel.centerY = height * 0.5
+        emailLabel.left = nameLabel.right
+        refuseButton.right = width - 25*UIRate
         refuseButton.centerY = height * 0.5
-        agreeButton.right = refuseButton.left - 10
+        agreeButton.right = refuseButton.left - 8*UIRate
         agreeButton.centerY = height * 0.5
     }
     

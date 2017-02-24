@@ -8,9 +8,10 @@
 
 import UIKit
 
-let ApplyConcern = "ApplyConcern"
+let SearchApply  = "SearchApply"
+let ApplyConcern = "批准申请"
 let MyConcern    = "MyConcern"
-let ConcernMe    = "ConcernMe"
+let ConcernMe    = "关注我的"
 
 class XBRelationConcernModel: NSObject {
     

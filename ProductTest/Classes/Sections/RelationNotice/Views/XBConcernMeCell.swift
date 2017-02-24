@@ -15,7 +15,7 @@ class XBConcernMeCell: XBRelationConcernCell {
 
     override func setup() {
         super.setup()
-        cancelConcernButton = pileButton(color: UIColor.green, selector: #selector(clickCancelConcern(_:)), title: "CancelConcern")
+        cancelConcernButton = pileButton(selector: #selector(clickCancelConcern(_:)), title: "Cancel\nConcern")
         contentView.addSubview(cancelConcernButton)
     }
     

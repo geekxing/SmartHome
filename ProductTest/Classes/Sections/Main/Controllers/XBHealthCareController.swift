@@ -21,7 +21,7 @@ class XBHealthCareController: UIViewController {
         super.viewDidLoad()
         //navigationItem.leftBarButtonItem = UIBarButtonItem(customView: UIView())
         view.backgroundColor = UIColor.white
-        closeBtn = UIButton.init(image: nil, color: UIColor.blue, target: self, sel: #selector(disconnect), title: "disconnect")
+        closeBtn = UIButton.init(image: nil, backImage:nil, color: UIColor.blue, target: self, sel: #selector(disconnect), title: "disconnect")
         closeBtn.frame = CGRect(x: 140, y: 50, width: 100, height: 40)
         view.addSubview(closeBtn)
         

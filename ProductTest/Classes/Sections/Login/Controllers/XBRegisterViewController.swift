@@ -10,10 +10,9 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import IQKeyboardManagerSwift
-import FTPopOverMenu_Swift
-import LGAlertView
 import Toast_Swift
 import SVProgressHUD
+import DropDown
 
 public protocol XBRegisterViewControllerDelegate:NSObjectProtocol {
     func regisDidComplete(account:String?, password pwd:String?)
@@ -21,7 +20,9 @@ public protocol XBRegisterViewControllerDelegate:NSObjectProtocol {
 
 let margin = 50.0
 
-class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertViewDelegate {
+class XBRegisterViewController: UIViewController, UITextFieldDelegate {
+    
+    //MARK: - Properties
     
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var backgroundView: UIView!
@@ -31,9 +32,9 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
     @IBOutlet weak var lastnameField: UITextField!
     @IBOutlet weak var birthField: UITextField!
     @IBOutlet weak var genderField: UITextField!
+    @IBOutlet weak var genderButton: UIButton!
     @IBOutlet weak var phoneNumberField: UITextField!
     @IBOutlet weak var addressField: UITextField!
-    @IBOutlet weak var pSerialNoField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var retypePasswordField: UITextField!
     @IBOutlet weak var checkboxButton: UIButton!
@@ -42,12 +43,30 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
     
     var fullFilled:Bool = false
     weak var delegate:XBRegisterViewControllerDelegate?
-    var datePicker:UIDatePicker? = nil
     
     lazy var textfields:[UITextField]? = {
        return []
     }()
     
+    lazy var datePicker:UIDatePicker? = {
+        let dPicker = UIDatePicker()
+        dPicker.datePickerMode = .date;
+        dPicker.frame = CGRect(x: 0.0, y: 0.0, width: dPicker.width, height: 250.0)
+        return dPicker
+    }()
+    
+    lazy var dateFormatter:DateFormatter? = {
+        let dateFmt = DateFormatter()
+        dateFmt.dateFormat = "dd/MM/yyyy"
+        return dateFmt
+    }()
+    
+    //MARK: - DropDown's
+
+    let chooseDayDropDown = DropDown()
+    let chooseGenderDropDown = DropDown()
+    
+    //MARK: - Life Cycle
     init() {
         super.init(nibName: "XBRegisterViewController", bundle: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
@@ -64,18 +83,24 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: UIView())
-        scrollView.contentSize = CGSize(width: 0, height: backgroundView.height + CGFloat( margin * 2))
+        setupDropDowns()
+        
+        scrollView.contentSize = CGSize(width: 0, height: backgroundView.top + backgroundView.height + CGFloat(margin))
         self.automaticallyAdjustsScrollViewInsets = false
         
         middleNameField.tag = -1
         addressField.tag = -1
-        pSerialNoField.tag = -1
+        
+        backButton.layer.cornerRadius = backButton.height * 0.5
+        submitButton.layer.cornerRadius = submitButton.height * 0.5
 
         findTextfield {[weak self] in
             self!.textfields?.append($0)
+            $0.setValue(UIColor.black, forKeyPath: "placeholderLabel.textColor")
+            $0.setValue(UIFontSize(size: 16), forKeyPath: "placeholderLabel.font")
         }
     }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -98,8 +123,12 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
         onTextChanged()
         if textField == birthField {
             showCalendar()
-        } else if (textField == genderField) {
-            showGenderSelectView()
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == birthField {
+            birthField.text = self.dateFormatter!.string(from: self.datePicker!.date)
         }
     }
     
@@ -111,17 +140,13 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
         }
         return true
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.inputView != nil {
-            let pickerView = textField.inputView as! UIDatePicker
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd/MM/yyyy"
-            textField.text = dateFormatter.string(from: pickerView.date)
-        }
-    }
 
     //MARK: - Action
+    
+    @IBAction func selectGender(_ sender: UIButton) {
+        chooseGenderDropDown.show()
+    }
+    
     @IBAction func submit(_ sender: UIButton) {
         if (!fullFilled || !checkboxButton.isSelected) {
             self.view.makeToast("Message is not Completed")
@@ -133,17 +158,20 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
             return
         }
         
+        let firstName = firstnameField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let middleName = middleNameField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName = lastnameField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         let params:Parameters = [
             "Email":usernameTextField.text!,
             "password":passwordField.text!,
-            "firstName":firstnameField.text!,
-            "middleName":middleNameField.text ?? "",
-            "lastName":lastnameField.text!,
+            "firstName":firstName,
+            "middleName":middleName ?? "",
+            "lastName":lastName,
             "yearOfBirth":birthField.text!,
             "gender":genderField.text!,
             "phoneNumber":phoneNumberField.text!,
             "address":addressField.text ?? "",
-            "SN":pSerialNoField.text ?? "",
         ]
         
         let url = baseRequestUrl + "login/register"
@@ -177,19 +205,14 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
     }
     
     //MARK: - Private
-    private func showCalendar() {
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date;
-        datePicker.frame = CGRect(x: 0.0, y: 0.0, width: datePicker.width, height: 250.0)
-        self.datePicker = datePicker
-        birthField.inputView = datePicker
-        birthField.reloadInputViews()
-    }
     
-    private func showGenderSelectView() {
-        genderField.resignFirstResponder()
-        let genderPicker = LGAlertView(title: nil, message: nil, style: .actionSheet, buttonTitles: ["Male", "Female"], cancelButtonTitle: nil, destructiveButtonTitle: nil, delegate: self)
-        genderPicker.showAnimated()
+    private func showCalendar() {
+        let comps = XBOperateUtils.shared.todayDateComponents()
+        let defaultDate = self.dateFormatter?.date(from: "\(comps.day)/\(comps.month)/\(comps.year-50)")
+        self.datePicker!.minimumDate = defaultDate!
+        self.datePicker!.date = defaultDate!
+        birthField.inputView = self.datePicker
+        birthField.reloadInputViews()
     }
     
     private func validatePassword() -> Bool {
@@ -209,7 +232,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
     }
     
     private func findTextfield(complete:((_ textfield:UITextField) -> ())?) {
-        for subview in view.subviews[0].subviews {
+        for subview in view.subviews[2].subviews {
             if subview.isKind(of: UITextField.self) {
                 let textField = subview as! UITextField
                 if (complete != nil) {
@@ -237,9 +260,36 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate, LGAlertVi
         }
     }
     
-    //MARK: -
-    func alertView(_ alertView: LGAlertView, buttonPressedWithTitle title: String?, index: UInt) {
-        genderField.text = title!
+}
+
+
+//MARK: - DropDown
+extension XBRegisterViewController {
+    
+    //MARK: - Setup
+    
+    func setupDropDowns() {
+        setupChooseGenderDropDown()
     }
+
+    private func setupChooseGenderDropDown() {
+        configDropDown(chooseGenderDropDown, ["Male", "Female"], genderField)
+    }
+    
+    private func configDropDown(_ dropDown:DropDown, _ datasource:Array<String>, _ anchorField:UITextField) {
+        
+        dropDown.anchorView = anchorField
+        dropDown.bottomOffset = CGPoint(x: 0, y: anchorField.bounds.height)
+        
+        dropDown.dataSource = datasource
+        
+        dropDown.selectionAction = { (index, item) in
+            anchorField.text = item
+        }
+        
+        dropDown.dismissMode = .onTap
+        dropDown.direction = .any
+    }
+    
     
 }

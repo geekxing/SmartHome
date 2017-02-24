@@ -9,6 +9,7 @@
 import UIKit
 import SVProgressHUD
 import IQKeyboardManagerSwift
+import DropDown
 
 let SMErrorDomain  = "com.sm.app"
 let XBImagePrefix  = "http://118.178.181.188:8080/"
@@ -42,14 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
+        DropDown.startListeningToKeyboard()
+        
         SVProgressHUD.setDefaultStyle(.dark)
         SVProgressHUD.setMaximumDismissTimeInterval(2.0)
         SVProgressHUD.setDefaultAnimationType(.native)
         
         setupMainViewController()
         commenInitListenEvents()
-        
-        application.setStatusBarStyle(.lightContent, animated: true)
         
         return true
     }
@@ -74,7 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     @objc func logout(aNote:Notification) {
-        XBLoginManager.shared.currentLoginData?.token = nil
         setupLoginVC()
     }
     

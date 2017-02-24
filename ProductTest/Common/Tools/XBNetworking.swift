@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import SVProgressHUD
 
 class XBNetworking: NSObject {
     static let share = XBNetworking()
@@ -63,6 +64,8 @@ class XBNetworking: NSObject {
     // MARK:- POST
     func postWithPath(path: String,paras: Dictionary<String,Any>?,success: @escaping ((_ result: Any) -> ()),failure: @escaping ((_ error: Error) -> ())) {
         
+        SVProgressHUD.show()
+        
         var i = 0
         var address: String = ""
         
@@ -87,6 +90,8 @@ class XBNetworking: NSObject {
         print(address)
         request.httpBody = address.data(using: .utf8)
         let dataTask = session.dataTask(with: request) { (data, respond, error) in
+            
+            SVProgressHUD.dismiss()
             
             if let data = data {
                 let json = JSON(data: data)
