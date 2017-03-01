@@ -10,13 +10,14 @@ import UIKit
 
 let SearchApply  = "SearchApply"
 let ApplyConcern = "批准申请"
-let MyConcern    = "MyConcern"
+let MyConcern    = "我的关注"
 let ConcernMe    = "关注我的"
 
 class XBRelationConcernModel: NSObject {
-    
 
     var user:XBUser!
     var tag:String!
+    
+    var open:Bool = false
     
 }

@@ -9,17 +9,11 @@
 import UIKit
 import SVProgressHUD
 import SwiftyJSON
-import LGAlertView
 
 class XBApplyConcernViewController: UIViewController {
     
-    private var loginUser:XBUser? {
-        if let userID = XBUserManager.shared.currentAccount() {
-            if let loginUser = XBUserManager.shared.user(uid: userID) {
-                return loginUser
-            }
-        }
-        return nil
+    var loginUser: XBUser? {
+        return XBUserManager.shared.loginUser()
     }
     var searchBar:XBRoundedTextField!
     var dataArray = [XBRelationConcernModel]()
@@ -168,14 +162,6 @@ extension XBApplyConcernViewController: UITextFieldDelegate {
         } else {
             return false
         }
-    }
-    
-}
-
-extension XBApplyConcernViewController: LGAlertViewDelegate {
-    
-    func alertView(_ alertView: LGAlertView, buttonPressedWithTitle title: String?, index: UInt) {
-        
     }
     
 }

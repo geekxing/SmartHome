@@ -21,8 +21,8 @@ class XBApplyConcernCell: XBRelationConcernCell {
     
     override func setup() {
         super.setup()
-        agreeButton = pileButton(selector: #selector(clickAgree(_:)), title: "批准")
-        refuseButton = pileButton(selector: #selector(clickRefuse(_:)), title: "拒绝")
+        agreeButton = XBRoundedButton.init(selector:#selector(clickAgree(_:)),target:self, title: "批准")
+        refuseButton = XBRoundedButton.init(selector: #selector(clickRefuse(_:)),target:self, title: "拒绝")
         shadowLineview.isHidden = false
         contentView.addSubview(agreeButton)
         contentView.addSubview(refuseButton)
@@ -31,16 +31,17 @@ class XBApplyConcernCell: XBRelationConcernCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        avatarView.top = 0;
         nameLabel.width = XBApplyConcernCell.maxNameLen
-        nameLabel.centerY = height * 0.5
+        nameLabel.centerY = avatarView.centerY
         nameLabel.left = avatarView.right + 8*UIRate
         emailLabel.width = XBApplyConcernCell.maxEmailLen
-        emailLabel.centerY = height * 0.5
+        emailLabel.centerY = avatarView.centerY
         emailLabel.left = nameLabel.right
         refuseButton.right = width - 25*UIRate
-        refuseButton.centerY = height * 0.5
+        refuseButton.centerY = avatarView.centerY
         agreeButton.right = refuseButton.left - 8*UIRate
-        agreeButton.centerY = height * 0.5
+        agreeButton.centerY = avatarView.centerY
     }
     
     //MARK: - Action

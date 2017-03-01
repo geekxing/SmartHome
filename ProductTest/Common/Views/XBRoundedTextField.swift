@@ -14,6 +14,7 @@ class XBRoundedTextField: UITextField {
         super.init(frame: frame)
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColorHex("595757", 1.0).cgColor
+        self.backgroundColor = UIColor.white
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,11 +28,13 @@ class XBRoundedTextField: UITextField {
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: 16, y: 0, width: bounds.width, height: bounds.height)
+        let inset = bounds.height * 0.25
+        return CGRect(x: inset, y: 0, width: bounds.width-2*inset, height: bounds.height)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: 16, y: 0, width: bounds.width, height: bounds.height)
+        let inset = bounds.height * 0.25
+        return CGRect(x: inset, y: 0, width: bounds.width-2*inset, height: bounds.height)
     }
 
 }

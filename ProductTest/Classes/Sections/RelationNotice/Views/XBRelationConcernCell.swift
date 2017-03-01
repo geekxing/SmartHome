@@ -75,21 +75,10 @@ class XBRelationConcernCell: UITableViewCell {
         nameLabel.bottom = avatarView.height * 0.5
         
         shadowLineview.width = self.width
-        shadowLineview.bottom = self.bottom
+        shadowLineview.height = 8.0;
+        shadowLineview.bottom = self.height
         shadowLineview.left = 0
         
-    }
-    
-    func pileButton(selector:Selector, title:String) -> XBRoundedButton {
-        let button = XBRoundedButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 11)
-        button.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 5)
-        button.sizeToFit()
-        button.addTarget(self, action: selector, for: .touchUpInside)
-        button.width += 22
-        button.height = 25
-        return button
     }
     
 }

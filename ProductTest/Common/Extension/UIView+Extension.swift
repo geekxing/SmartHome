@@ -179,4 +179,17 @@ extension UIView {
             return CGPoint(x: middleX, y: middleY)
         }
     }
+    
+    func isShowingOnKeywindow() -> Bool {
+        
+        let keyWindow = UIApplication.shared.keyWindow!
+        // 把这个view在它的父控件中的frame(即默认的frame)转换成在window的frame
+        let convertFrame  = self.superview?.convert(self.frame, to: keyWindow)
+        let windowBounds = keyWindow.bounds
+        // 判断这个控件是否在主窗口上（即该控件和keyWindow有没有交叉）
+        let isOnWindow = convertFrame?.intersects(windowBounds)
+        let isShowOnWindow = (self.window == keyWindow) && !self.isHidden && (self.alpha > 0.01) && isOnWindow == true
+        return isShowOnWindow
+        
+    }
 }

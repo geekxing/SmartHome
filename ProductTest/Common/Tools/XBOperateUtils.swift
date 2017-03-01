@@ -9,8 +9,16 @@
 import UIKit
 import SwiftyJSON
 import RealmSwift
+import SVProgressHUD
 
 class XBOperateUtils: NSObject {
+    
+    private var loginUser:XBUser! {
+        if let user = XBUserManager.shared.loginUser() {
+            return user
+        }
+        return nil
+    }
 
     static let shared = XBOperateUtils()
     
@@ -43,10 +51,9 @@ class XBOperateUtils: NSObject {
         })
     }
     
-    func todayDateComponents() -> (year:Int, month:Int, day:Int) {
-        let today = Date()
+    func components(for date:Date) -> (year:Int, month:Int, day:Int) {
         let dateSet: Set<Calendar.Component> = [.year, .month, .day]
-        let cmps = Calendar(identifier: .gregorian).dateComponents(dateSet, from: today)
+        let cmps = Calendar(identifier: .gregorian).dateComponents(dateSet, from: date)
         return (cmps.year!, cmps.month!, cmps.day!)
     }
     

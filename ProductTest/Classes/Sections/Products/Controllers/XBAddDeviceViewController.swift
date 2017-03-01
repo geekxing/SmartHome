@@ -45,7 +45,7 @@ class XBAddDeviceViewController: UIViewController {
     @IBAction func beginScan(_ sender: UIButton) {
         let qrVC = XBQRCodeScanViewController()
         qrVC.returnScan = {[weak self] scan in
-            self?.snField.text = "00010A0jmi9rcnb"
+            self?.snField.text = "00010A0o4i1muso"
         }
         navigationController?.pushViewController(qrVC, animated: true)
     }

@@ -22,8 +22,7 @@ class XBMainView: UIView {
     //Properties
     
     let btnColor = UIColor(white: 0/255.0, alpha: 0.2)
-    
-    var naviBackgroud:UIImageView!
+  
     var avatarRing:UIImageView!
     var avatarView:UIImageView!
     var nameLabel:UILabel!
@@ -85,9 +84,6 @@ class XBMainView: UIView {
     
     private func setupUserPart() {
         
-        naviBackgroud = UIImageView(frame: CGRect(x: 0, y: 0, width: self.width, height:268*UIRate))
-        naviBackgroud.image = UIImage(named: "bigPublicHeader")
-        
         avatarRing =  UIImageView(image: UIImage(named: "avatarRing"))
         avatarRing.centerX = self.centerX
         avatarRing.top = 48
@@ -104,8 +100,7 @@ class XBMainView: UIView {
         nameLabel = UILabel()
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
         nameLabel.textColor = UIColorHex("333333", 1.0)
-        
-        addSubview(naviBackgroud)
+
         addSubview(avatarRing)
         addSubview(avatarView)
         addSubview(nameLabel)

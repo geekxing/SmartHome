@@ -10,6 +10,7 @@ import Foundation
 
 let SCREEN_WIDTH = UIScreen.main.bounds.width
 let SCREEN_HEIGHT = UIScreen.main.bounds.height
+let STATUS_BAR_HEIGHT = UIApplication.shared.statusBarFrame.height
 let UIRate = SCREEN_WIDTH / 375
 
 func RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor{
@@ -51,3 +52,7 @@ func UIColorHex(_ hex:String, _ alpha:CGFloat) -> UIColor {
 func UIFontSize(size:CGFloat) -> UIFont {
     return UIFont.systemFont(ofSize: size)
 }
+
+//MARK: - Notifications
+
+let XBSearchSleepCareHistoryNotification = "kXBSearchSleepCareHistoryNotification"

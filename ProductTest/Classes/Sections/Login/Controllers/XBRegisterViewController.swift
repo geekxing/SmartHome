@@ -48,13 +48,6 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
        return []
     }()
     
-    lazy var datePicker:UIDatePicker? = {
-        let dPicker = UIDatePicker()
-        dPicker.datePickerMode = .date;
-        dPicker.frame = CGRect(x: 0.0, y: 0.0, width: dPicker.width, height: 250.0)
-        return dPicker
-    }()
-    
     lazy var dateFormatter:DateFormatter? = {
         let dateFmt = DateFormatter()
         dateFmt.dateFormat = "dd/MM/yyyy"
@@ -128,7 +121,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == birthField {
-            birthField.text = self.dateFormatter!.string(from: self.datePicker!.date)
+            birthField.text = self.dateFormatter!.string(from: datePicker!.date)
         }
     }
     
@@ -207,11 +200,11 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     //MARK: - Private
     
     private func showCalendar() {
-        let comps = XBOperateUtils.shared.todayDateComponents()
+        let comps = XBOperateUtils.shared.components(for: Date())
         let defaultDate = self.dateFormatter?.date(from: "\(comps.day)/\(comps.month)/\(comps.year-50)")
-        self.datePicker!.minimumDate = defaultDate!
-        self.datePicker!.date = defaultDate!
-        birthField.inputView = self.datePicker
+        datePicker!.minimumDate = defaultDate!
+        datePicker!.date = defaultDate!
+        birthField.inputView = datePicker
         birthField.reloadInputViews()
     }
     

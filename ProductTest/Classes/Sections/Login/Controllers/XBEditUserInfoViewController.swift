@@ -8,7 +8,6 @@
 //
 
 import UIKit
-import Alamofire
 import SwiftyJSON
 import IQKeyboardManagerSwift
 import Toast_Swift
@@ -39,19 +38,12 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     let chooseGenderDropDown = DropDown()
     
     var loginUser:XBUser?
-    var fullFilled:Bool = false
-    var photoManager:XBPhotoPickerManager?
-    var avatarImage:UIImage?
+    private var fullFilled:Bool = true
+    private var photoManager:XBPhotoPickerManager?
+    private var avatarImage:UIImage?
     
     lazy var textfields:[UITextField]? = {
         return []
-    }()
-    
-    lazy var datePicker:UIDatePicker? = {
-        let dPicker = UIDatePicker()
-        dPicker.datePickerMode = .date;
-        dPicker.frame = CGRect(x: 0.0, y: 0.0, width: dPicker.width, height: 250.0)
-       return dPicker
     }()
     
     lazy var dateFormatter:DateFormatter? = {
@@ -76,8 +68,8 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        scrollView.contentSize = CGSize(width: 0, height: backgroundView.top + backgroundView.height + CGFloat(71))
         self.automaticallyAdjustsScrollViewInsets = false
+        scrollView.contentSize = CGSize(width: 0, height: backgroundView.top + backgroundView.height + CGFloat(71))
         
         photoManager = XBPhotoPickerManager.shared
         photoManager?.delegate = self
@@ -186,7 +178,9 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
             return
         }
 
-        let params:Parameters = [
+        let boundary = "Boundary+V2ymHFg03ehbqgZCaKO6jy"
+        
+        let params:Dictionary = [
             "Email":usernameTextField.text!,
             "password":passwordField.text!,
             "firstName":firstnameField.text!,
@@ -202,60 +196,72 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
         
         SVProgressHUD.show()
         
-        Alamofire.upload(
-            multipartFormData: {[weak self] multipartFormData in
-                if let uploadImage = self?.avatarImage {
-                    if let imageData = UIImagePNGRepresentation(uploadImage)?.base64EncodedData(options: .lineLength64Characters) {
-                        //let filePath = XBFileLocationHelper.getAppDocumentPath() + "/avatar.txt"
-                        var url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-                        url = url?.appendingPathComponent("avatar.png")
-                        try! imageData.write(to: url!)
-                        multipartFormData.append(url!, withName: "header")
-                    }
-                }
-                //add bodypart
-                for (key , value) in params {
-                    assert(value is String)
-                    multipartFormData.append((value as! String).data(using: .utf8)!, withName: key)
-                }
-        },
-            to: url,
-            encodingCompletion: {[weak self] encodingResult in
-                switch encodingResult {
-                case .success(let upload, _, _):
-                    upload.responseJSON { response in
-                        debugPrint(response)
-                        switch response.result {
-                        case .success(let value):
-                            let json = JSON(value)
-                            let message = json[Message].stringValue
-                            if json[Code].intValue == updateInfo {
-                                SVProgressHUD.showSuccess(withStatus: message)
-                                self?.checkUserInfo()
-                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5, execute: { [weak self] in
-                                    self?.back(self!.backButton)
-                                })
-                            } else {
-                                SVProgressHUD.showError(withStatus: message)
-                            }
-                            break
-                        default:break
-                        }
-                    }
-                case .failure(let encodingError):
-                    print(encodingError)
-                }
+        // create request
+        var request = URLRequest(url: URL.init(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 5)
+        // post body
+        var body = Data()
+        
+        // add params (all params are strings)
+        let paramsDict = params as NSDictionary
+        
+        paramsDict.enumerateKeysAndObjects({ (key, obj, stop) in
+            var fieldString = "--\(boundary)\r\n"
+            fieldString += "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n"
+            fieldString += "\(obj)\r\n"
+            body.append(fieldString.data(using: .utf8)!)
+        })
+        
+        // add image data
+        if let uploadImage = self.avatarImage {
+            if let imageData = UIImageJPEGRepresentation(uploadImage, 1.0) {
+                //let filePath = XBFileLocationHelper.getAppDocumentPath() + "/avatar.txt"
+                var url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+                url = url?.appendingPathComponent("avatar.png")
+                try! imageData.write(to: url!)
+                
+                var imageString = "--\(boundary)\r\n"
+                imageString +=  "Content-Disposition: form-data; name=\"header\"; filename=\"image.jpg\"\r\n"
+                imageString += "Content-Type: image/jpeg\r\n"
+                imageString += "Content-Transfer-Encoding: binary\r\n\r\n"
+                
+                body.append(imageString.data(using: .utf8)!)
+                body.append(imageData)
+                body.append("\r\n".data(using: .utf8)!)
+                body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+                
+            }
         }
-        )
+        
+        request.httpMethod = "POST"
+        request.httpShouldHandleCookies = false
+        
+        // setting the body of the post to the reqeust
+        request.httpBody = body
+        
+        // set the content-length
+        request.setValue("\((body as NSData).length)", forHTTPHeaderField: "Content-Length")
+        
+        // set Content-Type in HTTP header
+        let contentType = "multipart/form-data; boundary=\(boundary)"
+        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+        
+        let bodyString = String.init(data: body, encoding: .utf8)
+        print("\(bodyString)")
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request, completionHandler: {[weak self] (data, response, error) in
+            print("\(data),\(response),\(error)")
+            self!.checkUserInfo()
+        })
+        
+        dataTask.resume()
+        
     }
     
     func checkUserInfo() {
         
-        XBOperateUtils.shared.login(email: usernameTextField.text!, token: passwordField.text!, success: { (result) in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+1.0, execute: {
-                let nav = XBNavigationController(rootViewController: XBMainViewController())
-                UIApplication.shared.keyWindow?.rootViewController = nav
-            })
+        XBOperateUtils.shared.login(email: usernameTextField.text!, token: passwordField.text!, success: {[weak self] (result) in
+            self!.navigationController!.popViewController(animated: true)
         }) { (error) in
             SVProgressHUD.showError(withStatus: error.localizedDescription)
         }
@@ -270,11 +276,16 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
         navigationController!.popViewController(animated: true)
     }
     
+    @IBAction func fillBirthday(_ sender: UIButton) {
+        birthField.becomeFirstResponder()
+        showCalendar()
+    }
+    
     //MARK: - Private
     private func showCalendar() {
         let date = self.dateFormatter!.date(from: loginUser!.yearOfBirth)
-        self.datePicker!.date = date!
-        birthField.inputView = self.datePicker
+        datePicker!.date = date!
+        birthField.inputView = datePicker
         birthField.reloadInputViews()
     }
     

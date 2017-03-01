@@ -8,22 +8,25 @@
 
 import UIKit
 
-class XBProductVersionController: UIViewController {
+class XBProductVersionController: XBBaseViewController {
+    
+    static let productCellId = "productCellId"
+    static let reuseHeaderId = "reuseHeaderId"
+    
+    override var naviTitle: String? {
+        return "增值服务"
+    }
+    
+    override var naviBackgroundImage: UIImage? {
+        return UIImage(named: "RectHeader")
+    }
     
     var tableGroups:[XBTableGroupItem] = []
-    private var loginUser:XBUser!
     fileprivate var tableView:UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let userID = XBUserManager.shared.currentAccount() {
-            if let loginUser = XBUserManager.shared.user(uid: userID) {
-                self.loginUser = loginUser
-            }
-        }
         self.view.backgroundColor = UIColor.white
-        setupNavigation()
         setupTableView()
         makeData()
     }
@@ -34,20 +37,18 @@ class XBProductVersionController: UIViewController {
     }
     
     //MARK: - UI Setting
-    private func setupNavigation() {
-        UIApplication.shared.statusBarStyle = .default
-        title = "产品升级"
-        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-    }
-    
+
     private func setupTableView() {
-        tableView = UITableView(frame: view.bounds, style: .grouped)
+        let naviHeight = (naviBackgroundImage!.size.height)
+        tableView = UITableView(frame: CGRect(x: 0, y: naviHeight, width: view.width, height: view.height-naviHeight))
         tableView.delegate = self
         tableView.dataSource = self
         tableView.sectionFooterHeight = 0
         tableView.sectionHeaderHeight = 20
         tableView.delaysContentTouches = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(XBMyPurchaseTableCell.self, forCellReuseIdentifier: XBProductVersionController.productCellId)
+        tableView.register(XBProductVersionSectionHeader.self, forHeaderFooterViewReuseIdentifier: XBProductVersionController.reuseHeaderId)
         view.addSubview(tableView)
     }
     
@@ -64,14 +65,19 @@ class XBProductVersionController: UIViewController {
         let groupItem2 = XBTableGroupItem()
         groupItem2.headerTitle = "新品发布"
         tableGroups.append(groupItem2)
+        
         let groupItem3 = XBTableGroupItem()
-        groupItem3.headerTitle = "产品升级"
+        let item = XBProductModel(productName:"智能床垫", typesn: loginUser!.type1sn, typeIp: loginUser!.type1Ip, level: loginUser!.level1, deadline: loginUser!.deadline1)
+        groupItem3.items.append(item)
+        
+        groupItem3.headerTitle = "产品升级\n\n您当前拥有的产品:"
         tableGroups.append(groupItem3)
     }
     
 }
 
 extension XBProductVersionController: UITableViewDataSource {
+    
     //MARK: - UITableViewDatasource
     func numberOfSections(in tableView: UITableView) -> Int {
         return tableGroups.count
@@ -85,10 +91,15 @@ extension XBProductVersionController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let group = tableGroups[indexPath.section]
-        let text = group.items[indexPath.row] as! String
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        cell.textLabel?.text = text
+        
+        if indexPath.section == 2 {
+            let model = group.items[indexPath.row] as! XBProductModel
+            let cell3 = tableView.dequeueReusableCell(withIdentifier: XBProductVersionController.productCellId) as! XBMyPurchaseTableCell
+            cell3.model = model
+            return cell3
+        }
         
         return cell
     }
@@ -96,20 +107,30 @@ extension XBProductVersionController: UITableViewDataSource {
 }
 
 extension XBProductVersionController: UITableViewDelegate {
+    
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
+        switch indexPath.section {
+        case 0: return 44
+        case 1: return 100
+        default: return 60
+        }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return tableGroups[section].headerTitle
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 2 {
+            return 93
+        }
+        return 52
     }
     
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return tableGroups[section].footerTitle
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerSectionView = tableView.dequeueReusableHeaderFooterView(withIdentifier: XBProductVersionController.reuseHeaderId) as! XBProductVersionSectionHeader
+        headerSectionView.titleLabel.text = tableGroups[section].headerTitle
+        return headerSectionView
     }
 }

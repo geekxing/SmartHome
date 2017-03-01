@@ -10,17 +10,13 @@ import UIKit
 import Alamofire
 import Toast_Swift
 
-class XBMainViewController: UIViewController {
+class XBMainViewController: XBBaseViewController {
+    
+    override var naviBackgroundImage: UIImage? {
+        return UIImage(named: "bigPublicHeader")
+    }
     
     var mainView:XBMainView!
-    
-    var loginUser:XBUser? {
-        let currentAccount = XBUserManager.shared.currentAccount()!
-        if let user = XBUserManager.shared.user(uid: currentAccount) {
-            return user
-        }
-        return nil
-    }
     
     deinit {
         NotificationCenter.default.removeObserver(self)

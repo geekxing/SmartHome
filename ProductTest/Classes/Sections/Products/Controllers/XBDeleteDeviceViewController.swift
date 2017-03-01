@@ -28,7 +28,7 @@ class XBDeleteDeviceViewController: UIViewController {
     //MARK: - Action
     
     @IBAction func submit(_ sender: UIButton) {
-        deletDevice(sn: snField.text ?? "")
+        deleteDeviceAlert()
     }
     
     @IBAction func back(_ sender: UIButton) {
@@ -36,6 +36,17 @@ class XBDeleteDeviceViewController: UIViewController {
     }
     
     //MARK: - Private
+    
+    private func deleteDeviceAlert() {
+        let vc = XBAlertController(title: "确定删除此设备？", message: "")
+        vc.clickAction = { [weak self] index in
+            switch index {
+            case 0: self?.deletDevice(sn: self?.snField.text ?? "")
+            default: break
+            }
+        }
+        self.present(vc, animated: true, completion: nil)
+    }
     
     private func deletDevice(sn:String) {
         

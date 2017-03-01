@@ -19,6 +19,21 @@ class XBRoundedButton: UIButton {
         super.init(coder: aDecoder)
     }
     
+    convenience init(selector:Selector, target:AnyObject, title:String) {
+        self.init(selector:selector, target:target, font:11, title:title)
+    }
+    
+    convenience init(selector:Selector, target:AnyObject, font:CGFloat, title:String) {
+        self.init()
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = UIFont.boldSystemFont(ofSize: font)
+        self.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 5)
+        self.sizeToFit()
+        self.addTarget(target, action: selector, for: .touchUpInside)
+        self.width += 22*UIRate
+        self.height += font
+    }
+    
     func setup() {
         
         self.setBackgroundImage(UIImage.imageWith(RGBA(r: 136, g: 132, b: 128, a: 1)), for: .normal)
@@ -31,6 +46,15 @@ class XBRoundedButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.layer.cornerRadius = self.height * 0.5
+    }
+    
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let buttonFrame = self.frame
+        let newRect = buttonFrame.insetBy(dx: -5, dy: -5)
+        if newRect.contains(point) {
+            return true
+        }
+        return super.point(inside: point, with: event)
     }
     
     

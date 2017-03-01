@@ -24,7 +24,7 @@ class XBProductMainView: XBMainView {
     
     override var currentUser:XBUser {
         didSet {
-            self.toggleFunctionEnabled(sn: currentUser.type1sn)
+            self.toggleFunctionEnabled(sn: "dsdsdsds")
         }
     }
     

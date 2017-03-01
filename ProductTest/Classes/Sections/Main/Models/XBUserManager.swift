@@ -67,6 +67,20 @@ class XBUserManager: NSObject {
         return XBLoginManager.shared.currentLoginData?.account
     }
     
+    ///
+    /// 返回当前登录用户信息
+    ///
+    /// - Returns: 当前登录用户信息
+    ///
+    func loginUser() -> XBUser? {
+        if let userID = XBUserManager.shared.currentAccount() {
+            if let loginUser = XBUserManager.shared.user(uid: userID) {
+                return loginUser
+            }
+        }
+        return nil
+    }
+    
     func addUser(userJson:JSON) {
         //用户信息本地缓存
         let realm = try! Realm()

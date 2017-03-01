@@ -22,6 +22,8 @@ class XBProductMainController: XBMainViewController {
         self.mainView.clickSquare = {[weak self] in
             let title = $0.titleLabel?.text
             switch $0.tag {
+            case 0: self!.realTimeData()
+            case 1: self!.checkHealCare()
             case 2: self!.addDevice()
             case 3: self!.deleteDevice()
             default: break
@@ -47,6 +49,17 @@ class XBProductMainController: XBMainViewController {
     }
     
     //MARK: - Private
+    
+    private func realTimeData() {
+        let vc = XBRealDataViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func checkHealCare() {
+        let vc = XBHealthCareViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     private func addDevice() {
         let vc = XBAddDeviceViewController()
         vc.loginUser = self.loginUser!

@@ -11,6 +11,14 @@ import SVProgressHUD
 import IQKeyboardManagerSwift
 import DropDown
 
+var datePicker:UIDatePicker? = {
+    let dPicker = UIDatePicker()
+    dPicker.datePickerMode = .date;
+    dPicker.maximumDate = Date()
+    dPicker.frame = CGRect(x: 0.0, y: 0.0, width: dPicker.width, height: 250.0)
+    return dPicker
+}()
+
 let SMErrorDomain  = "com.sm.app"
 let XBImagePrefix  = "http://118.178.181.188:8080/"
 let XBNotificationLogout = "XBNotificationLogout"
@@ -53,6 +61,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         commenInitListenEvents()
         
         return true
+    }
+    
+    func application(_ application: UIApplication, willChangeStatusBarFrame newStatusBarFrame: CGRect) {
+        if let win = window {
+            win.top = (newStatusBarFrame.height < 40) ? 0 : 20
+            win.height = (newStatusBarFrame.height < 40) ? SCREEN_HEIGHT : SCREEN_HEIGHT - 20
+            if newStatusBarFrame.height < 40 {
+                for view in win.subviews {
+                    view.frame = win.bounds
+                }
+            }
+        }
     }
     
     deinit {
