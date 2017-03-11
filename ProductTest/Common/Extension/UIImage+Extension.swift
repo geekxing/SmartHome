@@ -12,9 +12,13 @@ extension UIImage {
     
     //获取圆形图片
     func circleImage() -> UIImage {
-        UIGraphicsBeginImageContext(self.size)
+        return self.circleImage(to: self.size)
+    }
+    
+    func circleImage(to size:CGSize) -> UIImage {
+        UIGraphicsBeginImageContext(size)
         let ctx = UIGraphicsGetCurrentContext()
-        let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
+        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         ctx?.addEllipse(in: rect)
         ctx?.clip()
         self.draw(in: rect)
@@ -42,9 +46,9 @@ extension UIImage {
      *
      *  return 压缩后图片的二进制
      */
-    func compressImage(image: UIImage, maxLength: Int) -> NSData? {
+    func compressImage(image: UIImage, maxLength: Int) -> UIImage? {
         
-        let newSize = self.scaleImage(imageLength: 300)
+        let newSize = self.imageSize(with: CGFloat(maxLength))
         let newImage = self.resizeImage(newSize: newSize)
         
         var compress:CGFloat = 0.9
@@ -55,7 +59,7 @@ extension UIImage {
             data = UIImageJPEGRepresentation(newImage, compress)
         }
         
-        return data as NSData?
+        return UIImage(data: data!)
     }
     
     /**
@@ -66,7 +70,7 @@ extension UIImage {
      *
      *  return 获得等比例的size
      */
-    func  scaleImage(imageLength: CGFloat) -> CGSize {
+    func  imageSize(with imageLength: CGFloat) -> CGSize {
         
         var newWidth:CGFloat = 0.0
         var newHeight:CGFloat = 0.0
@@ -113,6 +117,10 @@ extension UIImage {
         return newImage!
     }
     
+    /// 获取颜色填充而成的图片
+    ///
+    /// - Parameter color: 颜色
+    /// - Returns: 图片
     class func imageWith(_ color:UIColor) -> UIImage? {
         let rect =  CGRect(x:0, y:0, width:1, height:1)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 1)
@@ -124,6 +132,10 @@ extension UIImage {
         return image
     }
     
+    
+    /// base64编码数据字符串
+    ///
+    /// - Returns: 编码字符串
     func base64String() -> String? {
         let data = UIImagePNGRepresentation(self)?.base64EncodedData(options: .lineLength64Characters)
         return data?.base64EncodedString()

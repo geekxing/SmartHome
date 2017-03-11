@@ -45,6 +45,8 @@
 		1A7720471DF4FC9200257F02 /* XBUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7720461DF4FC9200257F02 /* XBUserManager.swift */; };
 		1A8AC67F1DE809E4009CC8F6 /* XBNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8AC67E1DE809E4009CC8F6 /* XBNetworking.swift */; };
 		1A973C2D1E65CF7900FB2431 /* XBShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A973C2C1E65CF7900FB2431 /* XBShadowButton.swift */; };
+		1A973C2F1E666B0300FB2431 /* XBImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A973C2E1E666B0300FB2431 /* XBImageView.swift */; };
+		1A973C311E6693BB00FB2431 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A973C301E6693BB00FB2431 /* UIImageView+Extension.swift */; };
 		1A9BCADC1E2A8B990001A880 /* XBPhotoPickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCADB1E2A8B990001A880 /* XBPhotoPickerManager.swift */; };
 		1A9BCADE1E2B1FFB0001A880 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCADD1E2B1FFB0001A880 /* UIImage+Extension.swift */; };
 		1A9BCAE01E2B37D70001A880 /* XBOperateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCADF1E2B37D70001A880 /* XBOperateUtils.swift */; };
@@ -142,6 +144,8 @@
 		1A7720461DF4FC9200257F02 /* XBUserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBUserManager.swift; sourceTree = "<group>"; };
 		1A8AC67E1DE809E4009CC8F6 /* XBNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBNetworking.swift; sourceTree = "<group>"; };
 		1A973C2C1E65CF7900FB2431 /* XBShadowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBShadowButton.swift; sourceTree = "<group>"; };
+		1A973C2E1E666B0300FB2431 /* XBImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBImageView.swift; sourceTree = "<group>"; };
+		1A973C301E6693BB00FB2431 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		1A9BCADB1E2A8B990001A880 /* XBPhotoPickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBPhotoPickerManager.swift; sourceTree = "<group>"; };
 		1A9BCADD1E2B1FFB0001A880 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		1A9BCADF1E2B37D70001A880 /* XBOperateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBOperateUtils.swift; sourceTree = "<group>"; };
@@ -266,6 +270,7 @@
 				1AF364221E5B0AC9008AD8FC /* XBRoundedButton.swift */,
 				1AFB62301E62F66400AB254E /* XBAlertView.swift */,
 				1A973C2C1E65CF7900FB2431 /* XBShadowButton.swift */,
+				1A973C2E1E666B0300FB2431 /* XBImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -432,6 +437,7 @@
 				1A42B1E31DF3DB6F00A407B7 /* UIButton.swift */,
 				1A42B1E71DF43EA900A407B7 /* UIView+Extension.swift */,
 				1A9BCADD1E2B1FFB0001A880 /* UIImage+Extension.swift */,
+				1A973C301E6693BB00FB2431 /* UIImageView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -817,9 +823,11 @@
 				1A9BCADE1E2B1FFB0001A880 /* UIImage+Extension.swift in Sources */,
 				1AEC2C7A1E612809005E181D /* XBHealthCareViewController.swift in Sources */,
 				1A42B1DD1DF3C26300A407B7 /* XBSquareButton.swift in Sources */,
+				1A973C311E6693BB00FB2431 /* UIImageView+Extension.swift in Sources */,
 				1AEC2C701E6081F3005E181D /* XBTableViewHeaderFooterView.swift in Sources */,
 				1A14D6441DE6C10700CE719B /* MBProgressHUD+Extension.swift in Sources */,
 				1A42B1E41DF3DB6F00A407B7 /* UIButton.swift in Sources */,
+				1A973C2F1E666B0300FB2431 /* XBImageView.swift in Sources */,
 				1AC7B5C41E5AF1F70080BABD /* XBRoundedTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

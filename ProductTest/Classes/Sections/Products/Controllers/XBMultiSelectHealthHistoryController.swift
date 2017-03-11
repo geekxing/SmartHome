@@ -68,11 +68,6 @@ extension XBMultiSelectHealthHistoryController {
             minTapIndex = nowTapIndex
         }
         
-        if nowTapIndex - minTapIndex + 1 > 7 {
-            SVProgressHUD.showInfo(withStatus:"最多只能选择7天的内容")
-            return
-        }
-        
         let date = dateFormatter?.date(from: self.group[indexPath.row].date)
         
         var configDate = (indexPath.row == minTapIndex) ? headerView.beginDate : headerView.endDate

@@ -56,6 +56,10 @@ class XBDateSelectView: UIView {
     
     //MARK: - Life Cycle
     
+    deinit {
+        textField.removeFromSuperview()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()

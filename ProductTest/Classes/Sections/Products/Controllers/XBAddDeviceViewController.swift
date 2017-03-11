@@ -23,6 +23,8 @@ class XBAddDeviceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        SVProgressHUD.setDefaultMaskType(.clear)
+        
         snField.setValue(UIColorHex("333333", 1.0), forKeyPath: "placeholderLabel.textColor")
         scanButton.titleEdgeInsets = UIEdgeInsetsMake(0, 19*UIRate, 0, 0)
         scanButton.contentEdgeInsets = UIEdgeInsetsMake(0, -100, 0, 0)

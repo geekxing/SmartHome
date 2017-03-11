@@ -202,7 +202,6 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     private func showCalendar() {
         let comps = XBOperateUtils.shared.components(for: Date())
         let defaultDate = self.dateFormatter?.date(from: "\(comps.day)/\(comps.month)/\(comps.year-50)")
-        datePicker!.minimumDate = defaultDate!
         datePicker!.date = defaultDate!
         birthField.inputView = datePicker
         birthField.reloadInputViews()

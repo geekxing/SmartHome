@@ -102,6 +102,10 @@ class XBUserManager: NSObject {
         }
     }
     
+    func avatarImageForUser(uid:String) -> UIImage {
+        return user(uid: uid)?.gender == "Male" ? #imageLiteral(resourceName: "avatar_male") : #imageLiteral(resourceName: "avatar_female")
+    }
+    
     ///
     /// 返回单个用户信息
     ///

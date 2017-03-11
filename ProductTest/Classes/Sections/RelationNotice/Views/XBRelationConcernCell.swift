@@ -18,7 +18,7 @@ class XBRelationConcernCell: UITableViewCell {
     var model:XBRelationConcernModel! {
         didSet {
             let user = model.user!
-            avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + user.image!), placeholderImage: UIImage(named: "avatar_user")?.circleImage())
+            avatarView.setHeader(url: XBImagePrefix + user.image!)
             var name = ""
             if let fullName = user.Name {
                 name = fullName
@@ -40,7 +40,7 @@ class XBRelationConcernCell: UITableViewCell {
     }
 
     func setup() {
-        avatarView = UIImageView()
+        avatarView = UIImageView(frame: CGRect.zero)
         avatarView.isUserInteractionEnabled = true
         nameLabel = UILabel()
         nameLabel.font = UIFontSize(size: 16)

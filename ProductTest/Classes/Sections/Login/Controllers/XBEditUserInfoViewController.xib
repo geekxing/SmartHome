@@ -24,7 +24,6 @@
                 <outlet property="middleNameField" destination="f9y-Bp-kWY" id="hEW-gb-Pau"/>
                 <outlet property="passwordField" destination="VlL-0M-feK" id="lZ3-AE-KV8"/>
                 <outlet property="phoneNumberField" destination="gB9-Rk-M4A" id="ePb-Fp-Rgk"/>
-                <outlet property="pickAvatarButton" destination="kww-BK-NVX" id="FSY-Ss-fHR"/>
                 <outlet property="retypePasswordField" destination="PFw-N7-iQ8" id="ezi-lf-Fg9"/>
                 <outlet property="scrollView" destination="kp5-UB-Jx0" id="OWZ-b1-CL2"/>
                 <outlet property="submitButton" destination="cyr-sX-Ezk" id="Ri2-Jl-J99"/>
@@ -304,26 +303,6 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kww-BK-NVX">
-                            <rect key="frame" x="31" y="774" width="113" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <state key="normal" title="Select Picture">
-                                <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                    <integer key="value" value="1"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="5"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="pickAvatar:" destination="-1" eventType="touchUpInside" id="nJ2-No-KLd"/>
-                            </connections>
-                        </button>
                         <button contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8o-5R-JGH">
                             <rect key="frame" x="33" y="267" width="295" height="53"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -331,6 +310,13 @@
                                 <action selector="fillBirthday:" destination="-1" eventType="touchUpInside" id="g3e-rN-nCo"/>
                             </connections>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select Picture" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zoN-Lh-zPb">
+                            <rect key="frame" x="34" y="776" width="107" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                 </view>
             </subviews>

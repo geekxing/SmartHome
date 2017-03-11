@@ -31,7 +31,6 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     @IBOutlet weak var passwordField: XBTextField!
     @IBOutlet weak var retypePasswordField: XBTextField!
     @IBOutlet weak var avatarView: UIImageView!
-    @IBOutlet weak var pickAvatarButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
     
@@ -115,7 +114,8 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     }
     
     private func setupAvatar() {
-        avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + loginUser!.image!), placeholderImage: UIImage(named: "avatar_user")?.circleImage())
+        let placeholder = XBUserManager.shared.avatarImageForUser(uid: loginUser!.Email)
+        avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + loginUser!.image!), placeholderImage: placeholder.circleImage())
         avatarView.isUserInteractionEnabled = true
         let tapAvatarGR = UITapGestureRecognizer.init(target: self, action: #selector(pickAvatar(_:)))
         avatarView.addGestureRecognizer(tapAvatarGR)
@@ -268,10 +268,6 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
         
     }
     
-    @IBAction func pickAvatar(_ sender: UIButton) {
-        photoManager?.pickIn(vc: self)
-    }
-    
     @IBAction func back(_ sender: UIButton) {
         navigationController!.popViewController(animated: true)
     }
@@ -282,6 +278,10 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     }
     
     //MARK: - Private
+    @objc private func pickAvatar(_ sender: UIButton) {
+        photoManager?.pickIn(vc: self)
+    }
+    
     private func showCalendar() {
         let date = self.dateFormatter!.date(from: loginUser!.yearOfBirth)
         datePicker!.date = date!

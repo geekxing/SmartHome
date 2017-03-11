@@ -33,6 +33,11 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.view.endEditing(true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,12 +85,24 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     //MARK: - Fake Data
     private func makeData() {
         self.group.removeAll()
-        for i in -10 ... 0 {
-            let cmps = XBOperateUtils.shared.components(for: headerView.endDate.addingTimeInterval(Double(i*24*3600)))
+        for i in 0 ... 10 {
+            let cmps = XBOperateUtils.shared.components(for: headerView.endDate.addingTimeInterval(Double(-i*24*3600)))
             let sleepData = XBSleepData(date: "\(cmps.year)/\(cmps.month)/\(cmps.day)", time: "8", score: "90")
             self.group.append(sleepData)
             
         }
+    }
+    
+    
+    //MARK: - Private
+    fileprivate func makeCellChosen(indexPath:IndexPath) {
+    
+        for item in group {
+            item.selected = false
+        }
+        self.group[indexPath.row].selected = true
+        
+        tableView.reloadData()
     }
 
 }
@@ -120,9 +137,9 @@ extension XBSingleSelectHealthHistoryController: UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         let date = dateFormatter?.date(from: self.group[indexPath.row].date)
         headerView.setDate(date!, for: &headerView.endDate)
+        makeCellChosen(indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
