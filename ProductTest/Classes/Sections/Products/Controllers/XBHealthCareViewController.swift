@@ -18,6 +18,7 @@ class XBHealthCareViewController: XBBaseViewController {
     private var bottomSearchView:UIView!
     private var searchButton:XBRoundedButton!
     
+    private var realCurIndex = 0
     private var currenIndex = 0
     
     override var naviBackgroundImage: UIImage? {
@@ -42,6 +43,11 @@ class XBHealthCareViewController: XBBaseViewController {
         setupBottomSearchView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        splitView.currentIndex = realCurIndex
+    }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         bottomSearchView.bottom = view.height
@@ -58,7 +64,7 @@ class XBHealthCareViewController: XBBaseViewController {
         splitView.cornerRadius = 5
         for (index, button) in splitView.buttons.enumerated() {
             if index == 0 {
-                button.setTitleColor(UIColorHex("333333", 1.0), for: .normal)
+                button.setTitleColor(XB_DARK_TEXT, for: .normal)
                 button.setBackgroundImage(UIImage.imageWith(UIColor.white), for: .normal)
             } else {
                 button.setTitleColor(UIColor.white, for: .selected)
@@ -124,13 +130,14 @@ class XBHealthCareViewController: XBBaseViewController {
     
     //MARK: - 按钮事件
     @objc private func clickSearchBtn(_ btn:UIButton) {
+        realCurIndex = currenIndex
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: XBSearchSleepCareHistoryNotification), object: nil)
     }
-    
     
 }
 
 extension XBHealthCareViewController: UIScrollViewDelegate {
+    
     //UIScrollViewDelegate
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         self.addChildViews()

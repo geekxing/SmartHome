@@ -8,10 +8,14 @@
 
 import Foundation
 
+let SCALE = UIScreen.main.scale
 let SCREEN_WIDTH = UIScreen.main.bounds.width
 let SCREEN_HEIGHT = UIScreen.main.bounds.height
 let STATUS_BAR_HEIGHT = UIApplication.shared.statusBarFrame.height
 let UIRate = SCREEN_WIDTH / 375
+let UIRateH = SCREEN_HEIGHT / 667
+
+let XB_DARK_TEXT = UIColorHex("333333", 1)
 
 func RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor{
     return UIColor (red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a)

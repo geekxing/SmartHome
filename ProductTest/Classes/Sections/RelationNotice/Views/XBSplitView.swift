@@ -56,7 +56,7 @@ class XBSplitView: UIView {
         button.setBackgroundImage(UIImage.imageWith(UIColor.white), for: .selected)
         button.setBackgroundImage(UIImage.imageWith(RGBA(r: 196, g: 190, b: 183, a: 1.0)), for: .highlighted)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitleColor(UIColorHex("333333", 1.0), for: .selected)
+        button.setTitleColor(XB_DARK_TEXT, for: .selected)
         button.layer.masksToBounds = true
         
         return button

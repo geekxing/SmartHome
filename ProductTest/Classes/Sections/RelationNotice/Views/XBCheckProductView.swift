@@ -31,7 +31,7 @@ class XBCheckProductView: UIView {
     private func setup() {
         productLabel = UILabel()
         productLabel.font = UIFont.boldSystemFont(ofSize: 14)
-        productLabel.textColor = UIColorHex("333333", 1.0)
+        productLabel.textColor = XB_DARK_TEXT
         realTimeDataButton = XBRoundedButton.init(selector: #selector(clickRealTime(_:)),target:self, title: "查看实时数据")
         healCareButton = XBRoundedButton.init(selector: #selector(clickHealCare(_:)),target:self, title: "查看健康档案")
         addSubview(productLabel)

@@ -9,6 +9,8 @@
 import UIKit
 import Alamofire
 import Toast_Swift
+import SVProgressHUD
+import SwiftyJSON
 
 class XBMainViewController: XBBaseViewController {
     
@@ -17,6 +19,7 @@ class XBMainViewController: XBBaseViewController {
     }
     
     var mainView:XBMainView!
+    var originBackButton:UIBarButtonItem?
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -27,6 +30,7 @@ class XBMainViewController: XBBaseViewController {
 
         view.backgroundColor = UIColor.white
         setupMainView()
+        setupNaviItem()
         mainView.tapAvatar = { [weak self](user) in
             let editUserVC = XBEditUserInfoViewController()
             editUserVC.loginUser = user
@@ -39,7 +43,10 @@ class XBMainViewController: XBBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNaviItem()
+        if self.isMember(of: XBMainViewController.self) {
+            //登录主页面后禁止侧滑手势，需要点击左上角“注销”按钮退出！
+            (self.navigationController! as! XBNavigationController).shouldPopBlock = {}
+        }
     }
     
     public func setupMainView() {
@@ -56,6 +63,17 @@ class XBMainViewController: XBBaseViewController {
         }
     }
     
+    func setupNaviItem() {
+        self.originBackButton = self.navigationItem.leftBarButtonItem
+        let backButton = UIButton(image: #imageLiteral(resourceName: "backButton"), backImage: nil, color: nil, target: self, sel:  #selector(back), title: "注销")
+        backButton.setTitleColor(XB_DARK_TEXT, for: .normal)
+        backButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -10)
+        backButton.sizeToFit()
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: backButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage(named:"settings"), style: .plain, target: self, action: #selector(settings))
+        
+    }
+    
     //MARK: - Notification
     @objc func onUserInfoUpdated(notification:Notification) {
         let uid = notification.object as! String
@@ -67,19 +85,32 @@ class XBMainViewController: XBBaseViewController {
     }
     
     //MARK: - Private
-    
-    private func setupNaviItem() {
-        //        let backButton = UIButton.init(image: UIImage(named:"backButton"), color: nil, target: self, sel: #selector(back), title: "注销")
-        //        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: backButton)
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage(named:"settings"), style: .plain, target: self, action: #selector(settings))
-    }
-    
+
     @objc private func settings() {
         
     }
     
     @objc private func back() {
-        navigationController!.popViewController(animated: true)
+        
+        let params:Dictionary = ["token":XBLoginManager.shared.currentLoginData!.token]
+        
+        XBNetworking.share.postWithPath(path: LOGOUT, paras: params,
+                                        success: {[weak self]result in
+                                            let json:JSON = result as! JSON
+                                            let message = json[Message].stringValue
+                                            if json[Code].intValue == 1 {
+                                                let current = XBLoginManager.shared.currentLoginData
+                                                current?.password = ""
+                                                current?.token = ""
+                                                XBLoginManager.shared.currentLoginData = current
+                                                self!.navigationController!.popViewController(animated: true)
+                                                SVProgressHUD.showSuccess(withStatus: message)
+                                            } else {
+                                                SVProgressHUD.showError(withStatus: message)
+                                            }
+            }, failure: { (error) in
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+        })
     }
     
     private func smartMattress() {

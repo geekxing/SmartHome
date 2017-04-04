@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyJSON
 import SVProgressHUD
+import Photos
 
 class XBAddDeviceViewController: UIViewController {
     
@@ -18,14 +19,12 @@ class XBAddDeviceViewController: UIViewController {
     @IBOutlet weak var submitButton: UIButton!
     private var typeSn:String?
     
-    var loginUser:XBUser!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         SVProgressHUD.setDefaultMaskType(.clear)
         
-        snField.setValue(UIColorHex("333333", 1.0), forKeyPath: "placeholderLabel.textColor")
+        snField.setValue(XB_DARK_TEXT, forKeyPath: "placeholderLabel.textColor")
         scanButton.titleEdgeInsets = UIEdgeInsetsMake(0, 19*UIRate, 0, 0)
         scanButton.contentEdgeInsets = UIEdgeInsetsMake(0, -100, 0, 0)
         scanButton.width = 200
@@ -45,11 +44,50 @@ class XBAddDeviceViewController: UIViewController {
     //MARK: - Action
     
     @IBAction func beginScan(_ sender: UIButton) {
-        let qrVC = XBQRCodeScanViewController()
-        qrVC.returnScan = {[weak self] scan in
-            self?.snField.text = "00010A0o4i1muso"
+        
+        if !cameraAvailable() {
+            return
         }
-        navigationController?.pushViewController(qrVC, animated: true)
+        checkCameraAuth {[weak self] (flag) in
+            if flag {
+                let qrVC = XBQRCodeScanViewController()
+                qrVC.returnScan = {[weak self] scan in
+                    self?.snField.text = "00010A0o4i1muso"
+                }
+                self?.navigationController?.pushViewController(qrVC, animated: true)
+            }
+        }
+        
+        
+    }
+    
+    func cameraAvailable() -> Bool {
+        let available = UIImagePickerController.isSourceTypeAvailable(.camera)
+        if !available {
+            let alert = UIAlertView(title: NSLocalizedString("your device has no access to camera", comment: ""), message: "", delegate: nil, cancelButtonTitle: "DONE")
+            alert.show()
+        }
+        return available
+    }
+    
+    func checkCameraAuth(_ request:@escaping (Bool)->()) {
+        let authStatus = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        
+        if(authStatus == .denied || authStatus == .restricted) {
+            return
+        }else {
+            if authStatus == .authorized {
+                request(true)
+            } else {
+                AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (grand) in
+                    if grand {
+                        DispatchQueue.main.async(execute: {
+                            request(grand)
+                        })
+                    }
+                })
+            }
+        }
     }
     
     @IBAction func submit(_ sender: UIButton) {
@@ -63,21 +101,19 @@ class XBAddDeviceViewController: UIViewController {
     //MARK: - Private
     private func addDevice(sn:String) {
         
-        if let email = XBUserManager.shared.currentAccount() {
-            let params:Dictionary = ["Email":email,
-                                     "SN":sn]
-            
-            let url = baseRequestUrl + "product/add"
+        if let logData = XBLoginManager.shared.currentLoginData {
+            let params:Dictionary = ["token":logData.token,
+                                     "sn":sn]
             
             SVProgressHUD.show()
-            XBNetworking.share.postWithPath(path: url, paras: params,
+            XBNetworking.share.postWithPath(path: DEVICE_ADD, paras: params,
                                             success: {[weak self]result in
                                                 
                                                 let json:JSON = result as! JSON
                                                 let message = json[Message].stringValue
                                                 if json[Code].intValue == bindDevice {
                                                     SVProgressHUD.showSuccess(withStatus: message)
-                                                    self!.checkUserInfo()
+                                                    self!.checkUserInfo(logData.token)
                                                 } else {
                                                     SVProgressHUD.showError(withStatus: message)
                                                 }
@@ -89,15 +125,13 @@ class XBAddDeviceViewController: UIViewController {
 
     }
     
-    private func checkUserInfo() {
+    private func checkUserInfo(_ token:String) {
         
-        XBOperateUtils.shared.login(email: loginUser.Email, token: loginUser.password, success: { (result) in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+1.0, execute: { [weak self] in
-                self!.navigationController!.popViewController(animated: true)
-            })
-        }) { (error) in
-            SVProgressHUD.showError(withStatus: error.localizedDescription)
-        }
+        XBUserManager.shared.fetchUserFromServer(token: token, handler: { (user, error) in
+            if error == nil {
+                self.navigationController!.popViewController(animated: true)
+            }
+        })
         
     }
 

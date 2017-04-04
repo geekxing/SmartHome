@@ -10,35 +10,51 @@ import UIKit
 import SwiftyJSON
 import Toast_Swift
 import SVProgressHUD
+import MJRefresh
 
 class XBConcernMeViewController: UIViewController {
     
-    private var loginUser:XBUser? {
-        if let userID = XBUserManager.shared.currentAccount() {
-            if let loginUser = XBUserManager.shared.user(uid: userID) {
-                return loginUser
-            }
-        }
-        return nil
+    static let reuseHeaderId = "reuseHeaderId"
+    
+    let token = XBLoginManager.shared.currentLoginData!.token
+    var loginUser: XBUser? {
+        return XBUserManager.shared.loginUser()
     }
+    var tableView:UITableView!
+    private var shawdowLine:UIImageView!
     
-    fileprivate var tableView:UITableView!
+    var tableGroups:[XBTableGroupItem] = [XBTableGroupItem(),XBTableGroupItem()]
+    var applyGroup:[XBRelationConcernModel] = []
+    var concernMe:[XBRelationConcernModel] = []
     
-    fileprivate var tableGroups:[XBTableGroupItem] = []
-    fileprivate var applyGroup:[XBRelationConcernModel] = []
-    fileprivate var concernMe:[XBRelationConcernModel] = []
+    lazy var mjheader:MJRefreshNormalHeader = {
+         let mjH = MJRefreshNormalHeader(refreshingBlock: { [weak self] in
+            self?.loadData()
+        }) as MJRefreshNormalHeader
+        mjH.isAutomaticallyChangeAlpha = true
+        return mjH
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        setupShadow()
         loadData()
     }
     
     //MARK: - Setup
     
+    private func setupShadow() {
+        shawdowLine = UIImageView(image: UIImage(named: "horizontalShadow"))
+        shawdowLine.width = view.width
+        shawdowLine.height = 8;
+        shawdowLine.left = 0;
+        shawdowLine.top  = 32;
+        view.addSubview(shawdowLine)
+    }
+    
     private func setupTableView() {
-        tableView = UITableView(frame: view.bounds)
-        tableView.contentInset = UIEdgeInsetsMake(32, 0, 0, 0)
+        tableView = UITableView(frame: CGRect(x: 0, y: 32, width: view.width, height: view.height-32))
         tableView.separatorStyle = .none
         tableView.delegate = self
         tableView.dataSource = self
@@ -47,70 +63,89 @@ class XBConcernMeViewController: UIViewController {
         tableView.delaysContentTouches = false
         tableView.tableFooterView = UIView()
         tableView.rowHeight = 71.0
-        tableView.register(XBApplyConcernCell.self, forCellReuseIdentifier: ApplyConcern)
-        tableView.register(XBConcernMeCell.self, forCellReuseIdentifier: ConcernMe)
+        registerCell()
+        tableView.register(XBTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: XBConcernMeViewController.reuseHeaderId)
+        tableView.mj_header = self.mjheader
         view.addSubview(tableView)
     }
-
-    //MARK: - Operations
+    
+    func registerCell() {
+        tableView.register(XBApplyConcernCell.self, forCellReuseIdentifier: ApplyConcern)
+        tableView.register(XBConcernMeCell.self, forCellReuseIdentifier: ConcernMe)
+    }
     
     func loadData() {
-        getConcern { [weak self](success) in
-            if success {
-                self?.tableView.reloadData()
-            }
-        }
-    }
-    
-    private func getConcern(complete:@escaping ((Bool)->())) {
-        let params:Dictionary = ["Email":loginUser!.Email!]
-        let url = baseRequestUrl + "concern/getConcern"
-        
-        XBNetworking.share.postWithPath(path: url, paras: params, success: { [weak self] (result) in
-            let json = result as! JSON
-            var result = false
-            debugPrint(json)
-            let message = json[Message].stringValue
-            if json[Code] == 1 {
-                self?.clear()
-                self?.makeTableData(json)
-                result = true
-            } else {
-                SVProgressHUD.showError(withStatus: message)
-                result = false
-            }
-            complete(result)
-        }) { (error) in
-            SVProgressHUD.showError(withStatus: error.localizedDescription)
-        }
-    }
-    
-    
-    private func makeTableData(_ json:JSON) {
-        let applyConcernJson = json[data]["applyConcern"].arrayValue
-        let concernMeJson = json[data]["concernMe"].arrayValue
-        
-        deal(dataArary: &applyGroup, with: applyConcernJson, and: ApplyConcern)
-        deal(dataArary: &concernMe, with: concernMeJson, and: ConcernMe)
-    }
-    
-    private func deal(dataArary: inout [XBRelationConcernModel], with jsonArray:[JSON], and tag:String) {
-        let groupItem = XBTableGroupItem()
-        groupItem.headerTitle = tag
-        
-        for i in 0..<jsonArray.count {
-            let json = jsonArray[i]
-            let email = json["Email"].stringValue
-            self.checkUserExistInDB(userJson: json)
-            let user = XBUserManager.shared.user(uid: email)
+        if self.parent!.isKind(of: XBRelationNoticeController.self) {
+            let parentVc = self.parent as! XBRelationNoticeController
             
-            let model = XBRelationConcernModel()
-            model.tag = tag
-            model.user = user
-            dataArary.append(model)
+            let globalQueue = DispatchQueue.global()
+            let group = DispatchGroup()
+            let semaphore = DispatchSemaphore(value: 0)
+            
+            let workItem1 = DispatchWorkItem(qos: .userInitiated, flags: .assignCurrentContext) {
+                parentVc.getConcern(GET_WAIT ,complete: {[weak self] (data, _) in
+                    if let json = data {
+                        if json[Code] == 1 {
+                            self?.makeData(data: json, ApplyConcern)
+                        }
+                    }
+                    semaphore.signal()
+                })
+            }
+            globalQueue.async(group: group, execute: workItem1)
+            
+            let workItem2 = DispatchWorkItem(qos: .userInitiated, flags: .assignCurrentContext) {
+                parentVc.getConcern(GET_CONCERNME ,complete: {[weak self] (data, _) in
+                    if let json = data {
+                        if json[Code] == 1 {
+                            self?.makeData(data: json, ConcernMe)
+                        }
+                    }
+                    semaphore.signal()
+                })
+            }
+            globalQueue.async(group: group, execute: workItem2)
+            
+            group.notify(queue: globalQueue, execute: {
+                
+                let delay = DispatchTime.distantFuture
+                var st = 0
+                for _ in 0..<2 {
+                    switch semaphore.wait(timeout: delay) {
+                    case .success: st += 1
+                    default:break
+                    }
+                }
+                if st == 2 {
+                    DispatchQueue.main.async(execute: {
+                        self.tableView.mj_header.endRefreshing()
+                        self.tableView.reloadData()
+                    })
+                }
+                
+            })
+            
         }
-        groupItem.items = dataArary
-        tableGroups.append(groupItem)
+    }
+    
+    func makeData(data:JSON , _ tag:String) {
+        let array = data[XBData].arrayValue
+        var dataArray = [XBRelationConcernModel]()
+        for userData in array {
+            let email = userData["email"].stringValue
+            XBUserManager.shared.addUser(userJson: userData)
+            let user = XBUserManager.shared.user(uid: email)
+            let model = XBRelationConcernModel()
+            model.user = user
+            model.tag = tag
+            dataArray.append(model)
+        }
+
+        let group = XBTableGroupItem()
+        group.items = dataArray
+        group.headerTitle = tag
+        let index = tag == ApplyConcern ? 0 : 1
+        self.tableGroups[index] = group
     }
     
     //MARK: - Private
@@ -119,10 +154,63 @@ class XBConcernMeViewController: UIViewController {
         applyGroup.removeAll()
         concernMe.removeAll()
     }
+
+    //MARK: - Operations
     
-    private func checkUserExistInDB(userJson:JSON) {
-        XBUserManager.shared.addUser(userJson: userJson)
+    func reload() {
+        self.tableView.reloadData()
     }
+    
+    ///处理关注我
+    fileprivate func handleNotice(_ otherEmail:String,  handle:String) {
+        let params:Dictionary = ["token":token,
+                                 "email":otherEmail,
+                                 "handle":handle]
+        XBNetworking.share.postWithPath(path: HANDLE, paras: params, success: { [weak self](result) in
+            let json = result as! JSON
+            debugPrint(json)
+            let message = json[Message].stringValue
+            if json[Code].intValue == normalSuccess {
+                self?.loadData()
+            } else {
+                SVProgressHUD.showError(withStatus: message)
+            }
+        }) { (error) in
+            SVProgressHUD.showError(withStatus: error.localizedDescription)
+        }
+    }
+    
+    ///删除关注我的人
+    
+    func cancelAlert(_ otherEmail:String, type:String) {
+        let vc = XBAlertController(title: "确定不再被此人关注？", message: "")
+        vc.clickAction = { [weak self] index in
+            switch index {
+            case 0: self?.cancelConcern(otherEmail, type: type)
+            default: break
+            }
+        }
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    fileprivate func cancelConcern(_ otherEmail:String, type:String) {
+        let params:Dictionary = ["token":token,
+                                 "email":otherEmail,
+                                 "type":type ]
+        XBNetworking.share.postWithPath(path: CANCEL, paras: params, success: { [weak self](result) in
+            let json = result as! JSON
+            debugPrint(json)
+            let message = json[Message].stringValue
+            if json[Code].intValue == normalSuccess {
+                self?.loadData()
+            } else {
+                SVProgressHUD.showError(withStatus: message)
+            }
+        }) { (error) in
+            SVProgressHUD.showError(withStatus: error.localizedDescription)
+        }
+    }
+    
     
 }
 
@@ -149,16 +237,17 @@ extension XBConcernMeViewController: UITableViewDelegate, UITableViewDataSource 
         case ApplyConcern:
             let applyCell = tableView.dequeueReusableCell(withIdentifier: ApplyConcern) as! XBApplyConcernCell
             applyCell.clickAgreeButton = {[weak self] user in
-            
+                self?.handleNotice(user.email!, handle: "agree")
             }
             applyCell.clickRefuseButton = {[weak self] user in
-    
+                self?.handleNotice(user.email!, handle: "disagree")
             }
             cell = applyCell
             
         case ConcernMe:
             let concernMeCell = tableView.dequeueReusableCell(withIdentifier: ConcernMe) as! XBConcernMeCell
             concernMeCell.clickCancelButton = {[weak self] user in
+                self?.cancelAlert(user.email!, type: "concernMe")
             }
             cell = concernMeCell
         default:break
@@ -183,5 +272,14 @@ extension XBConcernMeViewController: UITableViewDelegate, UITableViewDataSource 
         return tableGroups[section].headerTitle
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60.0;
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerSectionView = tableView.dequeueReusableHeaderFooterView(withIdentifier: XBConcernMeViewController.reuseHeaderId)
+        headerSectionView?.textLabel?.text = tableGroups[section].headerTitle
+        return headerSectionView
+    }
     
 }

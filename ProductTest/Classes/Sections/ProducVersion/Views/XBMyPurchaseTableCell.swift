@@ -38,7 +38,7 @@ class XBMyPurchaseTableCell: UITableViewCell {
     func setup() {
         proNameLabel = UILabel()
         proNameLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        proNameLabel.textColor = UIColorHex("333333", 1.0)
+        proNameLabel.textColor = XB_DARK_TEXT
         vipLabel = UILabel()
         vipLabel.font = UIFont.boldSystemFont(ofSize: 14)
         vipLabel.textColor = UIColorHex("8a847f", 1.0)

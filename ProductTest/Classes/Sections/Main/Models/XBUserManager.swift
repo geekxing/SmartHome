@@ -13,17 +13,24 @@ import SwiftyJSON
 let XBUserInfoHasChangedNotification = "XBUserInfoHasChangedNotification"
 
 class XBUser: Object {
-    dynamic var Email:String!
-    dynamic var firstName:String! = " "
-    dynamic var middleName:String? = " "
-    dynamic var lastName:String! = " "
-    dynamic var Name:String!
-    dynamic var image:String? = " "
+    dynamic var id:String!
+    dynamic var userId:String!
+    dynamic var email:String!
+    dynamic var follower:String?
+    dynamic var firstName = ""
+    dynamic var middleName:String?
+    dynamic var lastName = ""
+    dynamic var name:String?
+    dynamic var image = ""
     dynamic var password:String!
-    dynamic var phoneNumber:String!
+    dynamic var mphone:String!
     dynamic var address:String?
-    dynamic var gender:String?
-    dynamic var yearOfBirth:String!
+    dynamic var gender:Int = 0
+    dynamic var birthDay:String!
+    dynamic var focus:String?
+    dynamic var device:String?
+    dynamic var createTime = 0.0
+    
     dynamic var type1sn:String?
     dynamic var type1Ip:String?
     dynamic var level1:String?
@@ -38,7 +45,7 @@ class XBUser: Object {
     dynamic var deadline3:String?
     
     override static func primaryKey() -> String? {
-        return "Email"
+        return "email"
     }
     
     func properties_name() -> [String] {
@@ -53,11 +60,18 @@ class XBUser: Object {
         }
         return properties_name
     }
+    
+    func Name() -> String {
+        let middleName = self.middleName ?? ""
+        return firstName + " " + middleName + " " + lastName
+    }
 }
 
 class XBUserManager: NSObject {
     static let shared = XBUserManager()
     
+    
+    //MARK: -
     ///
     /// 返回当前登录账号
     ///
@@ -87,11 +101,26 @@ class XBUserManager: NSObject {
         print(realm.configuration.fileURL!)
         let user = XBUser()
         for (key,subJson):(String, JSON) in userJson {
-            user.setValue(subJson.stringValue, forKey: key)
+            var value:String = ""
+            if key == "birthDay" {
+                if let dict = subJson.dictionary {
+                    if dict.keys.contains("birthDay") {
+                        value = dict["birthDay"]!.stringValue
+                    } else {
+                        let year = dict["year"]!.stringValue
+                        let month = dict["month"]!.stringValue
+                        let day  = dict["day"]!.stringValue
+                        value = "\(month)/\(day)/\(year)"                        
+                    }
+                }
+            } else {
+                value = subJson.stringValue
+            }
+            user.setValue(value, forKey: key)
         }
         try! realm.write {
             realm.add(user, update: true)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: XBUserInfoHasChangedNotification), object: user.Email)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: XBUserInfoHasChangedNotification), object: user.email)
         }
     }
     
@@ -103,7 +132,7 @@ class XBUserManager: NSObject {
     }
     
     func avatarImageForUser(uid:String) -> UIImage {
-        return user(uid: uid)?.gender == "Male" ? #imageLiteral(resourceName: "avatar_male") : #imageLiteral(resourceName: "avatar_female")
+        return user(uid: uid)?.gender == 1 ? #imageLiteral(resourceName: "avatar_male") : #imageLiteral(resourceName: "avatar_female")
     }
     
     ///
@@ -114,7 +143,45 @@ class XBUserManager: NSObject {
     /// - Returns:当前登录账号
     func user(uid:String) -> XBUser? {
         let realm = try! Realm()
-        let predicate = NSPredicate(format: "Email = %@", argumentArray: [uid])
+        let predicate = NSPredicate(format: "email = %@", argumentArray: [uid])
         return realm.objects(XBUser.self).filter(predicate).first
+    }
+    
+    ///
+    /// 从服务器返回指定账号的用户信息
+    ///
+    /// - Parameter uid:用户id
+    ///
+    /// - Returns:查询到的用户信息
+    
+    func fetchUserFromServer(token:String, handler: @escaping ((_ user:XBUser?, _ error: Error?) -> Void)) {
+        
+        let params = ["token":token]
+        var usr:XBUser?
+        XBNetworking.share.postWithPath(path: GET_INFO, paras: params,
+                                        success: { result in
+                                            let json:JSON = result as! JSON
+                                            if json[Code].intValue == 1 {
+                                                let userData = json[XBData]
+                                                let email = userData["email"].stringValue
+                                                //用户信息本地缓存
+                                                XBUserManager.shared.addUser(userJson: userData)
+                                                usr = XBUserManager.shared.user(uid: email)
+                                            }
+                                            handler(usr, nil)
+            }, failure: { (error) in
+                handler(usr, error)
+        })
+        
+    }
+    
+    
+    //MARK: - Class Func
+    class func integerForGender(_ gender:String) -> Int {
+        return gender == "Male" ? 1 : 0;
+    }
+    
+    class func genderForInt(_ genderIndex:Int) -> String {
+        return genderIndex == 0 ? "Female" : "Male"
     }
 }

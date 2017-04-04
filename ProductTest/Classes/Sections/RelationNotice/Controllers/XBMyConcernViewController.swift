@@ -11,6 +11,8 @@ import SwiftyJSON
 import SVProgressHUD
 
 class XBMyConcernViewController: XBConcernMeViewController {
+    
+    var myConcern:[XBRelationConcernModel] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,44 +28,27 @@ class XBMyConcernViewController: XBConcernMeViewController {
     override func loadData() {
         if self.parent!.isKind(of: XBRelationNoticeController.self) {
             let parentVc = self.parent as! XBRelationNoticeController
-            parentVc.getConcern(complete: {[weak self] (success) in
-                self?.tableGroups.removeAll()
-                self?.tableGroups.append(parentVc.tableGroups[2])
-                self?.reload()
+            parentVc.getConcern(GET_MYCONCERN, complete: {[weak self] (data, _) in
+                if let json = data {
+                    if json[Code] == 1 {
+                        self?.myConcern.removeAll()
+                        let array = json[XBData].arrayValue
+                        var dataArray = [XBRelationConcernModel]()
+                        for userData in array {
+                            let email = userData["email"].stringValue
+                            XBUserManager.shared.addUser(userJson: userData)
+                            let user = XBUserManager.shared.user(uid: email)
+                            let model = XBRelationConcernModel()
+                            model.user = user
+                            model.tag = MyConcern
+                            dataArray.append(model)
+                        }
+                        self?.myConcern = dataArray
+                        self?.tableView.mj_header.endRefreshing()
+                        self?.reload()
+                    }
+                }
             })
-        }
-    }
-    
-    ///删除我关注的人
-    
-    fileprivate func cancelAlert(otherEmail:String) {
-        let vc = XBAlertController(title: "确定不再关注此人？", message: "")
-        vc.clickAction = { [weak self] index in
-            switch index {
-            case 0: self?.cancelConcern(otherEmail: otherEmail)
-            default: break
-            }
-        }
-        self.present(vc, animated: true, completion: nil)
-    }
-    
-    fileprivate func cancelConcern(otherEmail:String) {
-        let params:Dictionary = ["myEmail":loginUser!.Email!,
-                                 "otherEmail":otherEmail,
-                                 "flog":"true" ]
-        let url = baseRequestUrl + "concern/cancel"
-        XBNetworking.share.postWithPath(path: url, paras: params, success: { [weak self](result) in
-            let json = result as! JSON
-            debugPrint(json)
-            let message = json[Message].stringValue
-            if json[Code].intValue == cancelNotice {
-                SVProgressHUD.showSuccess(withStatus: message)
-                self?.loadData()
-            } else {
-                SVProgressHUD.showError(withStatus: message)
-            }
-        }) { (error) in
-            SVProgressHUD.showError(withStatus: error.localizedDescription)
         }
     }
 
@@ -73,18 +58,25 @@ extension XBMyConcernViewController {
     
     //MARK: - Datasource
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         return myConcern.count
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let model:XBRelationConcernModel!
-        let group = tableGroups[indexPath.section]
-        model = group.items[indexPath.row] as? XBRelationConcernModel
+        model = myConcern[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: MyConcern) as! XBMyConcernCell
         cell.clickArrowButton = {[weak self] in
             self?.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         cell.clickCancelButton = {[weak self] user in
-            self?.cancelAlert(otherEmail: user.Email!)
+            self?.cancelAlert(user.email!, type:"myConcern")
         }
         
         cell.model = model
@@ -95,16 +87,11 @@ extension XBMyConcernViewController {
     //MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let group = tableGroups[indexPath.section]
-        let model = group.items[indexPath.row] as? XBRelationConcernModel
-        if model?.open == true {
+        let model = myConcern[indexPath.row]
+        if model.open == true {
             return 188;
         }
         return 71;
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

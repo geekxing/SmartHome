@@ -22,26 +22,24 @@ class XBOperateUtils: NSObject {
 
     static let shared = XBOperateUtils()
     
-    func login(email:String, token:String, success:@escaping (_ result:Any)->(), failure:@escaping (_ error:Error)->()) {
+    func login(email:String, pwd:String, success:@escaping (_ result:Any)->(), failure:@escaping (_ error:Error)->()) {
         let params = [
-            "Email":email,
-            "password":token
+            "email":email,
+            "password":pwd
         ]
         
-        let urlString = baseRequestUrl + "login/login"
-        
-        XBNetworking.share.postWithPath(path: urlString, paras: params,
+        XBNetworking.share.postWithPath(path: LOGIN, paras: params,
                                         success: {result in
                                             print(result)
                                             let json:JSON = result as! JSON
                                             let message = json[Message].stringValue
-                                            if json[Code].intValue == 1 {  //登录成功
+                                            let token = json[XBData]["token"].stringValue
+                                            if json[Code].intValue == 1 && message != "Error" {  //登录成功
                                                 //登录信息本地缓存
-                                                let loginData = LoginData(account: email, token: token)
+                                                let loginData = LoginData(account: email, password:pwd, token: token)
                                                 XBLoginManager.shared.currentLoginData = loginData
                                                 //用户信息本地缓存
-                                                self .setDefaultRealmForUser(username: email)
-                                                XBUserManager.shared.addUser(userJson: json[data])
+                                                XBUserManager.shared.addUser(userJson: json[XBData]["userInfo"])
                                                 success(message)
                                             } else {   //服务器返回失败原因
                                                 failure(NSError(domain: SMErrorDomain, code: json[Code].intValue, userInfo: [kCFErrorLocalizedDescriptionKey as AnyHashable :message]))
@@ -55,6 +53,13 @@ class XBOperateUtils: NSObject {
         let dateSet: Set<Calendar.Component> = [.year, .month, .day]
         let cmps = Calendar(identifier: .gregorian).dateComponents(dateSet, from: date)
         return (cmps.year!, cmps.month!, cmps.day!)
+    }
+    
+    class func timeComps(_ timeGap:Double) -> (hour:Int, minute:Int) {
+        let h = Int(timeGap / 3600)
+        let leftGap = timeGap - Double(h * 3600)
+        let m = Int(leftGap / 60)
+        return (h, m)
     }
     
     //MARK: - 获取某年某月的天数
@@ -83,7 +88,13 @@ class XBOperateUtils: NSObject {
         return 29;
     }
     
+    class func validateEmail(_ email: String) -> Bool {
+        let emailString = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailString)
+        return emailPredicate.evaluate(with: email)
+    }
     
+    //MARK: - Private
     private func setDefaultRealmForUser(username: String) {
         var config = Realm.Configuration()
         

@@ -59,7 +59,7 @@ class XBAlertView: UIView {
         self.layer.borderColor = UIColor.black.cgColor
         
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        titleLabel.textColor = UIColorHex("333333", 1.0)
+        titleLabel.textColor = XB_DARK_TEXT
         titleLabel.numberOfLines = 0
         addSubview(titleLabel)
         

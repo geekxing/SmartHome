@@ -13,10 +13,10 @@ class XBMainView: UIView {
     
     static let edgeMargin = CGFloat(46.0*UIRate)
     var buttonW: CGFloat {
-        return  69.0
+        return  69.0*UIRate
     }
     var buttonH: CGFloat {
-        return 100.0
+        return 100.0*UIRateH
     }
     
     //Properties
@@ -28,9 +28,8 @@ class XBMainView: UIView {
     var nameLabel:UILabel!
     var currentUser:XBUser = XBUser() {
         didSet {
-            avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + self.currentUser.image!), placeholderImage: UIImage(named: "avatar_user"))
-            let middleName = self.currentUser.middleName ?? ""
-            nameLabel.text = currentUser.firstName+" "+middleName+" "+currentUser.lastName
+            avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + self.currentUser.image), placeholderImage: XBUserManager.shared.avatarImageForUser(uid: currentUser.email))
+            nameLabel.text = currentUser.Name()
             nameLabel.sizeToFit()
         }
     }
@@ -60,6 +59,7 @@ class XBMainView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
     
     private func setup() {
@@ -99,7 +99,7 @@ class XBMainView: UIView {
         
         nameLabel = UILabel()
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        nameLabel.textColor = UIColorHex("333333", 1.0)
+        nameLabel.textColor = XB_DARK_TEXT
 
         addSubview(avatarRing)
         addSubview(avatarView)
@@ -141,10 +141,7 @@ class XBMainView: UIView {
     }
     
     //MARK: - action
-    @objc private func changeUser() {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: XBNotificationLogout), object: nil)
-    }
-    
+
     @objc private func click(btn:UIButton) {
         if (clickSquare != nil) {
             clickSquare!(btn)

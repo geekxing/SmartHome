@@ -26,7 +26,7 @@ class XBProductVersionSectionHeader: UITableViewHeaderFooterView {
         titleLabel = UILabel()
         titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel?.numberOfLines = 0;
-        titleLabel?.textColor = UIColorHex("333333", 1.0)
+        titleLabel?.textColor = XB_DARK_TEXT
         contentView.addSubview(titleLabel!)
     }
     

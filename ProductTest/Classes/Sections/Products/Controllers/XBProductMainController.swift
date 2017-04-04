@@ -32,13 +32,9 @@ class XBProductMainController: XBMainViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationItem.rightBarButtonItem = nil
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = nil
         (mainView as! XBProductMainView).toggleFunctionEnabled(sn: loginUser?.type1sn)
     }
     
@@ -49,6 +45,9 @@ class XBProductMainController: XBMainViewController {
     }
     
     //MARK: - Private
+    
+    override func setupNaviItem() {
+    }
     
     private func realTimeData() {
         let vc = XBRealDataViewController()
@@ -62,7 +61,6 @@ class XBProductMainController: XBMainViewController {
     
     private func addDevice() {
         let vc = XBAddDeviceViewController()
-        vc.loginUser = self.loginUser!
         navigationController?.pushViewController(vc, animated: true)
     }
     

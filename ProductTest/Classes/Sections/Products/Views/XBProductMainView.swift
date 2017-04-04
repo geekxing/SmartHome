@@ -29,11 +29,11 @@ class XBProductMainView: XBMainView {
     }
     
     override var buttonW: CGFloat {
-        return 117.0;
+        return 117.0*UIRate;
     }
     
     override var buttonH: CGFloat {
-        return 117.0;
+        return 117.0*UIRate;
     }
     
     func toggleFunctionEnabled(sn:String?) {

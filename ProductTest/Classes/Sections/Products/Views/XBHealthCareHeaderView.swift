@@ -139,7 +139,7 @@ class XBHealthCareHeaderView: UIView {
         for (title) in titles {
             let label = UILabel()
             label.font = UIFont.boldSystemFont(ofSize: 16)
-            label.textColor = UIColorHex("333333", 1.0)
+            label.textColor = XB_DARK_TEXT
             label.text = title
             label.sizeToFit()
             tipLabels.append(label)

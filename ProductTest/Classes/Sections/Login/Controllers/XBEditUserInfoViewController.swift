@@ -36,7 +36,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     
     let chooseGenderDropDown = DropDown()
     
-    var loginUser:XBUser?
+    var loginUser = XBUser()
     private var fullFilled:Bool = true
     private var photoManager:XBPhotoPickerManager?
     private var avatarImage:UIImage?
@@ -47,18 +47,9 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     
     lazy var dateFormatter:DateFormatter? = {
         let dateFmt = DateFormatter()
-        dateFmt.dateFormat = "dd/MM/yyyy"
+        dateFmt.dateFormat = "MM/dd/yyyy"
         return dateFmt
     }()
-    
-    init() {
-        super.init(nibName: "XBEditUserInfoViewController", bundle: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(nibName: "XBEditUserInfoViewController", bundle: nil)
-    }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -81,6 +72,8 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
         submitButton.layer.cornerRadius = submitButton.height * 0.5
         avatarView.layer.cornerRadius = avatarView.height * 0.5
         avatarView.layer.masksToBounds = true
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
     }
     
     //MARK: - Setup
@@ -92,30 +85,30 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
             self!.textfields?.append($0)
         }
         
-        usernameTextField.text = loginUser?.Email
-        firstnameField.text = loginUser?.firstName!
-        middleNameField.text = loginUser?.middleName
-        lastnameField.text =  loginUser?.lastName!
-        birthField.text = loginUser?.yearOfBirth
-        genderField.text = loginUser?.gender
-        phoneNumberField.text = loginUser?.phoneNumber
-        addressField.text = loginUser?.address
-        passwordField.text = loginUser?.password
-        retypePasswordField.text = loginUser?.password
+        let pwd = XBLoginManager.shared.currentLoginData?.password
+        usernameTextField.text = loginUser.email
+        firstnameField.text = loginUser.firstName
+        middleNameField.text = loginUser.middleName
+        lastnameField.text =  loginUser.lastName
+        birthField.text = loginUser.birthDay
+        genderField.text = XBUserManager.genderForInt(loginUser.gender)
+        phoneNumberField.text = loginUser.mphone
+        addressField.text = loginUser.address
+        passwordField.text = pwd
+        retypePasswordField.text = pwd
         
         for tf in self.textfields! {
             if tf.text != "" {
                 tf.textColor = UIColorHex("8a847f", 1.0)
             }
         }
-        
-        
+    
         usernameTextField.isEnabled = false
     }
     
     private func setupAvatar() {
-        let placeholder = XBUserManager.shared.avatarImageForUser(uid: loginUser!.Email)
-        avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + loginUser!.image!), placeholderImage: placeholder.circleImage())
+        let placeholder = XBUserManager.shared.avatarImageForUser(uid: loginUser.email)
+        avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + loginUser.image), placeholderImage: placeholder.circleImage())
         avatarView.isUserInteractionEnabled = true
         let tapAvatarGR = UITapGestureRecognizer.init(target: self, action: #selector(pickAvatar(_:)))
         avatarView.addGestureRecognizer(tapAvatarGR)
@@ -127,7 +120,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     
     //MARK: - UITextFieldDelegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        textField.textColor = UIColorHex("333333", 1.0)
+        textField.textColor = XB_DARK_TEXT
         if string == "\n" && textField.returnKeyType == .done {
             submit(submitButton)
             return false
@@ -160,9 +153,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.inputView != nil {
             let pickerView = textField.inputView as! UIDatePicker
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd/MM/yyyy"
-            textField.text = dateFormatter.string(from: pickerView.date)
+            textField.text = self.dateFormatter?.string(from: pickerView.date)
         }
     }
     
@@ -177,90 +168,42 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
         if !self.validatePassword() {
             return
         }
-
-        let boundary = "Boundary+V2ymHFg03ehbqgZCaKO6jy"
         
+        let gender = "\(XBUserManager.integerForGender(genderField.text!))"
         let params:Dictionary = [
-            "Email":usernameTextField.text!,
+            "email":usernameTextField.text!,
             "password":passwordField.text!,
             "firstName":firstnameField.text!,
             "middleName":middleNameField.text ?? "",
             "lastName":lastnameField.text!,
-            "yearOfBirth":birthField.text!,
-            "gender":genderField.text!,
-            "phoneNumber":phoneNumberField.text!,
+            "birthDay":birthField.text!,
+            "gender":gender,
+            "mphone":phoneNumberField.text!,
             "address":addressField.text ?? "",
-        ]
-        
-        let url = baseRequestUrl + "login/modify"
-        
+        ] as [String : Any]
+    
         SVProgressHUD.show()
-        
-        // create request
-        var request = URLRequest(url: URL.init(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 5)
-        // post body
-        var body = Data()
-        
-        // add params (all params are strings)
-        let paramsDict = params as NSDictionary
-        
-        paramsDict.enumerateKeysAndObjects({ (key, obj, stop) in
-            var fieldString = "--\(boundary)\r\n"
-            fieldString += "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n"
-            fieldString += "\(obj)\r\n"
-            body.append(fieldString.data(using: .utf8)!)
+        XBNetworking.share.postWithPath(path: MODIFY, paras: params,
+                                        success: {[weak self]result in
+                                            let json:JSON = result as! JSON
+                                            debugPrint(json)
+                                            var message = json[Message].stringValue
+                                            if json[Code].intValue == 1 {
+                                                SVProgressHUD.showSuccess(withStatus: message)
+                                                self?.back(self!.backButton)
+                                            } else {
+                                                message = message == "" ? "请求失败" : message
+                                                SVProgressHUD.showError(withStatus: message)
+                                            }
+            }, failure: { (error) in
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
         })
-        
-        // add image data
-        if let uploadImage = self.avatarImage {
-            if let imageData = UIImageJPEGRepresentation(uploadImage, 1.0) {
-                //let filePath = XBFileLocationHelper.getAppDocumentPath() + "/avatar.txt"
-                var url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-                url = url?.appendingPathComponent("avatar.png")
-                try! imageData.write(to: url!)
-                
-                var imageString = "--\(boundary)\r\n"
-                imageString +=  "Content-Disposition: form-data; name=\"header\"; filename=\"image.jpg\"\r\n"
-                imageString += "Content-Type: image/jpeg\r\n"
-                imageString += "Content-Transfer-Encoding: binary\r\n\r\n"
-                
-                body.append(imageString.data(using: .utf8)!)
-                body.append(imageData)
-                body.append("\r\n".data(using: .utf8)!)
-                body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-                
-            }
-        }
-        
-        request.httpMethod = "POST"
-        request.httpShouldHandleCookies = false
-        
-        // setting the body of the post to the reqeust
-        request.httpBody = body
-        
-        // set the content-length
-        request.setValue("\((body as NSData).length)", forHTTPHeaderField: "Content-Length")
-        
-        // set Content-Type in HTTP header
-        let contentType = "multipart/form-data; boundary=\(boundary)"
-        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
-        
-        let bodyString = String.init(data: body, encoding: .utf8)
-        print("\(bodyString)")
-        
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: request, completionHandler: {[weak self] (data, response, error) in
-            print("\(data),\(response),\(error)")
-            self!.checkUserInfo()
-        })
-        
-        dataTask.resume()
         
     }
     
     func checkUserInfo() {
         
-        XBOperateUtils.shared.login(email: usernameTextField.text!, token: passwordField.text!, success: {[weak self] (result) in
+        XBOperateUtils.shared.login(email: usernameTextField.text!, pwd: passwordField.text!, success: {[weak self] (result) in
             self!.navigationController!.popViewController(animated: true)
         }) { (error) in
             SVProgressHUD.showError(withStatus: error.localizedDescription)
@@ -283,7 +226,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     }
     
     private func showCalendar() {
-        let date = self.dateFormatter!.date(from: loginUser!.yearOfBirth)
+        let date = self.dateFormatter!.date(from: loginUser.birthDay)
         datePicker!.date = date!
         birthField.inputView = datePicker
         birthField.reloadInputViews()

@@ -9,17 +9,23 @@
 import UIKit
 
 let XBAccount = "account"
+let XBPassword = "password"
 let XBToken   = "token"
 
 class LoginData: NSObject, NSCoding {
-    var account:String!
-    var token:String!
+    var account = ""
+    var password = ""
+    var token = ""
     
     func encode(with aCoder: NSCoder) {
         let acc = account as NSString
+        let pwd = password as NSString
         let tok = token as NSString
         if acc.length != 0 {
             aCoder.encode(account, forKey: XBAccount)
+        }
+        if pwd.length != 0 {
+            aCoder.encode(password, forKey: XBPassword)
         }
         if tok.length != 0 {
             aCoder.encode(token, forKey: XBToken)
@@ -28,16 +34,22 @@ class LoginData: NSObject, NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
         super.init()
-        account = aDecoder.decodeObject(forKey: XBAccount) as! String!
-        token = aDecoder.decodeObject(forKey: XBToken) as! String!
+        account = aDecoder.decodeObject(forKey: XBAccount) as! String
+        if let pwd = aDecoder.decodeObject(forKey: XBPassword) {
+            password = pwd as! String
+        }
+        if let tok = aDecoder.decodeObject(forKey: XBToken) {
+            token = tok as! String
+        }
     }
     
     override init() {
     }
     
-    convenience init(account:String?, token:String?) {
+    convenience init(account:String, password:String, token:String) {
         self.init()
         self.account = account
+        self.password = password
         self.token = token
     }
 }

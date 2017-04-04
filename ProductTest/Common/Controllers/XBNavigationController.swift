@@ -9,6 +9,8 @@
 import UIKit
 
 class XBNavigationController: UINavigationController, UIGestureRecognizerDelegate {
+    
+    var shouldPopBlock:(()->())?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,15 +25,21 @@ class XBNavigationController: UINavigationController, UIGestureRecognizerDelegat
         if childViewControllers.count > 0 && !viewController.isKind(of: XBLoginViewController.self) {
             viewController.navigationItem.leftBarButtonItem = UIBarButtonItem.init(image:UIImage(named:"backButton") , style: .plain, target: self, action:#selector(onGoBack))
         }
+        self.shouldPopBlock = nil
         super.pushViewController(viewController, animated: animated)
     }
     
     @objc func onGoBack() {
-        popViewController(animated: true)
+        if shouldPopBlock != nil {
+            shouldPopBlock!()
+            shouldPopBlock = nil
+        } else {
+            popViewController(animated: true)
+        }
     }
     
     //MARK: - UIGestureRecognizerDelegate
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return childViewControllers.count > 1
+        return childViewControllers.count > 1 && shouldPopBlock == nil
     }
 }

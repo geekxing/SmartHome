@@ -9,7 +9,6 @@
 import UIKit
 
 class XBTableViewHeaderFooterView: UITableViewHeaderFooterView {
-
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -18,13 +17,14 @@ class XBTableViewHeaderFooterView: UITableViewHeaderFooterView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
     
     private func setup() {
         self.contentView.backgroundColor = UIColor.white
         self.textLabel?.font = UIFont.systemFont(ofSize: 18)
         self.textLabel?.numberOfLines = 0;
-        self.textLabel?.textColor = UIColorHex("333333", 1.0)
+        self.textLabel?.textColor = XB_DARK_TEXT
     }
     
     override func layoutSubviews() {

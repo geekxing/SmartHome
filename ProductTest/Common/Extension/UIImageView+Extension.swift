@@ -10,13 +10,16 @@ import UIKit
 
 extension UIImageView {
     
-    func setHeader(url:String?) {
+    func setHeader(url:String?, uid:String) {
         if let imageUrl = url {
+            let placeholder = XBUserManager.shared.avatarImageForUser(uid: uid)
             self.sd_setImage(with: URL.init(string: imageUrl),
-                             placeholderImage: UIImage(named: "avatar_male")?.circleImage(),
+                             placeholderImage:placeholder,
                              options: .retryFailed,
                              completed: { (image, err, _, _) in
-                                self.image = image?.circleImage()
+                                if (image != nil && err != nil) {
+                                    self.image = image?.circleImage()
+                                }
             })
         }
     }

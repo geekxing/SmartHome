@@ -10,7 +10,7 @@ import UIKit
 import SwiftyJSON
 import SVProgressHUD
 
-class XBFindPasswordController: UIViewController, UITextFieldDelegate {
+class XBFindPasswordController: UIViewController {
 
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var backButton: UIButton!
@@ -22,37 +22,30 @@ class XBFindPasswordController: UIViewController, UITextFieldDelegate {
         backButton.layer.cornerRadius = backButton.height * 0.5
         submitButton.layer.cornerRadius = submitButton.height * 0.5
     }
-    
-    //MARK: - UITextFieldDelegate
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text! as NSString
-        email = oldText.replacingCharacters(in: range, with: string)
-        let newText = email! as NSString
-        submitButton.isEnabled = newText.length != 0
-        return true
-    }
 
     @IBAction func submit(_ sender: UIButton) {
-        if (email == nil) {
+        email = emailField.text
+        if (emailField.isBlank()) {
             self.view.makeToast("Message is not Completed")
             return
         }
-        let params = ["Email":email!]
-        let url = baseRequestUrl + "login/forget"
+        let params = ["email":email!]
         emailField.resignFirstResponder()
         
         SVProgressHUD.show()
-        XBNetworking.share.getWithPath(path: url, paras: params,
-                                       success: {[weak self]result in
-                                        print(result)
-                                        let json:JSON = result as! JSON
-                                        let message = json[Message].stringValue
-                                        if json[Code].intValue == tokenSend {
-                                            SVProgressHUD.showSuccess(withStatus: message)
-                                            self?.back(self!.backButton!)
-                                        } else {
-                                            SVProgressHUD.showError(withStatus: message)
-                                        }
+        XBNetworking.share.postWithPath(path: FORGET, paras: params,
+                                        success: {[weak self]result in
+                                            print(result)
+                                            let json:JSON = result as! JSON
+                                            let message = json[Message].stringValue
+                                            if json[Code].intValue == normalSuccess {
+                                                SVProgressHUD.showSuccess(withStatus: message)
+                                                let verify = XBVerifyCodeViewController(nibName: "XBFindPasswordController", bundle: nil)
+                                                verify.email = self?.email
+                                                self!.navigationController?.pushViewController(verify, animated: true)
+                                            } else {
+                                                SVProgressHUD.showError(withStatus: message)
+                                            }
             }, failure: { error in
                 SVProgressHUD.showError(withStatus: error.localizedDescription)
         })

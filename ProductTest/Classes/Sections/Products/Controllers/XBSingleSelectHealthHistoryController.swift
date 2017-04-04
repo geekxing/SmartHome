@@ -71,6 +71,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     }
     
     //MARK: - Notification
+    
     @objc private func listenSearchData(_ aNote:Notification) {
         if !view.isShowingOnKeywindow() {
             return
@@ -80,6 +81,20 @@ class XBSingleSelectHealthHistoryController: UIViewController {
         print("\(beginDate), \(endDate)")
         makeData()
         self.tableView.reloadData()
+        
+        var vc:UIViewController!
+        if self.isMember(of: XBSingleSelectHealthHistoryController.self) {
+            let story = UIStoryboard(name: "XBReportViewController", bundle: Bundle.main)
+            let reportVc = story.instantiateViewController(withIdentifier: "reportViewController") as! XBReportViewController
+            reportVc.reportDate = headerView.endDate
+            vc = reportVc;
+        } else {
+            let mutiVC = XBMultiReportViewController()
+            mutiVC.beginDate = headerView.beginDate
+            mutiVC.endDate = headerView.endDate
+            vc = mutiVC
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     //MARK: - Fake Data

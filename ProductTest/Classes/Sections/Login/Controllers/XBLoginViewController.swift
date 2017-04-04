@@ -19,16 +19,7 @@ class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterVie
     @IBOutlet weak var findPasswordBtn: UIButton!
     @IBOutlet weak var registerButton: UIButton!
     
-    var loginData:LoginData? = nil
-    
-    init() {
-        super.init(nibName: "XBLoginViewController", bundle: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(nibName: "XBLoginViewController", bundle: nil)
-    }
+    var registerData = false
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -37,18 +28,26 @@ class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
         if let loginData = XBLoginManager.shared.currentLoginData {
             usernameTextField.text = loginData.account
-            passwordTextField.text = loginData.token
+            passwordTextField.text = loginData.password
+            //token值不为空，则尝试自动登录
+            if (loginData.token as NSString).length != 0 {
+                canAutoLogin(loginData.token)
+            }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if usernameTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
-            loginButton.isEnabled = false
-        } else {
-            loginButton.isEnabled = true
+        if self.registerData {
+            self.registerData = false
+            return
+        }
+        if let loginData = XBLoginManager.shared.currentLoginData {
+            usernameTextField.text = loginData.account
+            passwordTextField.text = loginData.password
         }
     }
     
@@ -78,6 +77,30 @@ class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterVie
         return true
     }
     
+    //MARK: - 自动登录
+    func canAutoLogin(_ token:String) {
+        
+        SVProgressHUD.show()
+        let params = ["token":token]
+        XBNetworking.share.postWithPath(path: CHECK_TOKEN, paras: params,
+                                        success: {[weak self]result in
+                                            let json:JSON = result as! JSON
+                                            let message = json[Message].stringValue
+                                            if json[Code].intValue == 1 {
+                                                XBUserManager.shared.fetchUserFromServer(token: token, handler: { (user, error) in
+                                                    if error == nil {
+                                                        self!.navigationController!.pushViewController(XBMainViewController(), animated: true)
+                                                    }
+                                                })
+                                                SVProgressHUD.showSuccess(withStatus: message)
+                                            } else {
+                                                SVProgressHUD.showError(withStatus: message)
+                                            }
+            }, failure: { (error) in
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+        })
+    }
+    
     //MARK: - Action
     func doLogin() {
         view.endEditing(true)
@@ -85,11 +108,17 @@ class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterVie
         let username = usernameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         let password = passwordTextField.text
         
-        XBOperateUtils.shared.login(email: username!, token: password!, success: { [weak self] (result) in
-            XBLoginManager.shared.currentLoginData = LoginData(account: username, token: password)
-            self?.navigationController!.pushViewController(XBMainViewController(), animated: true)
-        }) { (error) in
-            SVProgressHUD.showError(withStatus: error.localizedDescription)
+        if let uid = username, let pwd = password {
+            if (uid as NSString).length == 0 || (pwd as NSString).length == 0 {
+                self.view.makeToast("Message is not Completed")
+            } else {
+                
+                XBOperateUtils.shared.login(email: uid, pwd: pwd, success: { [weak self] (result) in
+                    self!.navigationController!.pushViewController(XBMainViewController(), animated: true)
+                }) { (error) in
+                    SVProgressHUD.showError(withStatus: error.localizedDescription)
+                }
+            }
         }
     }
     
@@ -110,6 +139,7 @@ class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterVie
     
     //MARK: - XBRegisterViewControllerDelegate
     func regisDidComplete(account: String?, password pwd: String?) {
+        registerData = true
         usernameTextField.text = account
         passwordTextField.text = pwd
     }
@@ -126,10 +156,8 @@ class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterVie
     
     private func onTextChanged() {
         if usernameTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
-            loginButton.isEnabled = false
             setAllTextFieldReturnType(type: .next)
         } else {
-            loginButton.isEnabled = true
             setAllTextFieldReturnType(type: .done)
         }
     }

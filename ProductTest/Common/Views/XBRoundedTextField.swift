@@ -10,6 +10,12 @@ import UIKit
 
 class XBRoundedTextField: UITextField {
     
+    override var isEnabled: Bool {
+        didSet {
+            self.textColor = isEnabled ? self.textColor : UIColor.gray
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layer.borderWidth = 1

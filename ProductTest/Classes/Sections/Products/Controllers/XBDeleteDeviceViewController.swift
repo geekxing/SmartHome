@@ -78,7 +78,7 @@ class XBDeleteDeviceViewController: UIViewController {
     
     private func checkUserInfo() {
         
-        XBOperateUtils.shared.login(email: loginUser.Email, token: loginUser.password, success: { (result) in
+        XBOperateUtils.shared.login(email: loginUser.email, pwd: loginUser.password, success: { (result) in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+1.0, execute: { [weak self] in
                 self!.navigationController!.popViewController(animated: true)
             })

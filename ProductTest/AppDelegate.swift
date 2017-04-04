@@ -25,7 +25,7 @@ let XBNotificationLogout = "XBNotificationLogout"
 let baseRequestUrl = "http://118.178.181.188:8080/SleepMonitor/"
 let Code = "Code"
 let Message = "Message"
-let data = "data"
+let XBData = "Data"
 
 //成功码
 let normalSuccess = 1

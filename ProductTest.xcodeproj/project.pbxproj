@@ -29,6 +29,7 @@
 		1A31D5A41DE586CE00B9BB33 /* XBRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A31D5A21DE586CE00B9BB33 /* XBRegisterViewController.xib */; };
 		1A37A3C61DF71684003B006C /* XBFindPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A37A3C41DF71684003B006C /* XBFindPasswordController.swift */; };
 		1A37A3C71DF71684003B006C /* XBFindPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A37A3C51DF71684003B006C /* XBFindPasswordController.xib */; };
+		1A3F78BA1E8E2500000AD173 /* XBRequestURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */; };
 		1A42B1DD1DF3C26300A407B7 /* XBSquareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A42B1DC1DF3C26300A407B7 /* XBSquareButton.swift */; };
 		1A42B1DF1DF3C3E000A407B7 /* XBMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A42B1DE1DF3C3E000A407B7 /* XBMainView.swift */; };
 		1A42B1E41DF3DB6F00A407B7 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A42B1E31DF3DB6F00A407B7 /* UIButton.swift */; };
@@ -45,15 +46,43 @@
 		1A7720471DF4FC9200257F02 /* XBUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7720461DF4FC9200257F02 /* XBUserManager.swift */; };
 		1A8AC67F1DE809E4009CC8F6 /* XBNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8AC67E1DE809E4009CC8F6 /* XBNetworking.swift */; };
 		1A973C2D1E65CF7900FB2431 /* XBShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A973C2C1E65CF7900FB2431 /* XBShadowButton.swift */; };
-		1A973C2F1E666B0300FB2431 /* XBImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A973C2E1E666B0300FB2431 /* XBImageView.swift */; };
 		1A973C311E6693BB00FB2431 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A973C301E6693BB00FB2431 /* UIImageView+Extension.swift */; };
+		1A9923051E91EE1400C1E02B /* BLECentralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922E31E91EE1400C1E02B /* BLECentralManager.m */; };
+		1A9923061E91EE1400C1E02B /* BLEConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922E51E91EE1400C1E02B /* BLEConnector.m */; };
+		1A9923071E91EE1400C1E02B /* BLEDataPack.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922E71E91EE1400C1E02B /* BLEDataPack.m */; };
+		1A9923081E91EE1400C1E02B /* BLEDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922E91E91EE1400C1E02B /* BLEDeviceInfo.m */; };
+		1A9923091E91EE1400C1E02B /* BLEInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922EB1E91EE1400C1E02B /* BLEInfoCell.m */; };
+		1A99230A1E91EE1400C1E02B /* BLEInfoEditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922ED1E91EE1400C1E02B /* BLEInfoEditCell.m */; };
+		1A99230B1E91EE1400C1E02B /* BLEInfoManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922F01E91EE1400C1E02B /* BLEInfoManagerViewController.m */; };
+		1A99230C1E91EE1400C1E02B /* ActionSheetHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922F31E91EE1400C1E02B /* ActionSheetHelper.m */; };
+		1A99230D1E91EE1400C1E02B /* AlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922F51E91EE1400C1E02B /* AlertHelper.m */; };
+		1A99230E1E91EE1400C1E02B /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922F71E91EE1400C1E02B /* RIButtonItem.m */; };
+		1A99230F1E91EE1400C1E02B /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922F91E91EE1400C1E02B /* UIActionSheet+Blocks.m */; };
+		1A9923101E91EE1400C1E02B /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922FB1E91EE1400C1E02B /* UIAlertView+Blocks.m */; };
+		1A9923111E91EE1400C1E02B /* UEBaseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9922FF1E91EE1400C1E02B /* UEBaseData.m */; };
+		1A9923121E91EE1400C1E02B /* UEReadDataPack.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9923011E91EE1400C1E02B /* UEReadDataPack.m */; };
+		1A9923131E91EE1400C1E02B /* BLEPeripheralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9923041E91EE1400C1E02B /* BLEPeripheralManager.m */; };
+		1A99231D1E91F33E00C1E02B /* CBCentralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A99231C1E91F33E00C1E02B /* CBCentralViewController.m */; };
+		1A9923251E92275B00C1E02B /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9923241E92275B00C1E02B /* UIDevice+Extension.swift */; };
 		1A9BCADC1E2A8B990001A880 /* XBPhotoPickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCADB1E2A8B990001A880 /* XBPhotoPickerManager.swift */; };
 		1A9BCADE1E2B1FFB0001A880 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCADD1E2B1FFB0001A880 /* UIImage+Extension.swift */; };
 		1A9BCAE01E2B37D70001A880 /* XBOperateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCADF1E2B37D70001A880 /* XBOperateUtils.swift */; };
 		1A9BCAE61E2B5D280001A880 /* XBProductMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCAE51E2B5D280001A880 /* XBProductMainView.swift */; };
 		1A9BCAE81E2B5FB90001A880 /* XBProductMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCAE71E2B5FB90001A880 /* XBProductMainController.swift */; };
 		1AAF1E0C1E2C9EE400B1792E /* XBProductVersionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF1E0B1E2C9EE400B1792E /* XBProductVersionController.swift */; };
+		1ABA44BC1E83A3AD009AED65 /* XBMultiReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44BB1E83A3AD009AED65 /* XBMultiReportViewController.swift */; };
+		1ABA44BE1E83A57C009AED65 /* XBMultiReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44BD1E83A57C009AED65 /* XBMultiReportView.swift */; };
+		1ABA44C01E83A710009AED65 /* XBSingleReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44BF1E83A710009AED65 /* XBSingleReportView.swift */; };
+		1ABA44C21E83C3CC009AED65 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44C11E83C3CC009AED65 /* Math.swift */; };
+		1ABA44C41E83DABE009AED65 /* XBRealDetailTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44C31E83DABE009AED65 /* XBRealDetailTableCell.swift */; };
+		1ABA44C91E8407B1009AED65 /* XBDoubleSetLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44C81E8407B1009AED65 /* XBDoubleSetLineView.swift */; };
+		1ABA44CC1E84313F009AED65 /* XBHourValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44CB1E84313F009AED65 /* XBHourValueFormatter.swift */; };
+		1ABA44CE1E84C335009AED65 /* XBDisplayRealStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44CD1E84C335009AED65 /* XBDisplayRealStateView.swift */; };
+		1ABA44D01E8502F0009AED65 /* XBButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44CF1E8502F0009AED65 /* XBButton.swift */; };
 		1ABFB3F71DF56C0100A9B212 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABFB3F61DF56C0100A9B212 /* libsqlite3.0.tbd */; };
+		1AC239F31E8F9016005C7AD5 /* XBVerifyCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC239F21E8F9016005C7AD5 /* XBVerifyCodeViewController.swift */; };
+		1AC239F51E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC239F41E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift */; };
+		1AC239F71E8FAAEC005C7AD5 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC239F61E8FAAEC005C7AD5 /* UITextField+Extension.swift */; };
 		1AC7B5BA1E5A7B2C0080BABD /* XBSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7B5B91E5A7B2C0080BABD /* XBSplitView.swift */; };
 		1AC7B5BC1E5A887C0080BABD /* XBApplyConcernViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7B5BB1E5A887C0080BABD /* XBApplyConcernViewController.swift */; };
 		1AC7B5BE1E5A888C0080BABD /* XBConcernMeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7B5BD1E5A888C0080BABD /* XBConcernMeViewController.swift */; };
@@ -70,7 +99,12 @@
 		1AEC2C801E614B48005E181D /* XBSingleSelectHealthHistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC2C7F1E614B48005E181D /* XBSingleSelectHealthHistoryController.swift */; };
 		1AEC2C821E615038005E181D /* XBHealthCareHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC2C811E615038005E181D /* XBHealthCareHeaderView.swift */; };
 		1AEC2C841E615283005E181D /* XBDateSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC2C831E615283005E181D /* XBDateSelectView.swift */; };
-		1AF3641F1E5B0096008AD8FC /* UIToolsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF3641E1E5B0096008AD8FC /* UIToolsManager.swift */; };
+		1AECDDA21E752EAD00294A3F /* XBReportViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AECDDA11E752EAD00294A3F /* XBReportViewController.storyboard */; };
+		1AECDDA71E752F2800294A3F /* XBReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AECDDA61E752F2800294A3F /* XBReportViewController.swift */; };
+		1AECDDA91E75332F00294A3F /* XBRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AECDDA81E75332F00294A3F /* XBRingView.swift */; };
+		1AECDDAB1E763F0F00294A3F /* XBSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AECDDAA1E763F0F00294A3F /* XBSliderView.swift */; };
+		1AECDDAD1E76908300294A3F /* XBRealDataTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AECDDAC1E76908300294A3F /* XBRealDataTableCell.swift */; };
+		1AECDDAF1E76EBAD00294A3F /* XBEcgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AECDDAE1E76EBAD00294A3F /* XBEcgView.swift */; };
 		1AF364211E5B0924008AD8FC /* XBSearchApplyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF364201E5B0924008AD8FC /* XBSearchApplyCell.swift */; };
 		1AF364231E5B0AC9008AD8FC /* XBRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF364221E5B0AC9008AD8FC /* XBRoundedButton.swift */; };
 		1AF921071DEF195400075A34 /* XBMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF921061DEF195400075A34 /* XBMainViewController.swift */; };
@@ -130,6 +164,7 @@
 		1A31D5A21DE586CE00B9BB33 /* XBRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBRegisterViewController.xib; sourceTree = "<group>"; };
 		1A37A3C41DF71684003B006C /* XBFindPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBFindPasswordController.swift; sourceTree = "<group>"; };
 		1A37A3C51DF71684003B006C /* XBFindPasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBFindPasswordController.xib; sourceTree = "<group>"; };
+		1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRequestURLs.swift; sourceTree = "<group>"; };
 		1A42B1DC1DF3C26300A407B7 /* XBSquareButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBSquareButton.swift; sourceTree = "<group>"; };
 		1A42B1DE1DF3C3E000A407B7 /* XBMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBMainView.swift; sourceTree = "<group>"; };
 		1A42B1E31DF3DB6F00A407B7 /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
@@ -144,16 +179,62 @@
 		1A7720461DF4FC9200257F02 /* XBUserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBUserManager.swift; sourceTree = "<group>"; };
 		1A8AC67E1DE809E4009CC8F6 /* XBNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBNetworking.swift; sourceTree = "<group>"; };
 		1A973C2C1E65CF7900FB2431 /* XBShadowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBShadowButton.swift; sourceTree = "<group>"; };
-		1A973C2E1E666B0300FB2431 /* XBImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBImageView.swift; sourceTree = "<group>"; };
 		1A973C301E6693BB00FB2431 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		1A9922E21E91EE1400C1E02B /* BLECentralManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLECentralManager.h; sourceTree = "<group>"; };
+		1A9922E31E91EE1400C1E02B /* BLECentralManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLECentralManager.m; sourceTree = "<group>"; };
+		1A9922E41E91EE1400C1E02B /* BLEConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEConnector.h; sourceTree = "<group>"; };
+		1A9922E51E91EE1400C1E02B /* BLEConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEConnector.m; sourceTree = "<group>"; };
+		1A9922E61E91EE1400C1E02B /* BLEDataPack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEDataPack.h; sourceTree = "<group>"; };
+		1A9922E71E91EE1400C1E02B /* BLEDataPack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEDataPack.m; sourceTree = "<group>"; };
+		1A9922E81E91EE1400C1E02B /* BLEDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEDeviceInfo.h; sourceTree = "<group>"; };
+		1A9922E91E91EE1400C1E02B /* BLEDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEDeviceInfo.m; sourceTree = "<group>"; };
+		1A9922EA1E91EE1400C1E02B /* BLEInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEInfoCell.h; sourceTree = "<group>"; };
+		1A9922EB1E91EE1400C1E02B /* BLEInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEInfoCell.m; sourceTree = "<group>"; };
+		1A9922EC1E91EE1400C1E02B /* BLEInfoEditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEInfoEditCell.h; sourceTree = "<group>"; };
+		1A9922ED1E91EE1400C1E02B /* BLEInfoEditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEInfoEditCell.m; sourceTree = "<group>"; };
+		1A9922EF1E91EE1400C1E02B /* BLEInfoManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEInfoManagerViewController.h; sourceTree = "<group>"; };
+		1A9922F01E91EE1400C1E02B /* BLEInfoManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEInfoManagerViewController.m; sourceTree = "<group>"; };
+		1A9922F21E91EE1400C1E02B /* ActionSheetHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetHelper.h; sourceTree = "<group>"; };
+		1A9922F31E91EE1400C1E02B /* ActionSheetHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetHelper.m; sourceTree = "<group>"; };
+		1A9922F41E91EE1400C1E02B /* AlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertHelper.h; sourceTree = "<group>"; };
+		1A9922F51E91EE1400C1E02B /* AlertHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertHelper.m; sourceTree = "<group>"; };
+		1A9922F61E91EE1400C1E02B /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
+		1A9922F71E91EE1400C1E02B /* RIButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIButtonItem.m; sourceTree = "<group>"; };
+		1A9922F81E91EE1400C1E02B /* UIActionSheet+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Blocks.h"; sourceTree = "<group>"; };
+		1A9922F91E91EE1400C1E02B /* UIActionSheet+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Blocks.m"; sourceTree = "<group>"; };
+		1A9922FA1E91EE1400C1E02B /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		1A9922FB1E91EE1400C1E02B /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
+		1A9922FC1E91EE1400C1E02B /* BluetoothConfigDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothConfigDefine.h; sourceTree = "<group>"; };
+		1A9922FE1E91EE1400C1E02B /* UEBaseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UEBaseData.h; sourceTree = "<group>"; };
+		1A9922FF1E91EE1400C1E02B /* UEBaseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UEBaseData.m; sourceTree = "<group>"; };
+		1A9923001E91EE1400C1E02B /* UEReadDataPack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UEReadDataPack.h; sourceTree = "<group>"; };
+		1A9923011E91EE1400C1E02B /* UEReadDataPack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UEReadDataPack.m; sourceTree = "<group>"; };
+		1A9923031E91EE1400C1E02B /* BLEPeripheralManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEPeripheralManager.h; sourceTree = "<group>"; };
+		1A9923041E91EE1400C1E02B /* BLEPeripheralManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheralManager.m; sourceTree = "<group>"; };
+		1A9923141E91EE3100C1E02B /* BLEHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEHeaders.h; sourceTree = "<group>"; };
+		1A99231B1E91F33E00C1E02B /* CBCentralViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCentralViewController.h; sourceTree = "<group>"; };
+		1A99231C1E91F33E00C1E02B /* CBCentralViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCentralViewController.m; sourceTree = "<group>"; };
+		1A9923241E92275B00C1E02B /* UIDevice+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		1A9BCADB1E2A8B990001A880 /* XBPhotoPickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBPhotoPickerManager.swift; sourceTree = "<group>"; };
 		1A9BCADD1E2B1FFB0001A880 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		1A9BCADF1E2B37D70001A880 /* XBOperateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBOperateUtils.swift; sourceTree = "<group>"; };
 		1A9BCAE51E2B5D280001A880 /* XBProductMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBProductMainView.swift; sourceTree = "<group>"; };
 		1A9BCAE71E2B5FB90001A880 /* XBProductMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBProductMainController.swift; sourceTree = "<group>"; };
 		1AAF1E0B1E2C9EE400B1792E /* XBProductVersionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBProductVersionController.swift; sourceTree = "<group>"; };
+		1ABA44BB1E83A3AD009AED65 /* XBMultiReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBMultiReportViewController.swift; sourceTree = "<group>"; };
+		1ABA44BD1E83A57C009AED65 /* XBMultiReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBMultiReportView.swift; sourceTree = "<group>"; };
+		1ABA44BF1E83A710009AED65 /* XBSingleReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBSingleReportView.swift; sourceTree = "<group>"; };
+		1ABA44C11E83C3CC009AED65 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		1ABA44C31E83DABE009AED65 /* XBRealDetailTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRealDetailTableCell.swift; sourceTree = "<group>"; };
+		1ABA44C81E8407B1009AED65 /* XBDoubleSetLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBDoubleSetLineView.swift; sourceTree = "<group>"; };
+		1ABA44CB1E84313F009AED65 /* XBHourValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBHourValueFormatter.swift; sourceTree = "<group>"; };
+		1ABA44CD1E84C335009AED65 /* XBDisplayRealStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBDisplayRealStateView.swift; sourceTree = "<group>"; };
+		1ABA44CF1E8502F0009AED65 /* XBButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBButton.swift; sourceTree = "<group>"; };
 		1ABFB3D31DF569BD00A9B212 /* ProductTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProductTest-Bridging-Header.h"; sourceTree = "<group>"; };
 		1ABFB3F61DF56C0100A9B212 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		1AC239F21E8F9016005C7AD5 /* XBVerifyCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBVerifyCodeViewController.swift; sourceTree = "<group>"; };
+		1AC239F41E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBModifyPasswordViewController.swift; sourceTree = "<group>"; };
+		1AC239F61E8FAAEC005C7AD5 /* UITextField+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		1AC7B5B91E5A7B2C0080BABD /* XBSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBSplitView.swift; sourceTree = "<group>"; };
 		1AC7B5BB1E5A887C0080BABD /* XBApplyConcernViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBApplyConcernViewController.swift; sourceTree = "<group>"; };
 		1AC7B5BD1E5A888C0080BABD /* XBConcernMeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBConcernMeViewController.swift; sourceTree = "<group>"; };
@@ -170,7 +251,12 @@
 		1AEC2C7F1E614B48005E181D /* XBSingleSelectHealthHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBSingleSelectHealthHistoryController.swift; sourceTree = "<group>"; };
 		1AEC2C811E615038005E181D /* XBHealthCareHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBHealthCareHeaderView.swift; sourceTree = "<group>"; };
 		1AEC2C831E615283005E181D /* XBDateSelectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBDateSelectView.swift; sourceTree = "<group>"; };
-		1AF3641E1E5B0096008AD8FC /* UIToolsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIToolsManager.swift; sourceTree = "<group>"; };
+		1AECDDA11E752EAD00294A3F /* XBReportViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = XBReportViewController.storyboard; sourceTree = "<group>"; };
+		1AECDDA61E752F2800294A3F /* XBReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBReportViewController.swift; sourceTree = "<group>"; };
+		1AECDDA81E75332F00294A3F /* XBRingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRingView.swift; sourceTree = "<group>"; };
+		1AECDDAA1E763F0F00294A3F /* XBSliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBSliderView.swift; sourceTree = "<group>"; };
+		1AECDDAC1E76908300294A3F /* XBRealDataTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRealDataTableCell.swift; sourceTree = "<group>"; };
+		1AECDDAE1E76EBAD00294A3F /* XBEcgView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBEcgView.swift; sourceTree = "<group>"; };
 		1AF364201E5B0924008AD8FC /* XBSearchApplyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBSearchApplyCell.swift; sourceTree = "<group>"; };
 		1AF364221E5B0AC9008AD8FC /* XBRoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRoundedButton.swift; sourceTree = "<group>"; };
 		1AF921061DEF195400075A34 /* XBMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBMainViewController.swift; sourceTree = "<group>"; };
@@ -270,7 +356,7 @@
 				1AF364221E5B0AC9008AD8FC /* XBRoundedButton.swift */,
 				1AFB62301E62F66400AB254E /* XBAlertView.swift */,
 				1A973C2C1E65CF7900FB2431 /* XBShadowButton.swift */,
-				1A973C2E1E666B0300FB2431 /* XBImageView.swift */,
+				1ABA44CF1E8502F0009AED65 /* XBButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -285,6 +371,7 @@
 		1A14D6381DE6B4F000CE719B /* Venders */ = {
 			isa = PBXGroup;
 			children = (
+				1A9922E01E91EE1400C1E02B /* XBBLE */,
 				1A14D6391DE6B77200CE719B /* MBProgressHUD */,
 			);
 			path = Venders;
@@ -379,6 +466,8 @@
 				1A37A3C51DF71684003B006C /* XBFindPasswordController.xib */,
 				1A4A75F61E2A622D00A40787 /* XBEditUserInfoViewController.swift */,
 				1A4A75F71E2A622D00A40787 /* XBEditUserInfoViewController.xib */,
+				1AC239F21E8F9016005C7AD5 /* XBVerifyCodeViewController.swift */,
+				1AC239F41E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -438,6 +527,8 @@
 				1A42B1E71DF43EA900A407B7 /* UIView+Extension.swift */,
 				1A9BCADD1E2B1FFB0001A880 /* UIImage+Extension.swift */,
 				1A973C301E6693BB00FB2431 /* UIImageView+Extension.swift */,
+				1AC239F61E8FAAEC005C7AD5 /* UITextField+Extension.swift */,
+				1A9923241E92275B00C1E02B /* UIDevice+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -449,9 +540,91 @@
 				1A42B1E51DF42DED00A407B7 /* GlobalDefines.swift */,
 				1A9BCADB1E2A8B990001A880 /* XBPhotoPickerManager.swift */,
 				1A9BCADF1E2B37D70001A880 /* XBOperateUtils.swift */,
-				1AF3641E1E5B0096008AD8FC /* UIToolsManager.swift */,
+				1ABA44C11E83C3CC009AED65 /* Math.swift */,
+				1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		1A9922E01E91EE1400C1E02B /* XBBLE */ = {
+			isa = PBXGroup;
+			children = (
+				1A9922E11E91EE1400C1E02B /* Central */,
+				1A9922EE1E91EE1400C1E02B /* Common */,
+				1A9922FD1E91EE1400C1E02B /* Models */,
+				1A9923021E91EE1400C1E02B /* Peripheral */,
+				1A9923141E91EE3100C1E02B /* BLEHeaders.h */,
+			);
+			path = XBBLE;
+			sourceTree = "<group>";
+		};
+		1A9922E11E91EE1400C1E02B /* Central */ = {
+			isa = PBXGroup;
+			children = (
+				1A9922E21E91EE1400C1E02B /* BLECentralManager.h */,
+				1A9922E31E91EE1400C1E02B /* BLECentralManager.m */,
+				1A9922E41E91EE1400C1E02B /* BLEConnector.h */,
+				1A9922E51E91EE1400C1E02B /* BLEConnector.m */,
+				1A9922E61E91EE1400C1E02B /* BLEDataPack.h */,
+				1A9922E71E91EE1400C1E02B /* BLEDataPack.m */,
+				1A9922E81E91EE1400C1E02B /* BLEDeviceInfo.h */,
+				1A9922E91E91EE1400C1E02B /* BLEDeviceInfo.m */,
+				1A9922EA1E91EE1400C1E02B /* BLEInfoCell.h */,
+				1A9922EB1E91EE1400C1E02B /* BLEInfoCell.m */,
+				1A9922EC1E91EE1400C1E02B /* BLEInfoEditCell.h */,
+				1A9922ED1E91EE1400C1E02B /* BLEInfoEditCell.m */,
+			);
+			path = Central;
+			sourceTree = "<group>";
+		};
+		1A9922EE1E91EE1400C1E02B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				1A99231B1E91F33E00C1E02B /* CBCentralViewController.h */,
+				1A99231C1E91F33E00C1E02B /* CBCentralViewController.m */,
+				1A9922EF1E91EE1400C1E02B /* BLEInfoManagerViewController.h */,
+				1A9922F01E91EE1400C1E02B /* BLEInfoManagerViewController.m */,
+				1A9922F11E91EE1400C1E02B /* Block */,
+				1A9922FC1E91EE1400C1E02B /* BluetoothConfigDefine.h */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		1A9922F11E91EE1400C1E02B /* Block */ = {
+			isa = PBXGroup;
+			children = (
+				1A9922F21E91EE1400C1E02B /* ActionSheetHelper.h */,
+				1A9922F31E91EE1400C1E02B /* ActionSheetHelper.m */,
+				1A9922F41E91EE1400C1E02B /* AlertHelper.h */,
+				1A9922F51E91EE1400C1E02B /* AlertHelper.m */,
+				1A9922F61E91EE1400C1E02B /* RIButtonItem.h */,
+				1A9922F71E91EE1400C1E02B /* RIButtonItem.m */,
+				1A9922F81E91EE1400C1E02B /* UIActionSheet+Blocks.h */,
+				1A9922F91E91EE1400C1E02B /* UIActionSheet+Blocks.m */,
+				1A9922FA1E91EE1400C1E02B /* UIAlertView+Blocks.h */,
+				1A9922FB1E91EE1400C1E02B /* UIAlertView+Blocks.m */,
+			);
+			path = Block;
+			sourceTree = "<group>";
+		};
+		1A9922FD1E91EE1400C1E02B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1A9922FE1E91EE1400C1E02B /* UEBaseData.h */,
+				1A9922FF1E91EE1400C1E02B /* UEBaseData.m */,
+				1A9923001E91EE1400C1E02B /* UEReadDataPack.h */,
+				1A9923011E91EE1400C1E02B /* UEReadDataPack.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1A9923021E91EE1400C1E02B /* Peripheral */ = {
+			isa = PBXGroup;
+			children = (
+				1A9923031E91EE1400C1E02B /* BLEPeripheralManager.h */,
+				1A9923041E91EE1400C1E02B /* BLEPeripheralManager.m */,
+			);
+			path = Peripheral;
 			sourceTree = "<group>";
 		};
 		1A9BCAE11E2B5C2D0001A880 /* Products */ = {
@@ -534,6 +707,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		1ABA44CA1E84310E009AED65 /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				1ABA44CB1E84313F009AED65 /* XBHourValueFormatter.swift */,
+			);
+			path = Formatters;
+			sourceTree = "<group>";
+		};
 		1AF921021DEF191100075A34 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -573,6 +754,7 @@
 		1AFB62321E63087D00AB254E /* RealTimeData */ = {
 			isa = PBXGroup;
 			children = (
+				1ABA44CA1E84310E009AED65 /* Formatters */,
 				1AFB62331E63087D00AB254E /* Controllers */,
 				1AFB62341E63087D00AB254E /* Models */,
 				1AFB62351E63087D00AB254E /* Views */,
@@ -584,6 +766,9 @@
 			isa = PBXGroup;
 			children = (
 				1AFB62361E63089900AB254E /* XBRealDataViewController.swift */,
+				1AECDDA11E752EAD00294A3F /* XBReportViewController.storyboard */,
+				1AECDDA61E752F2800294A3F /* XBReportViewController.swift */,
+				1ABA44BB1E83A3AD009AED65 /* XBMultiReportViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -598,6 +783,15 @@
 		1AFB62351E63087D00AB254E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1AECDDA81E75332F00294A3F /* XBRingView.swift */,
+				1AECDDAA1E763F0F00294A3F /* XBSliderView.swift */,
+				1AECDDAC1E76908300294A3F /* XBRealDataTableCell.swift */,
+				1ABA44C31E83DABE009AED65 /* XBRealDetailTableCell.swift */,
+				1AECDDAE1E76EBAD00294A3F /* XBEcgView.swift */,
+				1ABA44BD1E83A57C009AED65 /* XBMultiReportView.swift */,
+				1ABA44BF1E83A710009AED65 /* XBSingleReportView.swift */,
+				1ABA44C81E8407B1009AED65 /* XBDoubleSetLineView.swift */,
+				1ABA44CD1E84C335009AED65 /* XBDisplayRealStateView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -693,6 +887,7 @@
 				1A31D5871DE440F900B9BB33 /* Assets.xcassets in Resources */,
 				1A018D7D1E2B6A0400B1629D /* XBAddDeviceViewController.xib in Resources */,
 				1A4A75F91E2A622D00A40787 /* XBEditUserInfoViewController.xib in Resources */,
+				1AECDDA21E752EAD00294A3F /* XBReportViewController.storyboard in Resources */,
 				1A31D5A41DE586CE00B9BB33 /* XBRegisterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -766,68 +961,101 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AFB622D1E62EA6D00AB254E /* XBAlertController.swift in Sources */,
+				1A9923081E91EE1400C1E02B /* BLEDeviceInfo.m in Sources */,
 				1A31D59D1DE569D800B9BB33 /* XBLoginViewController.swift in Sources */,
 				1AEC2C781E612120005E181D /* XBMyPurchaseTableCell.swift in Sources */,
 				1A42B1E61DF42DED00A407B7 /* GlobalDefines.swift in Sources */,
 				1AFB622B1E62D11600AB254E /* XBProductModel.swift in Sources */,
+				1A9923111E91EE1400C1E02B /* UEBaseData.m in Sources */,
+				1AC239F71E8FAAEC005C7AD5 /* UITextField+Extension.swift in Sources */,
+				1AC239F51E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift in Sources */,
 				1A7720471DF4FC9200257F02 /* XBUserManager.swift in Sources */,
+				1A99230A1E91EE1400C1E02B /* BLEInfoEditCell.m in Sources */,
 				1A42B1EA1DF4634100A407B7 /* XBLoginManager.swift in Sources */,
 				1AFA39E81E2C91DE0036C870 /* XBMyConcernCell.swift in Sources */,
 				1A018D8A1E2C57E100B1629D /* XBRelationConcernModel.swift in Sources */,
 				1AEC2C841E615283005E181D /* XBDateSelectView.swift in Sources */,
+				1AECDDA91E75332F00294A3F /* XBRingView.swift in Sources */,
+				1A9923061E91EE1400C1E02B /* BLEConnector.m in Sources */,
 				1A42B1DF1DF3C3E000A407B7 /* XBMainView.swift in Sources */,
 				1AFB622F1E62EACE00AB254E /* XBDimmingPresentationController.swift in Sources */,
+				1A9923071E91EE1400C1E02B /* BLEDataPack.m in Sources */,
 				1AFB62251E6270DA00AB254E /* XBSleepData.swift in Sources */,
 				1A31D5801DE440F900B9BB33 /* AppDelegate.swift in Sources */,
+				1A9923121E91EE1400C1E02B /* UEReadDataPack.m in Sources */,
 				1AC7B5BC1E5A887C0080BABD /* XBApplyConcernViewController.swift in Sources */,
+				1AECDDAF1E76EBAD00294A3F /* XBEcgView.swift in Sources */,
 				1AEC2C741E611415005E181D /* XBBaseViewController.swift in Sources */,
+				1A9923051E91EE1400C1E02B /* BLECentralManager.m in Sources */,
+				1ABA44CC1E84313F009AED65 /* XBHourValueFormatter.swift in Sources */,
 				1A14D6421DE6B81E00CE719B /* MBProgressHUD.m in Sources */,
 				1AEC2C761E611DBD005E181D /* XBProductVersionSectionHeader.swift in Sources */,
 				1A9BCADC1E2A8B990001A880 /* XBPhotoPickerManager.swift in Sources */,
 				1AFA39E61E2C82880036C870 /* XBConcernMeCell.swift in Sources */,
+				1ABA44C01E83A710009AED65 /* XBSingleReportView.swift in Sources */,
+				1A99230D1E91EE1400C1E02B /* AlertHelper.m in Sources */,
 				1A018D881E2BB9AD00B1629D /* XBTableGroupItem.swift in Sources */,
+				1A3F78BA1E8E2500000AD173 /* XBRequestURLs.swift in Sources */,
+				1ABA44C91E8407B1009AED65 /* XBDoubleSetLineView.swift in Sources */,
 				1A10733A1E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift in Sources */,
+				1ABA44C41E83DABE009AED65 /* XBRealDetailTableCell.swift in Sources */,
+				1A9923101E91EE1400C1E02B /* UIAlertView+Blocks.m in Sources */,
 				1A018D7F1E2B7EBE00B1629D /* XBQRCodeScanViewController.swift in Sources */,
+				1AC239F31E8F9016005C7AD5 /* XBVerifyCodeViewController.swift in Sources */,
 				1AF921071DEF195400075A34 /* XBMainViewController.swift in Sources */,
 				1AC7B5C21E5AB0900080BABD /* XBTextField.swift in Sources */,
 				1A018D8C1E2C59E400B1629D /* XBRelationConcernCell.swift in Sources */,
 				1A4A75F51E2A2DA600A40787 /* MainItemModel.swift in Sources */,
+				1A99230F1E91EE1400C1E02B /* UIActionSheet+Blocks.m in Sources */,
+				1ABA44C21E83C3CC009AED65 /* Math.swift in Sources */,
 				1A8AC67F1DE809E4009CC8F6 /* XBNetworking.swift in Sources */,
 				1AFB62271E62723400AB254E /* XBSleepHistoryTableCell.swift in Sources */,
-				1AF3641F1E5B0096008AD8FC /* UIToolsManager.swift in Sources */,
 				1AEC2C801E614B48005E181D /* XBSingleSelectHealthHistoryController.swift in Sources */,
 				1AC7B5BA1E5A7B2C0080BABD /* XBSplitView.swift in Sources */,
 				1AEC2C7E1E614B20005E181D /* XBMultiSelectHealthHistoryController.swift in Sources */,
 				1A4A75F81E2A622D00A40787 /* XBEditUserInfoViewController.swift in Sources */,
 				1AF364231E5B0AC9008AD8FC /* XBRoundedButton.swift in Sources */,
+				1ABA44BE1E83A57C009AED65 /* XBMultiReportView.swift in Sources */,
 				1A018D851E2BAE5200B1629D /* XBRelationNoticeController.swift in Sources */,
+				1A9923091E91EE1400C1E02B /* BLEInfoCell.m in Sources */,
 				1AAF1E0C1E2C9EE400B1792E /* XBProductVersionController.swift in Sources */,
 				1A9BCAE81E2B5FB90001A880 /* XBProductMainController.swift in Sources */,
 				1AC7B5C01E5A889A0080BABD /* XBMyConcernViewController.swift in Sources */,
+				1A9923131E91EE1400C1E02B /* BLEPeripheralManager.m in Sources */,
 				1AEC2C721E60A521005E181D /* XBCheckProductView.swift in Sources */,
 				1A9BCAE61E2B5D280001A880 /* XBProductMainView.swift in Sources */,
 				1A31D5A01DE56E2700B9BB33 /* XBNavigationController.swift in Sources */,
+				1AECDDAB1E763F0F00294A3F /* XBSliderView.swift in Sources */,
 				1AFB62311E62F66400AB254E /* XBAlertView.swift in Sources */,
+				1ABA44D01E8502F0009AED65 /* XBButton.swift in Sources */,
 				1AFB62371E63089900AB254E /* XBRealDataViewController.swift in Sources */,
+				1A99231D1E91F33E00C1E02B /* CBCentralViewController.m in Sources */,
 				1A018D7C1E2B6A0400B1629D /* XBAddDeviceViewController.swift in Sources */,
 				1A42B1E81DF43EA900A407B7 /* UIView+Extension.swift in Sources */,
 				1AF921091DEF1BB600075A34 /* XBFileLocationHelper.swift in Sources */,
+				1AECDDA71E752F2800294A3F /* XBReportViewController.swift in Sources */,
 				1AC7B5BE1E5A888C0080BABD /* XBConcernMeViewController.swift in Sources */,
 				1A31D5A31DE586CE00B9BB33 /* XBRegisterViewController.swift in Sources */,
+				1A99230C1E91EE1400C1E02B /* ActionSheetHelper.m in Sources */,
+				1AECDDAD1E76908300294A3F /* XBRealDataTableCell.swift in Sources */,
 				1AEC2C821E615038005E181D /* XBHealthCareHeaderView.swift in Sources */,
 				1A9BCAE01E2B37D70001A880 /* XBOperateUtils.swift in Sources */,
 				1A973C2D1E65CF7900FB2431 /* XBShadowButton.swift in Sources */,
 				1AF364211E5B0924008AD8FC /* XBSearchApplyCell.swift in Sources */,
 				1A37A3C61DF71684003B006C /* XBFindPasswordController.swift in Sources */,
+				1A9923251E92275B00C1E02B /* UIDevice+Extension.swift in Sources */,
 				1A018D8E1E2C5D3900B1629D /* XBApplyConcernCell.swift in Sources */,
 				1A9BCADE1E2B1FFB0001A880 /* UIImage+Extension.swift in Sources */,
 				1AEC2C7A1E612809005E181D /* XBHealthCareViewController.swift in Sources */,
+				1A99230B1E91EE1400C1E02B /* BLEInfoManagerViewController.m in Sources */,
+				1A99230E1E91EE1400C1E02B /* RIButtonItem.m in Sources */,
 				1A42B1DD1DF3C26300A407B7 /* XBSquareButton.swift in Sources */,
 				1A973C311E6693BB00FB2431 /* UIImageView+Extension.swift in Sources */,
+				1ABA44CE1E84C335009AED65 /* XBDisplayRealStateView.swift in Sources */,
 				1AEC2C701E6081F3005E181D /* XBTableViewHeaderFooterView.swift in Sources */,
 				1A14D6441DE6C10700CE719B /* MBProgressHUD+Extension.swift in Sources */,
 				1A42B1E41DF3DB6F00A407B7 /* UIButton.swift in Sources */,
-				1A973C2F1E666B0300FB2431 /* XBImageView.swift in Sources */,
+				1ABA44BC1E83A3AD009AED65 /* XBMultiReportViewController.swift in Sources */,
 				1AC7B5C41E5AF1F70080BABD /* XBRoundedTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -956,6 +1184,7 @@
 				INFOPLIST_FILE = ProductTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -debug-time-function-bodies";
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.sHome;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProductTest/Venders/MBProgressHUD/ProductTest-Bridging-Header.h";
@@ -981,6 +1210,7 @@
 				INFOPLIST_FILE = ProductTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -debug-time-function-bodies";
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.sHome;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProductTest/Venders/MBProgressHUD/ProductTest-Bridging-Header.h";

@@ -10,6 +10,21 @@ import UIKit
 
 extension UIImage {
     
+    func image(with borderWidth:CGFloat, borderColor:UIColor) -> UIImage {
+        let ctxSize = CGSize(width: self.size.width + 2 * borderWidth, height: self.size.height + 2 * borderWidth)
+        UIGraphicsBeginImageContextWithOptions(ctxSize, false, 0)
+        var path = UIBezierPath(ovalIn: CGRect(origin: CGPoint.zero, size: ctxSize))
+        borderColor.setFill()
+        
+        let drawRect = CGRect(x: borderWidth, y: borderWidth, width: self.size.width, height: self.size.height)
+        path = UIBezierPath(ovalIn: drawRect)
+        path.addClip()
+        self.draw(in: drawRect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
+    
     //获取圆形图片
     func circleImage() -> UIImage {
         return self.circleImage(to: self.size)

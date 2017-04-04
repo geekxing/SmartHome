@@ -18,6 +18,7 @@ class XBApplyConcernViewController: UIViewController {
     var searchBar:XBRoundedTextField!
     var dataArray = [XBRelationConcernModel]()
     var keyword:String = ""
+    let token = XBLoginManager.shared.currentLoginData!.token
     
     private var otherEmail:String?
     
@@ -49,6 +50,7 @@ class XBApplyConcernViewController: UIViewController {
     private func setupSearchComponent() {
         searchBar = XBRoundedTextField(frame: CGRect(x: 33*UIRate, y: 152*UIRate, width: 265*UIRate, height: 29))
         searchBar.returnKeyType = .search
+        searchBar.clearButtonMode = .whileEditing
         searchBar.delegate = self
         scrollView.addSubview(searchBar)
         
@@ -82,22 +84,18 @@ class XBApplyConcernViewController: UIViewController {
     }
     
     //MARK: - Operate
-    private func search(email:String, complete:@escaping ((_ email:String, _ name:String)->())){
-        let params:Dictionary = ["Email":email]
-        let url = baseRequestUrl + "concern/query"
-        XBNetworking.share.postWithPath(path: url, paras: params, success: {[weak self] (result) in
+    private func search(email:String, complete:@escaping ((_ email:String)->())){
+        let params:Dictionary = ["email":email]
+        XBNetworking.share.postWithPath(path: QUERY, paras: params, success: { (result) in
             let json = result as! JSON
             debugPrint(json)
             let message = json[Message].stringValue
             if json[Code] == 1 {
-                debugPrint(json[data])
-                let email = json["Email"].stringValue
-                let name = json[data].stringValue
-                let user = XBUser()
-                user.Email = email
-                user.Name = name
-                XBUserManager.shared.add(user: user)
-                complete(email, name)
+                if email != self.loginUser!.email {
+                    let userData = json[XBData]
+                    XBUserManager.shared.addUser(userJson: userData)
+                }
+                complete(email)
             } else {
                 SVProgressHUD.showError(withStatus: message)
             }
@@ -107,20 +105,14 @@ class XBApplyConcernViewController: UIViewController {
     }
     
     func apply(email:String) {
-        let params:Dictionary = ["myEmail":loginUser!.Email!,
-                                 "otherEmail":email,
-                                 "firstName":loginUser!.firstName!,
-                                 "middleName":loginUser!.middleName ?? "",
-                                 "lastName":loginUser!.lastName!]
-        let url = baseRequestUrl + "concern/apply"
-        XBNetworking.share.postWithPath(path: url, paras: params, success: {[weak self] (result) in
+        let params:Dictionary = ["token":token,
+                                 "email":email]
+        XBNetworking.share.postWithPath(path: APPLY, paras: params, success: {[weak self] (result) in
             let json = result as! JSON
             debugPrint(json)
             let message = json[Message].stringValue
-            if json[Code].intValue == applyNotice {
-                self?.view.makeToast(message)
-            } else if message == "" {
-                self?.view.makeToast( "不能重复申请关注")
+            if json[Code].intValue == normalSuccess {
+                self?.view.makeToast(message, duration: 1.0, position: .center)
             } else {
                 SVProgressHUD.showError(withStatus: message)
             }
@@ -132,7 +124,7 @@ class XBApplyConcernViewController: UIViewController {
     //MARK: - Private
     @objc fileprivate func searchPeople() {
         searchBar.resignFirstResponder()
-        search(email: searchBar.text ?? "") { [weak self](email, name) in
+        search(email: searchBar.text ?? "") { [weak self](email) in
             if let user = XBUserManager.shared.user(uid: email) {
                 self?.dataArray.removeAll()
                 self?.otherEmail = email
@@ -177,7 +169,7 @@ extension XBApplyConcernViewController: UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchApply) as! XBSearchApplyCell
         cell.model = model
         cell.clickApplyButton = {[weak self] user in
-            self?.apply(email: user.Email!)
+            self?.apply(email: user.email!)
             self?.dataArray.removeAll()
             tableView.reloadData()
         }

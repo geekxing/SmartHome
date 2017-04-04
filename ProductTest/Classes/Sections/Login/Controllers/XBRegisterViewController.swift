@@ -60,14 +60,6 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     let chooseGenderDropDown = DropDown()
     
     //MARK: - Life Cycle
-    init() {
-        super.init(nibName: "XBRegisterViewController", bundle: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(nibName: "XBRegisterViewController", bundle: nil)
-    }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -92,6 +84,8 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
             $0.setValue(UIColor.black, forKeyPath: "placeholderLabel.textColor")
             $0.setValue(UIFontSize(size: 16), forKeyPath: "placeholderLabel.font")
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
     }
     
     
@@ -147,6 +141,10 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
         }
         view.endEditing(true)
         
+        if !XBOperateUtils.validateEmail(usernameTextField.text!) {
+            SVProgressHUD.showError(withStatus: "邮箱格式错误!")
+            return
+        }
         if !self.validatePassword() {
             return
         }
@@ -156,21 +154,19 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
         let lastName = lastnameField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         let params:Parameters = [
-            "Email":usernameTextField.text!,
+            "email":usernameTextField.text!,
             "password":passwordField.text!,
             "firstName":firstName,
             "middleName":middleName ?? "",
             "lastName":lastName,
-            "yearOfBirth":birthField.text!,
-            "gender":genderField.text!,
-            "phoneNumber":phoneNumberField.text!,
+            "birth":birthField.text!,
+            "gender":XBUserManager.integerForGender(genderField.text!),
+            "mphone":phoneNumberField.text!,
             "address":addressField.text ?? "",
         ]
-        
-        let url = baseRequestUrl + "login/register"
 
         SVProgressHUD.show()
-        XBNetworking.share.postWithPath(path: url, paras: params,
+        XBNetworking.share.postWithPath(path: REGIST, paras: params,
             success: {[weak self]result in
                 
                 let json:JSON = result as! JSON
