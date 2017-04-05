@@ -10,20 +10,16 @@ import UIKit
 
 class XBEcgView: UIView {
     
-    var frequency:Double = 0.25 {
+    var duration:CFTimeInterval = 0.25 {
         didSet {
-            timer?.cancel()
-            timer?.scheduleRepeating(deadline: .now(), interval: .milliseconds(Int(1000*frequency)))
-            timer?.resume()
+            animation4()
         }
     }
-    private var pointYs = [CGFloat]()
-    private let popYArray:[CGFloat] =
-        [0,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,]
-    private var xScale = CGFloat(6.0)
-    private var index = 0
     
-    private var timer:DispatchSourceTimer?
+    let pointYs:[CGFloat] =
+        [0,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,0]
+    
+    var xScale:CGFloat = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,66 +28,86 @@ class XBEcgView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-         setup()
+        setup()
     }
     
     deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
-    override func draw(_ rect: CGRect) {
-        if pointYs.count == 0 {
-            return
-        }
-        
-        let ctx = UIGraphicsGetCurrentContext()
-        ctx?.clear(self.bounds)
-        //ctx?.translateBy(x: 0, y: self.height * 0.5)
-        ctx?.setLineWidth(2)
-        ctx?.setLineJoin(.round)
-        ctx?.setStrokeColor(XB_DARK_TEXT.cgColor)
-        let path = CGMutablePath()
-        
-        // __CGAffineTransformMake(a,b,c,d,tx,ty)
-        // x = ax + cy + tx   y = bx + dy + ty
-        let transform = __CGAffineTransformMake(1, 0, 0, 3, 0, self.height * 0.5)
-        //curX -= xScale
-        let startY = pointYs.first!
-        path.move(to: CGPoint(x:0, y:startY), transform: transform)
-        
-        for i in 1..<pointYs.count {
-            path.addLine(to: CGPoint(x: CGFloat(i)*xScale, y: pointYs[i]), transform: transform)
-        }
-        ctx?.addPath(path)
-        ctx?.strokePath()
-        
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        xScale = width / CGFloat( pointYs.count )
     }
     
     private func setup() {
-        self.backgroundColor = UIColor.clear
         
-        timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.main)
-        timer?.setEventHandler( handler: {
-            self.updateData()
-        })
-        timer?.scheduleRepeating(deadline: .now(), interval: .milliseconds(Int(1000*frequency)))
-        timer?.resume()
+        self.backgroundColor = UIColor.white
         NotificationCenter.default.addObserver(self, selector: #selector(changeDrawingMode(_:)), name: Notification.Name.init(rawValue: XBDrawFrequecyDidChanged), object: nil)
+        
     }
     
     @objc private func changeDrawingMode(_ aNote:Notification) {
-        self.frequency = Double(3 / (aNote.userInfo!["obj"] as! Double))
+        self.duration = (aNote.userInfo!["obj"] as! Double) == 0 ? 0.0 : 50.0 / (aNote.userInfo!["obj"] as! Double)
     }
     
-    @objc private func updateData() {
-        pointYs.append(popYArray[index])
-        index += 1
-        if index == popYArray.count {
-            index = 0
-        }
-        if pointYs.count > popYArray.count {
-            pointYs.removeFirst()
-        }
-        setNeedsDisplay()
+    //MARK: - Draw ECG Graph 
+    
+    func animation4() {
+        
+        let r = CAReplicatorLayer()
+        r.bounds = CGRect(x: 0.0, y: 0.0, width: width, height: height)
+        r.position = center
+        r.backgroundColor = UIColor.gray.cgColor
+        
+        layer.addSublayer(r)
+        
+        let bar = CALayer()
+        bar.bounds = r.bounds
+        bar.position = r.position
+        bar.backgroundColor = UIColor.red.cgColor
+        bar.delegate = self
+        bar.setNeedsDisplay()
+        
+        r.addSublayer(bar)
+        
+        let move = CABasicAnimation(keyPath: "position.x")
+        move.toValue = bar.position.x - width
+        move.duration = self.duration
+        move.repeatCount = Float.infinity
+        bar.add(move, forKey: nil)
+        
+        r.instanceCount = 2
+        r.instanceTransform = CATransform3DMakeTranslation(width, 0.0, 0.0)
+        r.masksToBounds = true
+        
     }
-
+    
+    //MARK: -
+    
+    override func draw(_ layer: CALayer, in ctx: CGContext) {
+        
+        ctx.setLineWidth(2)
+        ctx.setLineJoin(.round)
+        ctx.setStrokeColor(UIColor.black.cgColor)
+        
+        let path = UIBezierPath()
+        
+        let startY = pointYs.first!
+        path.move(to: CGPoint(x:0, y:startY))
+        
+        for i in 1..<pointYs.count {
+            path.addLine(to: CGPoint(x: CGFloat(i)*xScale, y: pointYs[i]))
+        }
+        
+        var t = CGAffineTransform(a: 1, b: 0, c: 0, d: 3, tx: 0, ty: height * 0.5)
+        let cgPath = path.cgPath.copy(using: &t)
+        
+        ctx.addPath(cgPath!)
+        ctx.strokePath()
+        
+    }
+    
+    
 }

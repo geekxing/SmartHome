@@ -11,8 +11,46 @@ import UIKit
 class XBDisplayRealStateView: UIView {
     
     let cellId = "cell"
-    var datas = [#imageLiteral(resourceName: "onBedR"),#imageLiteral(resourceName: "motivateR"),#imageLiteral(resourceName: "nobodyR"),#imageLiteral(resourceName: "motivateR"),#imageLiteral(resourceName: "onBedR"),#imageLiteral(resourceName: "motivateR")]
-    var dataWidth:[CGFloat] = [10.0,40,50,15,110,30]
+    var timer:DispatchSourceTimer?
+    var xScale:CGFloat = 0
+    
+    var time = 0
+    var datas = [UIImage]()
+    var dataWidth = [CGFloat]()
+    var lastEvent = 0
+    var offset:CGFloat = 0.0
+    var now = Date()
+    var halfHour = Date().add(components: [.minute:30])
+    
+    var event:Int = 0 {
+        didSet {
+        
+            begin.text = now.string(format: .custom("hh:mm"))
+            end.text = halfHour.string(format: .custom("hh:mm"))
+            begin.sizeToFit()
+            end.sizeToFit()
+            
+            if let eventType = XBEventType(rawValue: event) {
+                time += 1
+                if dataWidth.count == 0 || lastEvent != event {
+                    dataWidth.append(xScale)
+                    datas.append(XBRealData.image(eventType))
+                } else if lastEvent == event {
+                    dataWidth[dataWidth.count-1] = dataWidth[dataWidth.count-1]+xScale
+                }
+                
+                collection.reloadData()
+                if time == 8 {
+                    collection.contentOffset = CGPoint(x: -(offset+10*xScale), y: 0)
+                    time = 0
+                }
+                lastEvent = event
+            }
+            
+            print("\(event)")
+        }
+    }
+    
     var collection:UICollectionView!
     var timeline:UIImageView!
     var begin:UILabel!
@@ -51,19 +89,40 @@ class XBDisplayRealStateView: UIView {
         
         begin = UILabel()
         begin.font = UIFontSize(size: 14)
-        begin.text = "21:00"
+        begin.text = "--:--"
         begin.sizeToFit()
         addSubview(begin)
         
         end = UILabel()
         end.font = UIFontSize(size: 14)
-        end.text = "22:00"
+        end.text = "--:--"
         end.sizeToFit()
         addSubview(end)
+        
+        setupTimer()
+    }
+    
+    private func setupTimer()  {
+        timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.main)
+        timer?.setEventHandler( handler: {
+            self.refreshTimeRange()
+        })
+        timer?.scheduleRepeating(deadline: .now(), interval: .seconds(30*60))
+        timer?.resume()
+    }
+    
+    private func refreshTimeRange() {
+        
+        now = Date()
+        halfHour = Date().add(components: [.minute:30])
+        datas.removeAll()
+        dataWidth.removeAll()
+        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        xScale = width / CGFloat(180) // 30 * 6
         collection.frame = CGRect(x: 0, y: 0, width: width, height: height * 2/3)
         timeline.frame = CGRect(x: 0, y: collection.bottom + 12, width: width, height: timeline.height)
         begin.left = timeline.left
@@ -81,12 +140,18 @@ extension XBDisplayRealStateView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        for view in cell.contentView.subviews {
+            view.removeFromSuperview()
+        }
+        
         let imageView = UIImageView(frame: cell.bounds)
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.image = datas[indexPath.row]
-        cell.addSubview(imageView)
+        cell.contentView.addSubview(imageView)
+        
         return cell
     }
     

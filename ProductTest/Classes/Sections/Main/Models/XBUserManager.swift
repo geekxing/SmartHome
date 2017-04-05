@@ -113,6 +113,8 @@ class XBUserManager: NSObject {
                         value = "\(month)/\(day)/\(year)"                        
                     }
                 }
+            } else if key == "image" {
+                value = subJson.rawString()!
             } else {
                 value = subJson.stringValue
             }
@@ -131,7 +133,7 @@ class XBUserManager: NSObject {
         }
     }
     
-    func avatarImageForUser(uid:String) -> UIImage {
+    func placeholderForUser(uid:String) -> UIImage {
         return user(uid: uid)?.gender == 1 ? #imageLiteral(resourceName: "avatar_male") : #imageLiteral(resourceName: "avatar_female")
     }
     

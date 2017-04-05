@@ -10,6 +10,13 @@ import UIKit
 
 class XBRealDetailTableCell: XBRealDataTableCell {
     
+    override var event:Int {
+        didSet {
+           realtimeState.event = event
+        }
+    }
+    
+    var offline:XBSquareButton!
     var onBed:XBSquareButton!
     var motivate:XBSquareButton!
     var noBody:XBSquareButton!
@@ -26,13 +33,15 @@ class XBRealDetailTableCell: XBRealDataTableCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let margin = CGFloat(30)
+        let margin = CGFloat(20)
         noBody.top = margin
         noBody.right = width - margin
         motivate.top = margin
-        motivate.right = noBody.right - UIRate*70
+        motivate.right = noBody.right - UIRate*50
         onBed.top = margin
-        onBed.right = motivate.right - UIRate*70
+        onBed.right = motivate.right - UIRate*50
+        offline.top = margin
+        offline.right = onBed.right - UIRate*50
         
         realtimeState.left = UIRate * 33
         realtimeState.top = onBed.bottom + 30
@@ -43,6 +52,7 @@ class XBRealDetailTableCell: XBRealDataTableCell {
     override func setup() {
         super.setup()
         self.shouldEnableEcgDisplay = false
+        offline = self.pileButton(#imageLiteral(resourceName: "dot2"), title: "离线")
         onBed = self.pileButton(#imageLiteral(resourceName: "onBed"), title: "在床")
         motivate = self.pileButton(#imageLiteral(resourceName: "motivate"), title: "体动")
         noBody = self.pileButton(#imageLiteral(resourceName: "nobody"), title: "无人")

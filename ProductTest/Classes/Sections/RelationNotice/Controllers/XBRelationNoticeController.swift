@@ -13,8 +13,6 @@ import Toast_Swift
 
 class XBRelationNoticeController: XBBaseViewController {
     
-    let token = XBLoginManager.shared.currentLoginData!.token
-    
     override var naviBackgroundImage: UIImage? {
         return UIImage(named: "RectHeader")
     }

@@ -12,6 +12,8 @@ import Toast_Swift
 import SVProgressHUD
 import SwiftyJSON
 
+let token = XBLoginManager.shared.currentLoginData!.token
+
 class XBMainViewController: XBBaseViewController {
     
     override var naviBackgroundImage: UIImage? {
@@ -79,9 +81,7 @@ class XBMainViewController: XBBaseViewController {
         let uid = notification.object as! String
         let currentAccount = XBUserManager.shared.currentAccount()!
         guard currentAccount == uid else { return }
-        if let user = XBUserManager.shared.user(uid: uid) {
-            mainView.currentUser = user
-        }
+        mainView.currentUser = XBUserManager.shared.user(uid: uid)!
     }
     
     //MARK: - Private

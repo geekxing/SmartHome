@@ -16,7 +16,6 @@ class XBConcernMeViewController: UIViewController {
     
     static let reuseHeaderId = "reuseHeaderId"
     
-    let token = XBLoginManager.shared.currentLoginData!.token
     var loginUser: XBUser? {
         return XBUserManager.shared.loginUser()
     }

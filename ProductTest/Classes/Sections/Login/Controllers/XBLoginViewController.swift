@@ -12,7 +12,8 @@ import IQKeyboardManagerSwift
 import SVProgressHUD
 import RealmSwift
 
-class XBLoginViewController: UIViewController,UITextFieldDelegate, XBRegisterViewControllerDelegate {
+class XBLoginViewController: UIViewController, UITextFieldDelegate, XBRegisterViewControllerDelegate {
+    
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!

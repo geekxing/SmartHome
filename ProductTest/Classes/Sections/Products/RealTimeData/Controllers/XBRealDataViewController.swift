@@ -7,16 +7,23 @@
 //
 
 import UIKit
+import SVProgressHUD
+import SwiftyJSON
 
 let XBDrawFrequecyDidChanged = "kXBDrawFrequecyDidChanged"
 
 class XBRealDataViewController: XBBaseViewController {
     
+    static var netError:Int = 0
     static let dataCellId = "dataCellId"
     static let detailCellId = "detailCellId"
     
-    var heartRateValue = 0
-    var breathRateValue = 0
+    var realData:XBRealData? {
+        didSet {
+            
+        }
+    }
+    
     private var timer:Timer?
     
     override var naviBackgroundImage: UIImage? {
@@ -35,6 +42,7 @@ class XBRealDataViewController: XBBaseViewController {
         view.backgroundColor = UIColor.white
         setupTableView()
         makeData()
+        self.timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(makeData), userInfo: nil, repeats: true)
     }
     
     deinit {
@@ -56,18 +64,43 @@ class XBRealDataViewController: XBBaseViewController {
         view.addSubview(tableView)
     }
     
-    private func makeData() {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(500), execute: {
-            self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.updateData), userInfo: nil, repeats: true)
-            self.updateData()
+    @objc private func makeData() {
+        
+        let params:Dictionary = ["sn":"b0b448f9fa58"]
+        
+        XBNetworking.share.postWithPath(path: REALDATA, paras: params,
+                                        success: {[weak self]result in
+                                            XBRealDataViewController.netError = 0
+                                            let json:JSON = result as! JSON
+                                            debugPrint(json)
+                                            let message = json[Message].stringValue
+                                            if json[Code].intValue == 1 {
+                                                let real = XBRealData()
+                                                real.add(json[XBData])
+                                                self?.realData = real
+                                                self?.updateComplete()
+                                            } else {
+                                                XBRealDataViewController.netError += 1
+                                                if XBRealDataViewController.netError == 3 {
+                                                    SVProgressHUD.showError(withStatus: message)
+                                                }
+                                            }
+            }, failure: { (error) in
+                XBRealDataViewController.netError += 1
+                if XBRealDataViewController.netError == 3 {
+                    SVProgressHUD.showError(withStatus: error.localizedDescription)
+                }
         })
+    
     }
     
-    @objc private func updateData() {
-        self.heartRateValue = Int(arc4random_uniform(51))+50
-        self.breathRateValue =  Int(arc4random_uniform(30))
-        NotificationCenter.default.post(name: Notification.Name(rawValue: XBDrawFrequecyDidChanged), object: nil, userInfo:["obj":Double(heartRateValue)])
-        self.tableView.reloadData()
+    func updateComplete() {
+        
+        if self.realData != nil {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: XBDrawFrequecyDidChanged), object: nil, userInfo:["obj":Double(realData!.heart)])
+            self.tableView.reloadData()
+        }
+        
     }
     
     //MARK: - misc
@@ -100,15 +133,22 @@ extension XBRealDataViewController: UITableViewDataSource {
         if indexPath.row == 0 {
             cell.imageView?.image = #imageLiteral(resourceName: "heart")
             cell.textLabel?.text = "心率"
-            cell.valueLabel.attributedText = self.makeScoreAttributeString(score: "\(self.heartRateValue)", text: "次/分")
             cell.shouldEnableEcgDisplay = true
         } else if indexPath.row == 1 {
             cell.imageView?.image = #imageLiteral(resourceName: "breath-1")
             cell.textLabel?.text = "呼吸率"
-            cell.valueLabel.attributedText = self.makeScoreAttributeString(score: "\(self.breathRateValue)", text: "次/分")
         } else {
             cell.imageView?.image = #imageLiteral(resourceName: "sleep")
             cell.textLabel?.text = "状态"
+        }
+        if self.realData != nil {
+            if indexPath.row == 0 {
+                cell.valueLabel.attributedText = self.makeScoreAttributeString(score: "\(realData!.heart)", text: "次/分")
+            } else if indexPath.row == 1 {
+                cell.valueLabel.attributedText = self.makeScoreAttributeString(score: "\(realData!.breath)", text: "次/分")
+            } else {
+                cell.event = realData!.event
+            }
         }
         
         return cell

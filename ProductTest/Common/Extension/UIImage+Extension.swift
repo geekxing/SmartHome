@@ -26,11 +26,11 @@ extension UIImage {
     }
     
     //获取圆形图片
-    func circleImage() -> UIImage {
+    func circleImage() -> UIImage? {
         return self.circleImage(to: self.size)
     }
     
-    func circleImage(to size:CGSize) -> UIImage {
+    func circleImage(to size:CGSize) -> UIImage? {
         UIGraphicsBeginImageContext(size)
         let ctx = UIGraphicsGetCurrentContext()
         let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
@@ -39,7 +39,7 @@ extension UIImage {
         self.draw(in: rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return newImage!
+        return newImage
     }
     
     ///对指定图片进行拉伸
@@ -61,7 +61,7 @@ extension UIImage {
      *
      *  return 压缩后图片的二进制
      */
-    func compressImage(image: UIImage, maxLength: Int) -> UIImage? {
+    func compressImage(maxLength: Int) -> Data? {
         
         let newSize = self.imageSize(with: CGFloat(maxLength))
         let newImage = self.resizeImage(newSize: newSize)
@@ -69,12 +69,13 @@ extension UIImage {
         var compress:CGFloat = 0.9
         var data = UIImageJPEGRepresentation(newImage, compress)
         
-        while data!.count > maxLength && compress > 0.01 {
-            compress -= 0.02
+        let maxSize = maxLength * 1024
+        while data!.count > maxSize && compress > 0.01 {
+            compress -= 0.1
             data = UIImageJPEGRepresentation(newImage, compress)
         }
         
-        return UIImage(data: data!)
+        return data
     }
     
     /**
@@ -85,7 +86,7 @@ extension UIImage {
      *
      *  return 获得等比例的size
      */
-    func  imageSize(with imageLength: CGFloat) -> CGSize {
+    func imageSize(with imageLength: CGFloat) -> CGSize {
         
         var newWidth:CGFloat = 0.0
         var newHeight:CGFloat = 0.0
@@ -151,9 +152,25 @@ extension UIImage {
     /// base64编码数据字符串
     ///
     /// - Returns: 编码字符串
-    func base64String() -> String? {
-        let data = UIImagePNGRepresentation(self)?.base64EncodedData(options: .lineLength64Characters)
-        return data?.base64EncodedString()
+    class func base64String(_ data:Data) -> String? {
+        return data.base64EncodedString(options: .lineLength64Characters)
+    }
+    
+    /// base64解码获取图片
+    ///
+    /// - Returns: 图片
+    class func base64DecodeToImage(_ base64:String) -> UIImage? {
+        
+        var image:UIImage?
+        
+        let decodeData = Data(base64Encoded: base64, options: .ignoreUnknownCharacters)
+        try! decodeData?.write(to: URL(fileURLWithPath: "/Users/laixiaobing/Desktop/211.png"))
+        
+        if decodeData != nil {
+            image = UIImage(data: decodeData!)
+        }
+        
+        return image
     }
     
 }

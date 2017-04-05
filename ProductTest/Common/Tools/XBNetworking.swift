@@ -9,6 +9,9 @@
 import UIKit
 import SwiftyJSON
 import SVProgressHUD
+import Alamofire
+
+public typealias Parameters = [String: Any]
 
 class XBNetworking: NSObject {
     static let share = XBNetworking()
@@ -64,8 +67,6 @@ class XBNetworking: NSObject {
     // MARK:- POST
     func postWithPath(path: String,paras: Dictionary<String,Any>?,success: @escaping ((_ result: Any) -> ()),failure: @escaping ((_ error: Error) -> ())) {
         
-        SVProgressHUD.show()
-        
         var i = 0
         var address: String = ""
         
@@ -91,8 +92,6 @@ class XBNetworking: NSObject {
         request.httpBody = address.data(using: .utf8)
         let dataTask = session.dataTask(with: request) { (data, respond, error) in
             
-            SVProgressHUD.dismiss()
-            
             if let data = data {
                 let json = JSON(data: data)
                 DispatchQueue.main.async(execute: {
@@ -107,6 +106,46 @@ class XBNetworking: NSObject {
             }
         }
         dataTask.resume()
+    }
+    
+    
+    func upload(_ images:[UIImage], url:String, maxLength:CGFloat, params:Parameters, success : @escaping (_ response : Parameters)->(), failture : @escaping (_ error : Error)->()) {
+        
+        let headers = ["content-type":"multipart/form-data"]
+        
+        Alamofire.upload(
+            multipartFormData: { multipartFormData in
+                
+                //遍历字典
+                for (key, value) in params {
+                    multipartFormData.append((value as! String).data(using: .utf8)!, withName: key)
+                }
+                
+                for i in 0..<images.count {
+                    let data = images[i].compressImage(maxLength: 200)!
+                    try! data.write(to: URL(fileURLWithPath: "/Users/laixiaobing/Desktop/211.png"))
+                    multipartFormData.append(data, withName: "head", fileName: "image\(i)", mimeType: "image/jpeg")
+                }
+        },
+            to: url,
+            headers: headers,
+            encodingCompletion: { encodingResult in
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    upload.responseJSON { response in
+                        if let value = response.result.value as? Parameters {
+                            success(value)
+                            let json = JSON(value)
+                            debugPrint(json)
+                        }
+                    }
+                case .failure(let encodingError):
+                    debugPrint(encodingError)
+                    failture(encodingError)
+                }
+        }
+        )
+        
     }
 
 }
