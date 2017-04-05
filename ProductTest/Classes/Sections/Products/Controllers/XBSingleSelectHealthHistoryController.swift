@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SVProgressHUD
+import SwiftyJSON
 
 class XBSingleSelectHealthHistoryController: UIViewController {
     
@@ -100,6 +102,24 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     //MARK: - Fake Data
     private func makeData() {
         self.group.removeAll()
+        
+        let time = headerView.endDate.string(format: .custom("MM/dd/yyyy"))
+        let params:Dictionary = ["token":token,
+                                 "time":time]
+        
+        XBNetworking.share.postWithPath(path: DEVICE_INFO, paras: params,
+                                        success: {[weak self]result in
+                                            
+                                            let json:JSON = result as! JSON
+                                            let message = json[Message].stringValue
+                                            if json[Code].intValue == 1 {
+                                            } else {
+                                                SVProgressHUD.showError(withStatus: message)
+                                            }
+            }, failure: { (error) in
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+        })
+        
         for i in 0 ... 10 {
             let cmps = XBOperateUtils.shared.components(for: headerView.endDate.addingTimeInterval(Double(-i*24*3600)))
             let sleepData = XBSleepData(date: "\(cmps.year)/\(cmps.month)/\(cmps.day)", time: "8", score: "90")

@@ -25,7 +25,6 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     @IBOutlet weak var birthField: XBTextField!
     @IBOutlet weak var birthButton: UIButton!
     @IBOutlet weak var genderField: XBTextField!
-    @IBOutlet weak var genderButton: XBTextField!
     @IBOutlet weak var phoneNumberField: XBTextField!
     @IBOutlet weak var addressField: XBTextField!
     @IBOutlet weak var passwordField: XBTextField!
@@ -39,7 +38,6 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     var loginUser = XBUser()
     private var fullFilled:Bool = true
     private var photoManager:XBPhotoPickerManager?
-    private var avatarImage:UIImage?
     
     lazy var textfields:[UITextField]? = {
         return []
@@ -107,8 +105,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     }
     
     private func setupAvatar() {
-        let placeholder = XBUserManager.shared.avatarImageForUser(uid: loginUser.email)
-        avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + loginUser.image), placeholderImage: placeholder.circleImage())
+        avatarView.setHeader(url: loginUser.image, uid: loginUser.email)
         avatarView.isUserInteractionEnabled = true
         let tapAvatarGR = UITapGestureRecognizer.init(target: self, action: #selector(pickAvatar(_:)))
         avatarView.addGestureRecognizer(tapAvatarGR)
@@ -170,42 +167,36 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
         }
         
         let gender = "\(XBUserManager.integerForGender(genderField.text!))"
-        let params:Dictionary = [
+        let params:Parameters = [
             "email":usernameTextField.text!,
             "password":passwordField.text!,
             "firstName":firstnameField.text!,
             "middleName":middleNameField.text ?? "",
             "lastName":lastnameField.text!,
-            "birthDay":birthField.text!,
+            "birth":birthField.text!,
             "gender":gender,
             "mphone":phoneNumberField.text!,
             "address":addressField.text ?? "",
-        ] as [String : Any]
-    
+            "token":token
+        ]
+        
         SVProgressHUD.show()
-        XBNetworking.share.postWithPath(path: MODIFY, paras: params,
-                                        success: {[weak self]result in
-                                            let json:JSON = result as! JSON
-                                            debugPrint(json)
-                                            var message = json[Message].stringValue
-                                            if json[Code].intValue == 1 {
-                                                SVProgressHUD.showSuccess(withStatus: message)
-                                                self?.back(self!.backButton)
-                                            } else {
-                                                message = message == "" ? "请求失败" : message
-                                                SVProgressHUD.showError(withStatus: message)
-                                            }
-            }, failure: { (error) in
-                SVProgressHUD.showError(withStatus: error.localizedDescription)
+        XBNetworking.share.upload([avatarView.image!],
+                                  url: MODIFY,
+                                  maxLength: 100,
+                                  params: params,
+                                  success: { (result) in
+                                    
+                                    print(result)
+                                    XBUserManager.shared.fetchUserFromServer(token: token,
+                                                                             handler: { (user, error) in
+                                               self.back(self.backButton)
+                                    })
+                                    SVProgressHUD.showSuccess(withStatus: "success")
+                                    
+                                    
         })
-        
-    }
-    
-    func checkUserInfo() {
-        
-        XBOperateUtils.shared.login(email: usernameTextField.text!, pwd: passwordField.text!, success: {[weak self] (result) in
-            self!.navigationController!.popViewController(animated: true)
-        }) { (error) in
+        { (error) in
             SVProgressHUD.showError(withStatus: error.localizedDescription)
         }
         
@@ -284,10 +275,9 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     
     //MARK: - XBPhotoPickerManagerDelegate
     func imagePickerDidFinishPickImage(image: UIImage) {
-        avatarImage = image.resizeImage(newSize: avatarView.frame.size)
-        avatarView.image = avatarImage?.circleImage()
+        
+        avatarView.image = image
     }
-    
     
 }
 

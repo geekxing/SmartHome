@@ -29,4 +29,8 @@ let GET_CONCERNME = IP1+"login/getConcernMe"
 let GET_MYCONCERN = IP1+"login/getMyConcern"
 
 let DEVICE_ADD = IP2+"device/add"
+let DEVICE_DATA = IP2+"device/getData"
+let DEVICE_INFO = IP2+"device/getInfo"
+
+let REALDATA = IP2+"api/realdata"
 

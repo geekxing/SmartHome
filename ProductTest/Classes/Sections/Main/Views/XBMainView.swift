@@ -28,7 +28,7 @@ class XBMainView: UIView {
     var nameLabel:UILabel!
     var currentUser:XBUser = XBUser() {
         didSet {
-            avatarView.sd_setImage(with: URL.init(string: XBImagePrefix + self.currentUser.image), placeholderImage: XBUserManager.shared.avatarImageForUser(uid: currentUser.email))
+            avatarView.setHeader(url: currentUser.image, uid: currentUser.email)
             nameLabel.text = currentUser.Name()
             nameLabel.sizeToFit()
         }

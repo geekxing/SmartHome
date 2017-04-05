@@ -18,7 +18,6 @@
                 <outlet property="birthButton" destination="A8o-5R-JGH" id="Mn4-YG-VTl"/>
                 <outlet property="birthField" destination="Q5e-an-hPq" id="TWy-KS-9Sx"/>
                 <outlet property="firstnameField" destination="yaT-cw-9UX" id="bZv-W7-Mnk"/>
-                <outlet property="genderButton" destination="dwz-TA-HSX" id="4BL-xE-bqT"/>
                 <outlet property="genderField" destination="dwz-TA-HSX" id="LjU-Eb-DQO"/>
                 <outlet property="lastnameField" destination="TZj-IG-w8I" id="kis-3G-992"/>
                 <outlet property="middleNameField" destination="f9y-Bp-kWY" id="hEW-gb-Pau"/>

@@ -18,7 +18,6 @@ class XBApplyConcernViewController: UIViewController {
     var searchBar:XBRoundedTextField!
     var dataArray = [XBRelationConcernModel]()
     var keyword:String = ""
-    let token = XBLoginManager.shared.currentLoginData!.token
     
     private var otherEmail:String?
     

@@ -10,7 +10,7 @@ import UIKit
 
 class XBRealDataTableCell: UITableViewCell {
     
-    var heartRateValue:Int = 0
+    var event:Int = 0
     var shouldEnableEcgDisplay = false {
         didSet {
             contentView.addSubview(self.ecgView)
@@ -29,6 +29,7 @@ class XBRealDataTableCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
     
     deinit {
