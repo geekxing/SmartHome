@@ -23,8 +23,7 @@ class XBMyConcernViewController: XBConcernMeViewController {
         tableView.register(XBMyConcernCell.self, forCellReuseIdentifier: MyConcern)
     }
     
-    
-    //MARK: - Operations
+    //MARK: - Data
     override func loadData() {
         if self.parent!.isKind(of: XBRelationNoticeController.self) {
             let parentVc = self.parent as! XBRelationNoticeController
@@ -35,9 +34,7 @@ class XBMyConcernViewController: XBConcernMeViewController {
                         let array = json[XBData].arrayValue
                         var dataArray = [XBRelationConcernModel]()
                         for userData in array {
-                            let email = userData["email"].stringValue
-                            XBUserManager.shared.addUser(userJson: userData)
-                            let user = XBUserManager.shared.user(uid: email)
+                            let user = XBUserManager.shared.user(userData)
                             let model = XBRelationConcernModel()
                             model.user = user
                             model.tag = MyConcern
@@ -50,6 +47,31 @@ class XBMyConcernViewController: XBConcernMeViewController {
                 }
             })
         }
+    }
+    
+    //MARK: -
+    fileprivate func configCell(_ cell:UITableViewCell, idx:IndexPath) {
+        
+        let cell = cell as! XBMyConcernCell
+        cell.clickArrowButton = {[weak self] in
+            self?.tableView.reloadRows(at: [idx], with: .automatic)
+        }
+        cell.clickCancelButton = {[weak self] user in
+            self?.cancelAlert(user.email!, type:"myConcern")
+        }
+        cell.checkRealTime = {[weak self] (user,_) in
+            
+            let realData = XBRealDataViewController(user.Device().first)
+            self!.navigationController?.pushViewController(realData, animated: true)
+            
+        }
+        cell.checkHealth = {[weak self] (user,_) in
+            
+            let report = XBHealthCareViewController(user, type: .other)
+            self!.navigationController?.pushViewController(report, animated: true)
+            
+        }
+        
     }
 
 }
@@ -68,18 +90,12 @@ extension XBMyConcernViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: MyConcern) as! XBMyConcernCell
+        
         let model:XBRelationConcernModel!
         model = myConcern[indexPath.row]
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: MyConcern) as! XBMyConcernCell
-        cell.clickArrowButton = {[weak self] in
-            self?.tableView.reloadRows(at: [indexPath], with: .automatic)
-        }
-        cell.clickCancelButton = {[weak self] user in
-            self?.cancelAlert(user.email!, type:"myConcern")
-        }
-        
         cell.model = model
+        configCell(cell, idx: indexPath)
         
         return cell
     }

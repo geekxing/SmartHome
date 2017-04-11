@@ -25,4 +25,17 @@ class XBProductModel: NSObject {
         self.level = level
         self.deadline = deadline
     }
+    
+    override var debugDescription: String {
+        
+        var des = ""
+        for str in XBProductModel.properties_name() {
+            let value = (self.value(forKey: str) as? String) ?? ""
+            let newStr = str + ":" + value + "\n"
+            des += newStr
+        }
+        return des
+        
+    }
+    
 }

@@ -37,6 +37,7 @@ class XBRealDataTableCell: UITableViewCell {
     }
     
     func setup() {
+        
         self.selectionStyle = .none
         self.textLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         self.textLabel?.textColor = XB_DARK_TEXT
@@ -47,9 +48,11 @@ class XBRealDataTableCell: UITableViewCell {
         valueLabel.textAlignment = .center
         contentView.addSubview(shadowLineview)
         contentView.addSubview(valueLabel)
+        
     }
     
     override func layoutSubviews() {
+        
         super.layoutSubviews()
         self.imageView?.sizeToFit()
         self.imageView?.left = UIRate * 33
@@ -74,6 +77,7 @@ class XBRealDataTableCell: UITableViewCell {
         shadowLineview.width = self.width
         shadowLineview.bottom = self.height
         shadowLineview.left = 0
+        
     }
 
 }

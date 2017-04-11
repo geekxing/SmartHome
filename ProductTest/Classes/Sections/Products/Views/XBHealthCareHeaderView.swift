@@ -101,6 +101,7 @@ class XBHealthCareHeaderView: UIView {
             addSubview(selectViewA!)
             selectViewA?.didPickDateBlock = { [weak self] date in
                 self?.beginDate = date
+                self?.selectViewB?.beginDate = date
             }
             
             toLabel.text = "至"
@@ -110,6 +111,7 @@ class XBHealthCareHeaderView: UIView {
             addSubview(toLabel)
             
             selectViewB = XBDateSelectView(frame: CGRect(x: 0, y: selectViewA!.bottom+40, width: self.width, height: 33.0))
+            selectViewB?.beginDate = beginDate
             selectViewB?.date = endDate
             selectViewB?.labelTextColor = UIColorHex("ffffff", 1.0)
             addSubview(selectViewB!)

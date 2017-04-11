@@ -8,6 +8,8 @@
 
 import UIKit
 import SwiftDate
+import SVProgressHUD
+import SwiftyJSON
 
 class XBReportViewController: XBBaseViewController {
     
@@ -28,11 +30,9 @@ class XBReportViewController: XBBaseViewController {
     @IBOutlet weak var totalSleepView: XBSliderView!
     @IBOutlet weak var totalSleepLabel: UILabel!
     
-    var reportDate = Date()
+    var model:XBSleepData?
     var timer:Timer?
     var triggerTime = 0
-    
-    let sleepScore = arc4random_uniform(101)
     
     override var naviBackgroundImage: UIImage? {
         return UIImage(named: "RectHeader")
@@ -46,6 +46,26 @@ class XBReportViewController: XBBaseViewController {
         super.viewDidLoad()
         
         self.automaticallyAdjustsScrollViewInsets = false
+        setupTopPart()
+        setupBottomPart()
+        scrollView.contentSize = CGSize(width: view.width, height: totalSleepView.bottom + 50)
+        setValueForUI()
+    
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
+    }
+    
+    func beginAnimate() {
+        timer = Timer.scheduledTimer(timeInterval: 1/60, target: self, selector: #selector(changeProgressValue), userInfo: nil, repeats: true)
+    }
+    
+    
+    //MARK: - Setup UI
+    
+    private func setupTopPart() {
         
         self.dateLabel.font = UIFont.boldSystemFont(ofSize: 18*UIRate)
         self.ringView.strokeWidth = 10*UIRate
@@ -56,6 +76,10 @@ class XBReportViewController: XBBaseViewController {
         breathButton.setTitle("平均呼吸率", for: .normal)
         fanshenButton.setTitle("翻身次数", for: .normal)
         qiyeButton.setTitle("起夜次数", for: .normal)
+        
+    }
+    
+    private func setupBottomPart() {
         
         self.pileRoundButton(btn: sleepButton, text: "上床")
         self.pileRoundButton(btn: getupButton, text: "起床")
@@ -87,63 +111,8 @@ class XBReportViewController: XBBaseViewController {
                             rightColor: UIColor.white,
                             dotImage: #imageLiteral(resourceName: "dot4"),
                             tagText: "总长")
+
         
-        scrollView.contentSize = CGSize(width: view.width, height: totalSleepView.bottom + 50)
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(500) , execute: {
-            
-            self.dateLabel.text = "检测日期：\(self.reportDate.month)月\(self.reportDate.day)日"
-            self.dateLabel.sizeToFit()
-            self.ringView.maxValue = CGFloat(self.sleepScore)/100.0
-            self.ringView.increment = self.ringView.maxValue/60
-            
-            self.heatRateButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"70", text: "次/分")
-            self.breathButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"17", text: "次/分")
-            self.fanshenButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"15", text: "次")
-            self.qiyeButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"8", text: "次")
-            
-            let gotoBed = try! "2017/03/10/21:20".date(format: .custom("yyyy/MM/dd/hh:mm")).absoluteDate
-            let getup = try! "2017/03/11/6:30".date(format: .custom("yyyy/MM/dd/hh:mm")).absoluteDate
-            let sleep = try! "2017/03/10/22:30".date(format: .custom("yyyy/MM/dd/hh:mm")).absoluteDate
-            let timeGap = DateTimeInterval(start: gotoBed, end: getup).duration ///上床->起床
-            let fallSleepGap = DateTimeInterval(start: gotoBed, end: sleep).duration ///上床->睡眠
-            
-            self.sleepTimeLineView.maxValue = CGFloat(fallSleepGap / timeGap)
-            self.sleepTimeLineView.increment = self.sleepTimeLineView.maxValue/60
-            self.sleepTimeLineView.thumbnailButton.setTitle("\(sleep.hour):\(sleep.minute)", for: .normal)
-            
-            let gap = timeGap-fallSleepGap
-            let timeCmp = XBOperateUtils.timeComps(gap)
-            self.totalSleepView.maxValue = 1
-            self.totalSleepView.increment = self.totalSleepView.maxValue/60
-            self.totalSleepLabel.text = "总睡眠时长：\(timeCmp.hour)小时\(timeCmp.minute)分"
-            self.totalSleepLabel.sizeToFit()
-            
-            let timeCmp2 = XBOperateUtils.timeComps(gap*0.8)
-            self.deepSleepView.maxValue = 0.8
-            self.deepSleepView.increment = self.deepSleepView.maxValue/60
-            self.deepSleepLabel.text = "深度睡眠时长：\(timeCmp2.hour)小时\(timeCmp2.minute)分"
-            self.deepSleepLabel.sizeToFit()
-            
-            let timeCmp3 = XBOperateUtils.timeComps(gap*0.2)
-            self.sleepView.maxValue = 0.2
-            self.sleepView.increment = self.sleepView.maxValue/60
-            self.sleepLabel.text = "浅度睡眠时长：\(timeCmp3.hour)小时\(timeCmp3.minute)分"
-            self.sleepLabel.sizeToFit()
-            
-            self.sleepButton.setTitle("\(gotoBed.hour):\(gotoBed.minute)", for: .normal)
-            self.getupButton.setTitle("\(getup.hour):\(getup.minute)", for: .normal)
-            
-            self.beginAnimate()
-        })
-    }
-    
-    deinit {
-        timer?.invalidate()
-    }
-    
-    func beginAnimate() {
-        timer = Timer.scheduledTimer(timeInterval: 1/60, target: self, selector: #selector(changeProgressValue), userInfo: nil, repeats: true)
     }
     
     @objc private func changeProgressValue() {
@@ -169,7 +138,7 @@ class XBReportViewController: XBBaseViewController {
         btn.subTitleLabel.centerY = sleepButton.imageView!.centerY
     }
     
-    func pileSliderView(slider:XBSliderView, width:CGFloat, leftColor:UIColor, rightColor:UIColor, dotImage:UIImage, tagText:String) {
+    private func pileSliderView(slider:XBSliderView, width:CGFloat, leftColor:UIColor, rightColor:UIColor, dotImage:UIImage, tagText:String) {
         slider.trackWidth = width
         slider.rightTrackColor = rightColor
         slider.leftTrackColor = leftColor
@@ -191,5 +160,69 @@ class XBReportViewController: XBBaseViewController {
         scoreAttri.append(textAttri)
         return scoreAttri
     }
+    
+    
+    //MARK: - Setter
+    
+    func setValueForUI() {
+        
+        if let model = self.model {
+            
+            let date = Date(timeIntervalSince1970: model.date)
+            self.dateLabel.text = "检测日期：\(date.month)月\(date.day)日"
+            self.dateLabel.sizeToFit()
+            self.ringView.maxValue = CGFloat(model.score)/100.0
+            self.ringView.increment = self.ringView.maxValue/60
+            
+            self.heatRateButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.avgHeart)", text: "次/分")
+            self.breathButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.avgBreath)", text: "次/分")
+            self.fanshenButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.turnNum)", text: "次")
+            self.qiyeButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.outNum)", text: "次")
+            
+            let gotoBed = Date(timeIntervalSince1970: model.goToBed)
+            let getup = Date(timeIntervalSince1970: model.outOfBed)
+            let sleep = Date(timeIntervalSince1970: model.sleepStart)
+            let timeGap = model.outOfBed - model.goToBed ///上床->起床
+            let fallSleepGap = model.sleepStart - model.goToBed ///上床->睡眠
+            
+            if timeGap != 0 {
+                self.sleepTimeLineView.maxValue = CGFloat(fallSleepGap / timeGap)
+                self.sleepTimeLineView.increment = self.sleepTimeLineView.maxValue/60
+                self.sleepTimeLineView.thumbnailButton.setTitle("\(sleep.hour):\(sleep.minute)", for: .normal)
+            }
+            
+            self.sleepButton.setTitle("\(gotoBed.hour):\(gotoBed.minute)", for: .normal)
+            self.getupButton.setTitle("\(getup.hour):\(getup.minute)", for: .normal)
+            
+            let gap = model.deepSleepTime+model.lightSleepTime
+            if gap != 0 {
+                
+                let timeCmp = XBOperateUtils.timeComps(gap)
+                self.totalSleepView.maxValue = 1
+                self.totalSleepView.increment = self.totalSleepView.maxValue/60
+                self.totalSleepLabel.text = "总睡眠时长：\(timeCmp.hour)小时\(timeCmp.minute)分"
+                self.totalSleepLabel.sizeToFit()
+                
+                let timeCmp2 = XBOperateUtils.timeComps(model.deepSleepTime)
+                self.deepSleepView.maxValue = CGFloat(model.deepSleepTime / gap)
+                self.deepSleepView.increment = self.deepSleepView.maxValue/60
+                self.deepSleepLabel.text = "深度睡眠时长：\(timeCmp2.hour)小时\(timeCmp2.minute)分"
+                self.deepSleepLabel.sizeToFit()
+                
+                let timeCmp3 = XBOperateUtils.timeComps(model.lightSleepTime)
+                self.sleepView.maxValue = CGFloat(model.lightSleepTime / gap)
+                self.sleepView.increment = self.sleepView.maxValue/60
+                self.sleepLabel.text = "浅度睡眠时长：\(timeCmp3.hour)小时\(timeCmp3.minute)分"
+                self.sleepLabel.sizeToFit()
+                
+            }
+            
+            self.beginAnimate()
+            
+        }
+        
+        
+    }
+    
 
 }

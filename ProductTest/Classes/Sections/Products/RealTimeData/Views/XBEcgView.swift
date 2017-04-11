@@ -10,14 +10,16 @@ import UIKit
 
 class XBEcgView: UIView {
     
-    var duration:CFTimeInterval = 0.25 {
+    var ecgLine:CALayer?
+    
+    var duration:CFTimeInterval = 1.0 {
         didSet {
-            animation4()
+            animation()
         }
     }
     
     let pointYs:[CGFloat] =
-        [0,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,0]
+        [0,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,0,2,-10,0,-2,5,-8]
     
     var xScale:CGFloat = 0
     
@@ -38,6 +40,9 @@ class XBEcgView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        if xScale == 0 {
+            drawLayer()
+        }
         xScale = width / CGFloat( pointYs.count )
     }
     
@@ -49,38 +54,47 @@ class XBEcgView: UIView {
     }
     
     @objc private func changeDrawingMode(_ aNote:Notification) {
-        self.duration = (aNote.userInfo!["obj"] as! Double) == 0 ? 0.0 : 50.0 / (aNote.userInfo!["obj"] as! Double)
+        self.duration = (aNote.userInfo!["obj"] as! Double) == 0 ? 0.0 : 140.0 / (aNote.userInfo!["obj"] as! Double)
     }
     
     //MARK: - Draw ECG Graph 
     
-    func animation4() {
+    func drawLayer() {
         
         let r = CAReplicatorLayer()
         r.bounds = CGRect(x: 0.0, y: 0.0, width: width, height: height)
-        r.position = center
-        r.backgroundColor = UIColor.gray.cgColor
+        r.position = CGPoint(x: width / 2, y: height / 2)
         
-        layer.addSublayer(r)
+        self.layer.addSublayer(r)
         
         let bar = CALayer()
-        bar.bounds = r.bounds
-        bar.position = r.position
-        bar.backgroundColor = UIColor.red.cgColor
+        bar.bounds = CGRect(x: 0.0, y: 0.0, width: width, height: height)
+        bar.position = CGPoint(x: width / 2, y: height / 2)
         bar.delegate = self
         bar.setNeedsDisplay()
+        ecgLine = bar
         
         r.addSublayer(bar)
         
-        let move = CABasicAnimation(keyPath: "position.x")
-        move.toValue = bar.position.x - width
-        move.duration = self.duration
-        move.repeatCount = Float.infinity
-        bar.add(move, forKey: nil)
-        
         r.instanceCount = 2
-        r.instanceTransform = CATransform3DMakeTranslation(width, 0.0, 0.0)
+        r.instanceTransform = CATransform3DMakeTranslation(width , 0.0, 0.0)
         r.masksToBounds = true
+        
+    }
+    
+    func animation() {
+        
+        if let ecg = ecgLine {
+            ecg.setNeedsDisplay()
+            ecg.removeAnimation(forKey: "move")
+            if duration != 0 {
+                let move = CABasicAnimation(keyPath: "position.x")
+                move.toValue = ecg.position.x - width
+                move.duration = 0
+                move.repeatCount = Float.infinity
+                ecg.add(move, forKey: "move")
+            }
+        }
         
     }
     
@@ -95,15 +109,19 @@ class XBEcgView: UIView {
         let path = UIBezierPath()
         
         let startY = pointYs.first!
-        path.move(to: CGPoint(x:0, y:startY))
+        path.move(to: CGPoint(x: 0, y: startY))
         
         for i in 1..<pointYs.count {
             path.addLine(to: CGPoint(x: CGFloat(i)*xScale, y: pointYs[i]))
         }
         
-        var t = CGAffineTransform(a: 1, b: 0, c: 0, d: 3, tx: 0, ty: height * 0.5)
+        path.addLine(to: CGPoint(x: width, y: 0))
+        
+        var t = CGAffineTransform(a: 1.0, b: 0, c: 0, d: 2, tx: 0, ty: layer.bounds.height * 0.5)
         let cgPath = path.cgPath.copy(using: &t)
         
+        ctx.setAllowsAntialiasing(true)
+        ctx.setShouldAntialias(true)
         ctx.addPath(cgPath!)
         ctx.strokePath()
         

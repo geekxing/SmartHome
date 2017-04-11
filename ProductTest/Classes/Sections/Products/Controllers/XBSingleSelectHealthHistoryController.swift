@@ -12,26 +12,43 @@ import SwiftyJSON
 
 class XBSingleSelectHealthHistoryController: UIViewController {
     
-    fileprivate let reuseIdentifier = "sleepCellID"
+    let token = XBLoginManager.shared.currentLoginData!.token
     
+    fileprivate let reuseIdentifier = "sleepCellID"
     fileprivate let cellSelectedColor = RGBA(r: 220, g: 221, b: 222, a: 1.0)
     
     var headerView:XBHealthCareHeaderView!
-    
+    var nowTapIndex     = 0
     var tableView:UITableView!
     var group:[XBSleepData] = []
     
-    lazy var dateFormatter:DateFormatter? = {
-        let dateFmt = DateFormatter()
-        dateFmt.dateFormat = "yyyy/MM/dd"
-        return dateFmt
-    }()
+    var other:XBUser?
+    var type:XBCheckReportType = .me
+    var url:String {
+        return type == .me ? DEVICE_INFO : DEVICE_OTHERINFO
+    }
+    var params:[String:String] {
+        
+        let time = headerView.endDate.string(format: .custom("MM/dd/yyyy"))
+        var params:Dictionary = ["token":token,
+                                 "time":time]
+        if type == .other {
+            params["email"] = other!.email
+        }
+        return params
+        
+    }
     
     lazy var image:UIImage? = {
         return UIImage(named: "RectHeader")
     }()
     
-    
+    convenience init(_ user:XBUser?, type:XBCheckReportType) {
+        self.init()
+        self.other = user
+        self.type = type
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -51,6 +68,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
         makeData()
     }
     
+    //MARK: - Setup
     func setupHeader() {
         headerView = XBHealthCareHeaderView(.single)
         headerView.frame = CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 121)
@@ -70,6 +88,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     
     private func listenNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(listenSearchData(_:)), name: Notification.Name(rawValue:XBSearchSleepCareHistoryNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDateDidChanged), name: Notification.Name(rawValue:XBDateSelectViewDidSelectDate), object: nil)
     }
     
     //MARK: - Notification
@@ -78,41 +97,56 @@ class XBSingleSelectHealthHistoryController: UIViewController {
         if !view.isShowingOnKeywindow() {
             return
         }
-        let beginDate = dateFormatter?.string(from: headerView.beginDate)
-        let endDate   = dateFormatter?.string(from: headerView.endDate)
-        print("\(beginDate), \(endDate)")
-        makeData()
-        self.tableView.reloadData()
+        beginSearch()
         
-        var vc:UIViewController!
-        if self.isMember(of: XBSingleSelectHealthHistoryController.self) {
-            let story = UIStoryboard(name: "XBReportViewController", bundle: Bundle.main)
-            let reportVc = story.instantiateViewController(withIdentifier: "reportViewController") as! XBReportViewController
-            reportVc.reportDate = headerView.endDate
-            vc = reportVc;
-        } else {
-            let mutiVC = XBMultiReportViewController()
-            mutiVC.beginDate = headerView.beginDate
-            mutiVC.endDate = headerView.endDate
-            vc = mutiVC
+    }
+    
+    @objc func onDateDidChanged() {
+        
+        if !self.view.isShowingOnKeywindow() {
+            return
         }
-        self.navigationController?.pushViewController(vc, animated: true)
+        makeData()
+        
+    }
+    
+    //MARK: - Misc
+    
+    func beginSearch() {
+
+        if self.group.count == 0 {
+            self.view.makeToast("There is no data")
+            return
+        }
+        let story = UIStoryboard(name: "XBReportViewController", bundle: Bundle.main)
+        let reportVc = story.instantiateViewController(withIdentifier: "reportViewController") as! XBReportViewController
+        reportVc.model = self.group[nowTapIndex]
+        self.navigationController?.pushViewController(reportVc, animated: true)
+        
     }
 
-    //MARK: - Fake Data
+    //MARK: - Make Data
+    
     private func makeData() {
-        self.group.removeAll()
         
-        let time = headerView.endDate.string(format: .custom("MM/dd/yyyy"))
-        let params:Dictionary = ["token":token,
-                                 "time":time]
-        
-        XBNetworking.share.postWithPath(path: DEVICE_INFO, paras: params,
-                                        success: {[weak self]result in
-                                            
-                                            let json:JSON = result as! JSON
+        XBNetworking.share.postWithPath(path: url, paras: params,
+                                        success: {[weak self] json in
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == 1 {
+                                                self?.group.removeAll()
+                                                for (_ ,subJson):(String, JSON) in json[XBData] {
+                                                    let model = XBSleepData()
+                                                    model.add(subJson)
+                                                    self!.group.append(model)
+                                                }
+                                                if self!.group.count > 0 {
+                                                    let firstRow = IndexPath(row: 0, section: 0)
+                                                    self!.sort()
+                                                    self!.makeCellChosen(indexPath: firstRow)
+                                                } else {
+                                                    self!.tableView.reloadData()
+                                                }
+                                                
                                             } else {
                                                 SVProgressHUD.showError(withStatus: message)
                                             }
@@ -120,22 +154,30 @@ class XBSingleSelectHealthHistoryController: UIViewController {
                 SVProgressHUD.showError(withStatus: error.localizedDescription)
         })
         
-        for i in 0 ... 10 {
-            let cmps = XBOperateUtils.shared.components(for: headerView.endDate.addingTimeInterval(Double(-i*24*3600)))
-            let sleepData = XBSleepData(date: "\(cmps.year)/\(cmps.month)/\(cmps.day)", time: "8", score: "90")
-            self.group.append(sleepData)
-            
-        }
     }
     
     
     //MARK: - Private
+    
+    private func sort() {
+        
+        if self.group.count > 0 {
+            self.group.sort(by: { (obj1, obj2) -> Bool in
+                
+                return obj1.date > obj2.date
+                
+            })
+        }
+        
+    }
+    
     fileprivate func makeCellChosen(indexPath:IndexPath) {
     
         for item in group {
             item.selected = false
         }
         self.group[indexPath.row].selected = true
+        nowTapIndex = indexPath.row
         
         tableView.reloadData()
     }
@@ -172,9 +214,9 @@ extension XBSingleSelectHealthHistoryController: UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let date = dateFormatter?.date(from: self.group[indexPath.row].date)
-        headerView.setDate(date!, for: &headerView.endDate)
+        
         makeCellChosen(indexPath: indexPath)
+
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

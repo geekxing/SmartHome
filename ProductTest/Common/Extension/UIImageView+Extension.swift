@@ -13,11 +13,11 @@ extension UIImageView {
     func setHeader(url:String?, uid:String) {
         if let imageUrl = url {
             let placeholder = XBUserManager.shared.placeholderForUser(uid: uid)
-            self.sd_setImage(with: URL.init(string: imageUrl),
+            self.sd_setImage(with: URL(string: imageUrl),
                              placeholderImage:placeholder,
-                             options: .refreshCached,
+                             options: .retryFailed,
                              completed: { (image, err, _, _) in
-                                if (image != nil && err != nil) {
+                                if (image != nil && err == nil) {
                                     self.image = image?.circleImage()
                                 }
             })

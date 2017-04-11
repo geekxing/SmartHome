@@ -13,22 +13,22 @@ import SwiftyJSON
 let XBUserInfoHasChangedNotification = "XBUserInfoHasChangedNotification"
 
 class XBUser: Object {
-    dynamic var id:String!
-    dynamic var userId:String!
+    dynamic var id:String?
+    dynamic var userId:String?
     dynamic var email:String!
-    dynamic var follower:String?
+    dynamic var follower:Data? = Data()
     dynamic var firstName = ""
     dynamic var middleName:String?
     dynamic var lastName = ""
     dynamic var name:String?
     dynamic var image = ""
-    dynamic var password:String!
-    dynamic var mphone:String!
+    dynamic var password:String?
+    dynamic var mphone:String?
     dynamic var address:String?
     dynamic var gender:Int = 0
-    dynamic var birthDay:String!
-    dynamic var focus:String?
-    dynamic var device:String?
+    dynamic var birthDay:String?
+    dynamic var focus:Data? = Data()
+    dynamic var device:Data? = Data()
     dynamic var createTime = 0.0
     
     dynamic var type1sn:String?
@@ -48,28 +48,35 @@ class XBUser: Object {
         return "email"
     }
     
-    func properties_name() -> [String] {
-        var count:UInt32 = 0
-        let ivars = class_copyIvarList(XBUser.self, &count)
-        var properties_name = [String]()
-        for i in 0..<count {
-            let ivar = ivars?[Int(i)]
-            let ivarName = ivar_getName(ivar!)
-            let nName = String(cString: ivarName!)
-            properties_name.append(nName)
-        }
-        return properties_name
-    }
-    
     func Name() -> String {
         let middleName = self.middleName ?? ""
         return firstName + " " + middleName + " " + lastName
     }
+    
+    func Device() -> [String] {
+        if let data = self.device {
+            return data.count == 0 ? [] : try! JSONSerialization.jsonObject(with: data, options: []) as! [String]
+        }
+        return []
+    }
+    
+    override var debugDescription: String {
+        
+        var des = ""
+        let properties = XBUser.properties_name()
+        for property in properties {
+            des += " \(property) : \(self.value(forKey: property)) "
+        }
+        return des
+        
+    }
+    
 }
 
 class XBUserManager: NSObject {
     static let shared = XBUserManager()
     
+    let userProperties = XBUser.properties_name()
     
     //MARK: -
     ///
@@ -95,32 +102,42 @@ class XBUserManager: NSObject {
         return nil
     }
     
-    func addUser(userJson:JSON) {
-        //用户信息本地缓存
-        let realm = try! Realm()
-        print(realm.configuration.fileURL!)
+    
+    func user(_ userJson:JSON) -> XBUser {
+        
         let user = XBUser()
         for (key,subJson):(String, JSON) in userJson {
-            var value:String = ""
+            if !self.userProperties.contains(key) {
+                continue
+            }
+            var value:Any?
             if key == "birthDay" {
-                if let dict = subJson.dictionary {
-                    if dict.keys.contains("birthDay") {
-                        value = dict["birthDay"]!.stringValue
-                    } else {
-                        let year = dict["year"]!.stringValue
-                        let month = dict["month"]!.stringValue
-                        let day  = dict["day"]!.stringValue
-                        value = "\(month)/\(day)/\(year)"                        
+                if let dict = subJson.dictionaryObject {
+                    if !dict.keys.contains("birthDay") {
+                        let year = dict["year"] as! String
+                        let month = dict["month"] as! String
+                        let day  = dict["day"] as! String
+                        value = "\(month)/\(day)/\(year)"
                     }
                 }
-            } else if key == "image" {
-                value = subJson.rawString()!
+            } else if subJson.type == .array {
+                value = try! JSONSerialization.data(withJSONObject: subJson.rawValue, options: [])
+            } else if subJson.type == .null {
             } else {
                 value = subJson.stringValue
             }
             user.setValue(value, forKey: key)
         }
+        return user
+        
+    }
+    
+    func addUser(userJson:JSON) {
+        //用户信息本地缓存
+        let realm = try! Realm()
+        print(realm.configuration.fileURL!)
         try! realm.write {
+            let user = self.user(userJson)
             realm.add(user, update: true)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: XBUserInfoHasChangedNotification), object: user.email)
         }
@@ -161,8 +178,7 @@ class XBUserManager: NSObject {
         let params = ["token":token]
         var usr:XBUser?
         XBNetworking.share.postWithPath(path: GET_INFO, paras: params,
-                                        success: { result in
-                                            let json:JSON = result as! JSON
+                                        success: { json in
                                             if json[Code].intValue == 1 {
                                                 let userData = json[XBData]
                                                 let email = userData["email"].stringValue
@@ -186,4 +202,5 @@ class XBUserManager: NSObject {
     class func genderForInt(_ genderIndex:Int) -> String {
         return genderIndex == 0 ? "Female" : "Male"
     }
+    
 }

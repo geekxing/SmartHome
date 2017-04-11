@@ -19,9 +19,15 @@ class XBMyPurchaseTableCell: UITableViewCell {
             
             proNameLabel.text = model?.productName
             proNameLabel.sizeToFit()
-            vipLabel.text = model?.level == "" ? "普通用户" : "会员"
-            vipLabel.sizeToFit()
-            purchaseButton.setTitle(model?.deadline != "" ? "续费" : "购买", for: .normal)
+            if XBUserManager.shared.loginUser()!.Device().first != nil && model?.productName == "智能床垫" {
+                purchaseButton.isEnabled = true
+                proNameLabel.textColor = XB_DARK_TEXT
+                vipLabel.textColor = UIColorHex("8a847f", 1.0)
+            } else {
+                purchaseButton.isEnabled = false
+                proNameLabel.textColor = UIColorHex("8a847f", 1.0)
+                vipLabel.textColor = UIColorHex("8a847f", 0.6)
+            }
             
         }
     }
@@ -33,6 +39,7 @@ class XBMyPurchaseTableCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
 
     func setup() {
@@ -42,7 +49,10 @@ class XBMyPurchaseTableCell: UITableViewCell {
         vipLabel = UILabel()
         vipLabel.font = UIFont.boldSystemFont(ofSize: 14)
         vipLabel.textColor = UIColorHex("8a847f", 1.0)
+        vipLabel.text = "高级版"
+        vipLabel.sizeToFit()
         purchaseButton = XBRoundedButton.init(selector: #selector(purchase(_:)), target: self, font:19, title: "续费")
+        purchaseButton.isEnabled = false
         addSubview(proNameLabel)
         addSubview(vipLabel)
         addSubview(purchaseButton)
@@ -66,6 +76,7 @@ class XBMyPurchaseTableCell: UITableViewCell {
         purchaseButton.width = 77
         purchaseButton.right = width - 33
         purchaseButton.centerY = height * 0.5
+        
     }
     
     //MARK: - Private

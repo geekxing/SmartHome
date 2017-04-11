@@ -18,15 +18,21 @@ class XBRoundedTextField: UITextField {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColorHex("595757", 1.0).cgColor
-        self.backgroundColor = UIColor.white
+        setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
-
+    
+    func setup() {
+        
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColorHex("595757", 1.0).cgColor
+        self.backgroundColor = UIColor.white
+        
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()

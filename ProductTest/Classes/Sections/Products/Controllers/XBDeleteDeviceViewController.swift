@@ -16,19 +16,28 @@ class XBDeleteDeviceViewController: UIViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
     
+    let token = XBLoginManager.shared.currentLoginData!.token
     var loginUser:XBUser!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        snField.text = loginUser?.type1sn
+        snField.text = loginUser?.Device().first
         backButton.layer.cornerRadius = backButton.height * 0.5
         submitButton.layer.cornerRadius = submitButton.height * 0.5
     }
     
     //MARK: - Action
     
+    @IBAction func textDidTapReturnKey(_ sender: UITextField) {
+        submit(submitButton)
+    }
+    
     @IBAction func submit(_ sender: UIButton) {
-        deleteDeviceAlert()
+        if (snField.text! as NSString).length == 0 {
+            UIAlertView(title: "未绑定设备号sn", message: nil, delegate: nil, cancelButtonTitle: "DONE").show()
+        } else {
+            deleteDeviceAlert()
+        }
     }
     
     @IBAction func back(_ sender: UIButton) {
@@ -50,40 +59,31 @@ class XBDeleteDeviceViewController: UIViewController {
     
     private func deletDevice(sn:String) {
         
-        if let email = XBUserManager.shared.currentAccount() {
-            let params:Dictionary = ["Email":email,
-                                     "SN":sn]
-            
-            let url = baseRequestUrl + "product/delete"
-            
-            SVProgressHUD.show()
-            XBNetworking.share.postWithPath(path: url, paras: params,
-                                            success: {[weak self]result in
-                                                
-                                                let json:JSON = result as! JSON
-                                                let message = json[Message].stringValue
-                                                if json[Code].intValue == deleteDevice {
-                                                    SVProgressHUD.showSuccess(withStatus: message)
-                                                    self!.checkUserInfo()
-                                                } else {
-                                                    SVProgressHUD.showError(withStatus: message)
-                                                }
-                }, failure: { (error) in
-                    SVProgressHUD.showError(withStatus: error.localizedDescription)
-            })
-            
-        }
+        let params:Dictionary = ["token":token,
+                                 "sn":sn]
+        
+        SVProgressHUD.show()
+        XBNetworking.share.postWithPath(path: DEVICE_DELETE, paras: params,
+                                        success: {[weak self] json in
+                                            
+                                            let message = json[Message].stringValue
+                                            if json[Code].intValue == normalSuccess {
+                                                self!.checkUserInfo()
+                                            } else {
+                                                SVProgressHUD.showError(withStatus: message)
+                                            }
+            }, failure: { (error) in
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+        })
         
     }
     
     private func checkUserInfo() {
         
-        XBOperateUtils.shared.login(email: loginUser.email, pwd: loginUser.password, success: { (result) in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+1.0, execute: { [weak self] in
-                self!.navigationController!.popViewController(animated: true)
-            })
-        }) { (error) in
-            SVProgressHUD.showError(withStatus: error.localizedDescription)
+        XBUserManager.shared.fetchUserFromServer(token: token) { (_, error) in
+            if error == nil {
+                self.navigationController!.popViewController(animated: true)
+            }
         }
         
     }

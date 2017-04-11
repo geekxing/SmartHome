@@ -23,20 +23,24 @@ class XBOperateUtils: NSObject {
     static let shared = XBOperateUtils()
     
     func login(email:String, pwd:String, success:@escaping (_ result:Any)->(), failure:@escaping (_ error:Error)->()) {
+        
+        if !XBOperateUtils.validateEmail(email) {
+            SVProgressHUD.showError(withStatus: "邮箱格式错误!")
+            return
+        }
         let params = [
             "email":email,
             "password":pwd
         ]
         
+        SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: LOGIN, paras: params,
-                                        success: {result in
-                                            print(result)
-                                            let json:JSON = result as! JSON
-                                            let message = json[Message].stringValue
-                                            let token = json[XBData]["token"].stringValue
-                                            if json[Code].intValue == 1 && message != "Error" {  //登录成功
+                                        success: { json in
+                                            let message = errorMsg(json[Code].intValue)
+                                            let tk = json[XBData]["token"].stringValue
+                                            if json[Code].intValue == 1 {  //登录成功
                                                 //登录信息本地缓存
-                                                let loginData = LoginData(account: email, password:pwd, token: token)
+                                                let loginData = LoginData(account: email, password:pwd, token: tk)
                                                 XBLoginManager.shared.currentLoginData = loginData
                                                 //用户信息本地缓存
                                                 XBUserManager.shared.addUser(userJson: json[XBData]["userInfo"])
@@ -47,12 +51,6 @@ class XBOperateUtils: NSObject {
         }, failure: { error in
             failure(error)
         })
-    }
-    
-    func components(for date:Date) -> (year:Int, month:Int, day:Int) {
-        let dateSet: Set<Calendar.Component> = [.year, .month, .day]
-        let cmps = Calendar(identifier: .gregorian).dateComponents(dateSet, from: date)
-        return (cmps.year!, cmps.month!, cmps.day!)
     }
     
     class func timeComps(_ timeGap:Double) -> (hour:Int, minute:Int) {
@@ -92,6 +90,24 @@ class XBOperateUtils: NSObject {
         let emailString = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailString)
         return emailPredicate.evaluate(with: email)
+    }
+    
+    class func validatePassword(_ pwd:String, confirmPwd:String) -> Bool {
+        
+        let pwdRegex = "^[0-9a-zA-Z]{6,16}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", pwdRegex)
+        let isPwd = predicate.evaluate(with: pwd)
+        
+        if !isPwd {
+            SVProgressHUD.showError(withStatus: "密码由6-16位任意数字、字母组成")
+            return false
+        }
+        if pwd != confirmPwd {
+            SVProgressHUD.showError(withStatus: NSLocalizedString("Two passwords are not the same!", comment: ""))
+            return false
+        }
+        return true
+        
     }
     
     //MARK: - Private

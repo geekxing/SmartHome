@@ -14,25 +14,27 @@ class XBDisplayRealStateView: UIView {
     var timer:DispatchSourceTimer?
     var xScale:CGFloat = 0
     
-    var time = 0
     var datas = [UIImage]()
     var dataWidth = [CGFloat]()
     var lastEvent = 0
     var offset:CGFloat = 0.0
     var now = Date()
     var halfHour = Date().add(components: [.minute:30])
+    var motivateCounter = 0
     
     var event:Int = 0 {
+    
         didSet {
-        
-            begin.text = now.string(format: .custom("hh:mm"))
-            end.text = halfHour.string(format: .custom("hh:mm"))
-            begin.sizeToFit()
-            end.sizeToFit()
+            
+            if event == 3 {  //motivate
+                motivateCounter += 1
+                if motivateCounter == 3 || motivateCounter == 4 {
+                    event = 2  // modify data to onBed
+                }
+            }
             
             if let eventType = XBEventType(rawValue: event) {
-                time += 1
-                if dataWidth.count == 0 || lastEvent != event {
+                if dataWidth.count == 0 || (lastEvent != event)  {
                     dataWidth.append(xScale)
                     datas.append(XBRealData.image(eventType))
                 } else if lastEvent == event {
@@ -40,11 +42,10 @@ class XBDisplayRealStateView: UIView {
                 }
                 
                 collection.reloadData()
-                if time == 8 {
-                    collection.contentOffset = CGPoint(x: -(offset+10*xScale), y: 0)
-                    time = 0
-                }
                 lastEvent = event
+            } else if (lastEvent != 0) {
+                //对于非第一次的无效的信号则画上一次的信号
+                dataWidth[dataWidth.count-1] = dataWidth[dataWidth.count-1]+xScale
             }
             
             print("\(event)")
@@ -55,6 +56,10 @@ class XBDisplayRealStateView: UIView {
     var timeline:UIImageView!
     var begin:UILabel!
     var end:UILabel!
+    
+    deinit {
+        
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -88,13 +93,13 @@ class XBDisplayRealStateView: UIView {
         addSubview(timeline)
         
         begin = UILabel()
-        begin.font = UIFontSize(size: 14)
+        begin.font = UIFontSize(14)
         begin.text = "--:--"
         begin.sizeToFit()
         addSubview(begin)
         
         end = UILabel()
-        end.font = UIFontSize(size: 14)
+        end.font = UIFontSize(14)
         end.text = "--:--"
         end.sizeToFit()
         addSubview(end)
@@ -117,6 +122,11 @@ class XBDisplayRealStateView: UIView {
         halfHour = Date().add(components: [.minute:30])
         datas.removeAll()
         dataWidth.removeAll()
+        
+        begin.text = String(format: "%.2zd:%.2zd", now.hour, now.minute)
+        end.text = String(format: "%.2zd:%.2zd", halfHour.hour, halfHour.minute)
+        begin.sizeToFit()
+        end.sizeToFit()
         
     }
     

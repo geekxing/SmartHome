@@ -17,6 +17,7 @@ class XBRoundedButton: UIButton {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
     
     convenience init(selector:Selector, target:AnyObject, title:String) {

@@ -10,58 +10,62 @@ import UIKit
 import SVProgressHUD
 import SwiftyJSON
 
-class XBModifyPasswordViewController: XBFindPasswordController {
+class XBModifyPasswordViewController: XBFindPasswordController, UITextFieldDelegate {
     
-    let passwordField = XBRoundedTextField()
     let confirmPasswordField = XBRoundedTextField()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailField.isEnabled = false
-        emailField.text = email
+        titleLabel.text = "Reset Password"
+        tipLabel.removeFromSuperview()
+        headLabel.removeFromSuperview()
         
-        passwordField.isSecureTextEntry = true
-        passwordField.placeholder = "New Password"
+        //此处emailField用作密码输入框
+        emailField.placeholder = "New Password"
+        emailField.isSecureTextEntry = true
+        emailField.delegate = self
+        
+        confirmPasswordField.font = UIFontSize(14)
         confirmPasswordField.isSecureTextEntry = true
         confirmPasswordField.placeholder = "Confirm Password"
+        confirmPasswordField.returnKeyType = .done
+        confirmPasswordField.delegate = self
         
-        view.addSubview(passwordField)
-        view.addSubview(confirmPasswordField)
+        smallBackground.addSubview(confirmPasswordField)
         
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        passwordField.width = emailField.width*UIRate
-        passwordField.height = 29
-        passwordField.centerX = view.centerX
-        passwordField.top = UIRateH*200 + 229
         
-        confirmPasswordField.width = passwordField.width
+        emailField.top = 60
+        
+        confirmPasswordField.width = 304*UIRate
         confirmPasswordField.height = 29
         confirmPasswordField.centerX = view.centerX
-        confirmPasswordField.top = passwordField.bottom + 30
+        confirmPasswordField.top = emailField.bottom + 30
     }
     
     @IBAction override func submit(_ sender: UIButton) {
-        if (emailField.isBlank() || passwordField.isBlank() || confirmPasswordField.isBlank()) {
+        if (email == nil || emailField.isBlank() || confirmPasswordField.isBlank()) {
             self.view.makeToast("Message is not Completed")
             return
         }
-        if passwordField.text != confirmPasswordField.text {
-            self.view.makeToast("两次密码输入不一致！")
+        if !XBOperateUtils.validatePassword(emailField.text!, confirmPwd: confirmPasswordField.text!) {
             return
         }
         let params = ["email":email!,
-                      "password":passwordField.text!]
+                      "password":emailField.text!]
         emailField.resignFirstResponder()
         
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: MODIFY_PWD, paras: params,
-                                        success: {[weak self]result in
-                                            print(result)
-                                            let json:JSON = result as! JSON
+                                        success: {[weak self] json in
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == normalSuccess {
                                                 SVProgressHUD.showSuccess(withStatus: message)

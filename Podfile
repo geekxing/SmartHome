@@ -18,4 +18,5 @@ target 'ProductTest' do
     pod 'SwiftDate', '~> 4.0'
     pod 'ChameleonFramework'
     pod 'MJRefresh'
+    pod 'CocoaLumberjack/Swift'
 end

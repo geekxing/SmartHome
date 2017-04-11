@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 import SwiftyJSON
 import IQKeyboardManagerSwift
 import Toast_Swift
@@ -82,7 +81,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
         findTextfield {[weak self] in
             self!.textfields?.append($0)
             $0.setValue(UIColor.black, forKeyPath: "placeholderLabel.textColor")
-            $0.setValue(UIFontSize(size: 16), forKeyPath: "placeholderLabel.font")
+            $0.setValue(UIFontSize(16), forKeyPath: "placeholderLabel.font")
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
@@ -145,7 +144,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
             SVProgressHUD.showError(withStatus: "邮箱格式错误!")
             return
         }
-        if !self.validatePassword() {
+        if !XBOperateUtils.validatePassword(passwordField.text!, confirmPwd: retypePasswordField.text!) {
             return
         }
         
@@ -167,9 +166,8 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
 
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: REGIST, paras: params,
-            success: {[weak self]result in
+            success: {[weak self] json in
                 
-                let json:JSON = result as! JSON
                 let message = json[Message].stringValue
                 if json[Code].intValue == 1 {
                     SVProgressHUD.showSuccess(withStatus: message)
@@ -196,21 +194,13 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     //MARK: - Private
     
     private func showCalendar() {
-        let comps = XBOperateUtils.shared.components(for: Date())
-        let defaultDate = self.dateFormatter?.date(from: "\(comps.day)/\(comps.month)/\(comps.year-50)")
-        datePicker!.date = defaultDate!
+        var date = Date().add(components: [.year:-50])
+        if !birthField.isBlank() {
+            date = try! birthField.text!.date(format: .custom("MM/dd/yyyy")).absoluteDate
+        }
+        datePicker!.date = date
         birthField.inputView = datePicker
         birthField.reloadInputViews()
-    }
-    
-    private func validatePassword() -> Bool {
-        let pwd = passwordField.text!
-        let confirmPwd = retypePasswordField.text!
-        if pwd != confirmPwd {
-            SVProgressHUD.showError(withStatus: "两次密码输入不一致！")
-            return false
-        }
-        return true
     }
     
     private func setAllTextFieldReturnType(type:UIReturnKeyType) {
@@ -230,7 +220,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    private func onTextChanged() {
+    fileprivate func onTextChanged() {
         for tf in self.textfields! {
             let text = tf.text! as NSString
             if text.length == 0 && tf.tag != -1 {
@@ -271,8 +261,9 @@ extension XBRegisterViewController {
         
         dropDown.dataSource = datasource
         
-        dropDown.selectionAction = { (index, item) in
+        dropDown.selectionAction = {[weak self] (index, item) in
             anchorField.text = item
+            self?.onTextChanged()
         }
         
         dropDown.dismissMode = .onTap

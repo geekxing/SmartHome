@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftDate
 
 class XBSleepHistoryTableCell: UITableViewCell {
     
@@ -20,12 +21,15 @@ class XBSleepHistoryTableCell: UITableViewCell {
     var model:XBSleepData? {
         didSet {
             //self.isSelected = model!.selected
-            dateLabel.text = model?.date
-            dateLabel.sizeToFit()
-            hourLabel.text = model?.time
-            hourLabel.sizeToFit()
-            scoreLabel.text = model?.score
-            scoreLabel.sizeToFit()
+            if model != nil {
+                let date = Date(timeIntervalSince1970: model!.date)
+                dateLabel.text = "\(date.year)/\(date.month)/\(date.day)"
+                dateLabel.sizeToFit()
+                hourLabel.text = "\(Int(model!.sleepTime()))"
+                hourLabel.sizeToFit()
+                scoreLabel.text = "\(model!.score)"
+                scoreLabel.sizeToFit()
+            }
         }
     }
     
@@ -50,7 +54,7 @@ class XBSleepHistoryTableCell: UITableViewCell {
     }
     
     private func commonInit(label:UILabel, font:CGFloat) {
-        label.font = UIFontSize(size: font)
+        label.font = UIFontSize(font)
         label.textColor = XBSleepHistoryTableCell.textColor
         addSubview(label)
     }

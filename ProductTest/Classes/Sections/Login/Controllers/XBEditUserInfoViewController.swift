@@ -34,8 +34,10 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     @IBOutlet weak var backButton: UIButton!
     
     let chooseGenderDropDown = DropDown()
+    let token = XBLoginManager.shared.currentLoginData!.token
     
     var loginUser = XBUser()
+    var avatarImage:UIImage?
     private var fullFilled:Bool = true
     private var photoManager:XBPhotoPickerManager?
     
@@ -162,14 +164,16 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
         }
         view.endEditing(true)
         
-        if !self.validatePassword() {
+        if !XBOperateUtils.validatePassword(passwordField.text!, confirmPwd: retypePasswordField.text!) {
             return
         }
         
+        let email = usernameTextField.text!
+        let pwd = passwordField.text!
         let gender = "\(XBUserManager.integerForGender(genderField.text!))"
         let params:Parameters = [
-            "email":usernameTextField.text!,
-            "password":passwordField.text!,
+            "email":email,
+            "password":pwd,
             "firstName":firstnameField.text!,
             "middleName":middleNameField.text ?? "",
             "lastName":lastnameField.text!,
@@ -180,20 +184,33 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
             "token":token
         ]
         
+        var imageFiles = [UIImage]()
+        if let image = avatarImage {
+            imageFiles.append(image)
+        }
+        
         SVProgressHUD.show()
-        XBNetworking.share.upload([avatarView.image!],
+        XBNetworking.share.upload(imageFiles,
                                   url: MODIFY,
                                   maxLength: 100,
                                   params: params,
-                                  success: { (result) in
+                                  success: { (json) in
                                     
-                                    print(result)
-                                    XBUserManager.shared.fetchUserFromServer(token: token,
-                                                                             handler: { (user, error) in
-                                               self.back(self.backButton)
-                                    })
-                                    SVProgressHUD.showSuccess(withStatus: "success")
-                                    
+                                    if json[Code].intValue == 1 {
+                                        XBUserManager.shared
+                                        .fetchUserFromServer(token: self.token,
+                                                            handler: { (user, error) in
+                                                                //登录信息本地缓存
+                                                                let loginData = LoginData(account: email,
+                                                                                          password: pwd,
+                                                                                          token: self.token)
+                                                                XBLoginManager.shared.currentLoginData = loginData
+                                                                self.back(self.backButton)
+                                        })
+                                    } else {
+                                        let message = json[Message].stringValue
+                                        SVProgressHUD.showSuccess(withStatus: message)
+                                    }
                                     
         })
         { (error) in
@@ -217,7 +234,14 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     }
     
     private func showCalendar() {
-        let date = self.dateFormatter!.date(from: loginUser.birthDay)
+        var dateStr:String = ""
+        if birthField.text == nil {
+            let now = Date()
+            dateStr = "\(now.day)/\(now.month)/\(now.year-50)"
+        } else {
+            dateStr = birthField.text!
+        }
+        let date = self.dateFormatter!.date(from: dateStr)
         datePicker!.date = date!
         birthField.inputView = datePicker
         birthField.reloadInputViews()
@@ -226,16 +250,6 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     private func showGenderSelectView() {
         genderField.resignFirstResponder()
         chooseGenderDropDown.show()
-    }
-    
-    private func validatePassword() -> Bool {
-        let pwd = passwordField.text!
-        let confirmPwd = retypePasswordField.text!
-        if pwd != confirmPwd {
-            SVProgressHUD.showError(withStatus: "两次密码输入不一致！")
-            return false
-        }
-        return true
     }
     
     private func setAllTextFieldReturnType(type:UIReturnKeyType) {
@@ -276,6 +290,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     //MARK: - XBPhotoPickerManagerDelegate
     func imagePickerDidFinishPickImage(image: UIImage) {
         
+        avatarImage = image
         avatarView.image = image
     }
     

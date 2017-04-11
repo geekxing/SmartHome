@@ -84,8 +84,7 @@ class XBLoginViewController: UIViewController, UITextFieldDelegate, XBRegisterVi
         SVProgressHUD.show()
         let params = ["token":token]
         XBNetworking.share.postWithPath(path: CHECK_TOKEN, paras: params,
-                                        success: {[weak self]result in
-                                            let json:JSON = result as! JSON
+                                        success: {[weak self] json in
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == 1 {
                                                 XBUserManager.shared.fetchUserFromServer(token: token, handler: { (user, error) in
@@ -93,7 +92,6 @@ class XBLoginViewController: UIViewController, UITextFieldDelegate, XBRegisterVi
                                                         self!.navigationController!.pushViewController(XBMainViewController(), animated: true)
                                                     }
                                                 })
-                                                SVProgressHUD.showSuccess(withStatus: message)
                                             } else {
                                                 SVProgressHUD.showError(withStatus: message)
                                             }
@@ -135,6 +133,7 @@ class XBLoginViewController: UIViewController, UITextFieldDelegate, XBRegisterVi
     
     @IBAction func onTouchFindPwd(_ sender: UIButton) {
         let findPwdVC = XBFindPasswordController()
+        findPwdVC.email = usernameTextField.text
         navigationController?.pushViewController(findPwdVC, animated: true)
     }
     
@@ -147,7 +146,7 @@ class XBLoginViewController: UIViewController, UITextFieldDelegate, XBRegisterVi
     
     //MARK: - Private
     private func setAllTextFieldReturnType(type:UIReturnKeyType) {
-        for subview in view.subviews[0].subviews {
+        for subview in view.subviews {
             if subview.isKind(of: UITextField.self) {
                 let textField = subview as! UITextField
                 textField.returnKeyType = type
@@ -156,7 +155,7 @@ class XBLoginViewController: UIViewController, UITextFieldDelegate, XBRegisterVi
     }
     
     private func onTextChanged() {
-        if usernameTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
+        if usernameTextField.isBlank() || passwordTextField.isBlank() {
             setAllTextFieldReturnType(type: .next)
         } else {
             setAllTextFieldReturnType(type: .done)

@@ -15,13 +15,22 @@ class XBMultiReportViewController: XBBaseViewController {
     var viewArray = [XBSingleReportView]()
     let titles = ["心率","呼吸率","深度睡眠时长","睡眠质量曲线"]
     let danweis = ["次/分","次/分","时","分"]
-    let datas1 = [70.0,74,68,76,70,71]
-    let datas2 = [15,20,16.5,19.5,15.5]
-    let datas3 = [5.0,7.3,5.0,9.0,3.0]
-    let datas3B = [7.0,10.0,6.0,11.0,7.0]
-    var beginDate:Date?
-    var endDate:Date?
-    var count = 8
+    var heartGroups = [Double]()
+    var breathGroups = [Double]()
+    var deepSleeps = [Double]()
+    var sleeps = [Double]()
+    var sleepQuality = [Double]()
+    var modelArray = [XBSleepData]() {
+        didSet {
+            for model in modelArray {
+                heartGroups.append(Double(model.avgHeart))
+                breathGroups.append(Double(model.avgBreath))
+                deepSleeps.append(model.deepSleepTime / 3600)
+                sleeps.append(model.sleepTime())
+                sleepQuality.append(Double(model.score))
+            }
+        }
+    }
 
     //MARK: - Overrides
     override var naviBackgroundImage: UIImage? {
@@ -59,31 +68,32 @@ class XBMultiReportViewController: XBBaseViewController {
         }
         
         makeData()
+        
     }
     
     //MARK: - Private
     private func makeData() {
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
+        if modelArray.count > 0 {
             
-            self.scrollView.beginDate = self.beginDate
-            self.scrollView.endDate = self.endDate
-            self.scrollView.count = self.count
-            
-        })
+            scrollView.refresh( Date(timeIntervalSince1970: modelArray.last!.date),
+                                end: Date(timeIntervalSince1970: modelArray.first!.date),
+                                count: modelArray.count)
+        }
         
         for report in viewArray {
             let i = report.tag
             report.title = titles[i]
             report.danwei = danweis[i]
         }
-        viewArray[0].datas = datas1
-        viewArray[1].datas = datas2
+        viewArray[0].datas = heartGroups
+        viewArray[1].datas = breathGroups
         let doubleSetView = viewArray[2] as! XBDoubleSetLineView
         doubleSetView.beginValue = 0
-        doubleSetView.datas = datas3
-        doubleSetView.datasB = datas3B
+        doubleSetView.datas = deepSleeps
+        doubleSetView.datasB = sleeps
+        viewArray[3].datas = sleepQuality
     }
     
-
+    
 }

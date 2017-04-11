@@ -7,19 +7,66 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class XBSleepData: NSObject {
 
-    var date:String!
-    var time:String!
-    var score:String!
+    var id:String = ""
+    var user:String = ""
+    var creatTime:Double = 0
+    var date:Double = 0
+    var goToBed:Double = 0
+    var outOfBed:Double = 0
+    var sleepStart:Double = 0
+    var sleepEnd:Double = 0
+    var lightSleepTime:Double = 0
+    var deepSleepTime:Double = 0
+    var avgHeart:Int = 0
+    var avgBreath:Int = 0
+    var outNum:Int = 0
+    var turnNum:Int = 0
+    var score:Int = 0
     
     var selected = false
     
-    convenience init(date:String, time:String, score:String) {
-        self.init()
-        self.date = date
-        self.time = time
-        self.score = score
+    func add(_ json:JSON) {
+        let timeGroup = timeIntevalProperties()
+        for (key,subJson):(String, JSON) in json {
+            var value:Any?
+            if timeGroup.contains(key) {
+                value = (subJson.rawValue as! Double) / 1000.0
+            }else {
+                value = subJson.stringValue
+            }
+            self.setValue(value, forKey: key)
+        }
     }
+    
+    
+    //返回总的睡眠时长
+    func sleepTime() -> Double {
+        
+        let total = (lightSleepTime + deepSleepTime)
+        return total / 3600.0
+        
+    }
+    
+    private func timeIntevalProperties() -> [String] {
+        
+        return ["creatTime","date","goToBed","outOfBed","sleepStart",
+                "sleepEnd"]
+        
+    }
+    
+    override var debugDescription: String {
+        
+        var des = ""
+        let properties = XBSleepData.properties_name()
+        for property in properties {
+            des += " \(property) : \(self.value(forKey: property)) "
+        }
+        return des
+        
+    }
+    
 }

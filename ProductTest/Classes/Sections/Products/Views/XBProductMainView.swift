@@ -22,12 +22,6 @@ class XBProductMainView: XBMainView {
         return array
     }
     
-    override var currentUser:XBUser {
-        didSet {
-            self.toggleFunctionEnabled(sn: "dsdsdsds")
-        }
-    }
-    
     override var buttonW: CGFloat {
         return 117.0*UIRate;
     }
@@ -37,18 +31,14 @@ class XBProductMainView: XBMainView {
     }
     
     func toggleFunctionEnabled(sn:String?) {
-        if sn != "" {
+        if sn != "" && sn != nil {
             for btn in squareBtns {
                 btn.isEnabled = true
             }
         } else {
             for i in 0..<squareBtns.count {
                 let btn = squareBtns[i]
-                if i == 2 {
-                    btn.isEnabled = true
-                } else {
-                    btn.isEnabled = false
-                }
+                btn.isEnabled = i == 2
             }
         }
     }

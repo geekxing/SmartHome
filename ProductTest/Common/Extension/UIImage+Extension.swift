@@ -64,7 +64,7 @@ extension UIImage {
     func compressImage(maxLength: Int) -> Data? {
         
         let newSize = self.imageSize(with: CGFloat(maxLength))
-        let newImage = self.resizeImage(newSize: newSize)
+        let newImage = self.resizeImage(newSize: newSize) ?? self
         
         var compress:CGFloat = 0.9
         var data = UIImageJPEGRepresentation(newImage, compress)
@@ -123,14 +123,14 @@ extension UIImage {
      *
      *  return 调整后的图片
      */
-    func resizeImage(newSize: CGSize) -> UIImage {
+    func resizeImage(newSize: CGSize) -> UIImage? {
         UIGraphicsBeginImageContext(newSize)
         self.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage!
+        return newImage
     }
     
     /// 获取颜色填充而成的图片

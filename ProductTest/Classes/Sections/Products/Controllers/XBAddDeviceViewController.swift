@@ -17,6 +17,8 @@ class XBAddDeviceViewController: UIViewController {
     @IBOutlet weak var scanButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
+    
+    let token = XBLoginManager.shared.currentLoginData!.token
     private var typeSn:String?
     
     override func viewDidLoad() {
@@ -52,15 +54,28 @@ class XBAddDeviceViewController: UIViewController {
             if flag {
                 let qrVC = XBQRCodeScanViewController()
                 qrVC.returnScan = {[weak self] scan in
-                    self?.snField.text = "00010A0o4i1muso"
+                    self?.snField.text = scan
                 }
                 self?.navigationController?.pushViewController(qrVC, animated: true)
             }
         }
         
-        
+    }
+
+    @IBAction func textTapReturnKey(_ sender: UITextField) {
+        submit(submitButton)
     }
     
+    @IBAction func submit(_ sender: UIButton) {
+        addDevice(sn: snField.text ?? "")
+    }
+    
+    @IBAction func back(_ sender: UIButton) {
+        navigationController!.popViewController(animated: true)
+    }
+    
+    
+    //MARK: - Camera Access
     func cameraAvailable() -> Bool {
         let available = UIImagePickerController.isSourceTypeAvailable(.camera)
         if !available {
@@ -89,39 +104,32 @@ class XBAddDeviceViewController: UIViewController {
             }
         }
     }
-    
-    @IBAction func submit(_ sender: UIButton) {
-        addDevice(sn: snField.text ?? "")
-    }
-    
-    @IBAction func back(_ sender: UIButton) {
-        navigationController!.popViewController(animated: true)
-    }
-    
+
     //MARK: - Private
     private func addDevice(sn:String) {
         
-        if let logData = XBLoginManager.shared.currentLoginData {
-            let params:Dictionary = ["token":logData.token,
-                                     "sn":sn]
-            
-            SVProgressHUD.show()
-            XBNetworking.share.postWithPath(path: DEVICE_ADD, paras: params,
-                                            success: {[weak self]result in
-                                                
-                                                let json:JSON = result as! JSON
-                                                let message = json[Message].stringValue
-                                                if json[Code].intValue == bindDevice {
-                                                    SVProgressHUD.showSuccess(withStatus: message)
-                                                    self!.checkUserInfo(logData.token)
-                                                } else {
-                                                    SVProgressHUD.showError(withStatus: message)
-                                                }
-                }, failure: { (error) in
-                    SVProgressHUD.showError(withStatus: error.localizedDescription)
-            })
-
+        if (sn as NSString).length < 20 {
+            UIAlertView(title: "sn长度小于20位", message: nil, delegate: nil, cancelButtonTitle: "DONE").show()
+            return
         }
+        
+        let params:Dictionary = ["token":token,
+                                 "sn_all":sn]
+        
+        SVProgressHUD.show()
+        XBNetworking.share.postWithPath(path: DEVICE_ADD, paras: params,
+                                        success: {[weak self] json in
+    
+                                            let message = json[Message].stringValue
+                                            let code = json[Code].intValue
+                                            if code == normalSuccess || code == 1002 {
+                                                self!.checkUserInfo(self!.token)
+                                            } else {
+                                                SVProgressHUD.showError(withStatus: message)
+                                            }
+            }, failure: { (error) in
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+        })
 
     }
     
@@ -129,7 +137,8 @@ class XBAddDeviceViewController: UIViewController {
         
         XBUserManager.shared.fetchUserFromServer(token: token, handler: { (user, error) in
             if error == nil {
-                self.navigationController!.popViewController(animated: true)
+                let bleVC = CBCentralViewController()
+                self.navigationController!.pushViewController(bleVC, animated: true)
             }
         })
         

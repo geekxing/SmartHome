@@ -15,6 +15,7 @@ import MJRefresh
 class XBConcernMeViewController: UIViewController {
     
     static let reuseHeaderId = "reuseHeaderId"
+    let token = XBLoginManager.shared.currentLoginData!.token
     
     var loginUser: XBUser? {
         return XBUserManager.shared.loginUser()
@@ -41,6 +42,11 @@ class XBConcernMeViewController: UIViewController {
         loadData()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = CGRect(x: 0, y: 32, width: view.width, height: view.height-32)
+    }
+    
     //MARK: - Setup
     
     private func setupShadow() {
@@ -53,7 +59,7 @@ class XBConcernMeViewController: UIViewController {
     }
     
     private func setupTableView() {
-        tableView = UITableView(frame: CGRect(x: 0, y: 32, width: view.width, height: view.height-32))
+        tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.delegate = self
         tableView.dataSource = self
@@ -73,6 +79,8 @@ class XBConcernMeViewController: UIViewController {
         tableView.register(XBConcernMeCell.self, forCellReuseIdentifier: ConcernMe)
     }
     
+    
+    //MARK: - Data
     func loadData() {
         if self.parent!.isKind(of: XBRelationNoticeController.self) {
             let parentVc = self.parent as! XBRelationNoticeController
@@ -131,9 +139,7 @@ class XBConcernMeViewController: UIViewController {
         let array = data[XBData].arrayValue
         var dataArray = [XBRelationConcernModel]()
         for userData in array {
-            let email = userData["email"].stringValue
-            XBUserManager.shared.addUser(userJson: userData)
-            let user = XBUserManager.shared.user(uid: email)
+            let user = XBUserManager.shared.user(userData)
             let model = XBRelationConcernModel()
             model.user = user
             model.tag = tag
@@ -165,9 +171,7 @@ class XBConcernMeViewController: UIViewController {
         let params:Dictionary = ["token":token,
                                  "email":otherEmail,
                                  "handle":handle]
-        XBNetworking.share.postWithPath(path: HANDLE, paras: params, success: { [weak self](result) in
-            let json = result as! JSON
-            debugPrint(json)
+        XBNetworking.share.postWithPath(path: HANDLE, paras: params, success: { [weak self] (json) in
             let message = json[Message].stringValue
             if json[Code].intValue == normalSuccess {
                 self?.loadData()
@@ -196,9 +200,7 @@ class XBConcernMeViewController: UIViewController {
         let params:Dictionary = ["token":token,
                                  "email":otherEmail,
                                  "type":type ]
-        XBNetworking.share.postWithPath(path: CANCEL, paras: params, success: { [weak self](result) in
-            let json = result as! JSON
-            debugPrint(json)
+        XBNetworking.share.postWithPath(path: CANCEL, paras: params, success: { [weak self](json) in
             let message = json[Message].stringValue
             if json[Code].intValue == normalSuccess {
                 self?.loadData()

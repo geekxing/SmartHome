@@ -16,10 +16,6 @@ class XBMultiReportView: UIScrollView {
     private var dateLabel:UILabel!
     private var countLabel:UILabel!
     
-    var beginDate:Date?
-    var endDate:Date?
-    var count = 0
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -39,17 +35,21 @@ class XBMultiReportView: UIScrollView {
         max = makeButton(#imageLiteral(resourceName: "up"), title: "最高值")
         avg = makeButton(#imageLiteral(resourceName: "mid"), title: "平均值")
         min = makeButton(#imageLiteral(resourceName: "down"), title: "最低值")
+
+        self.dateLabel.text = "*月*日" + " - *月*日"
+        self.dateLabel.sizeToFit()
+        self.countLabel.text = "共计次数：*次"
+        self.countLabel.sizeToFit()
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(1.0 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-            
-            if let begin = self.beginDate, let end = self.endDate {
-                self.dateLabel.text = "\(begin.month)月\(begin.day)日" + " - \(end.month)月\(end.day)日"
-                self.dateLabel.sizeToFit()
-            }
-            self.countLabel.text = "共计次数：\(self.count)次"
-            self.countLabel.sizeToFit()
-            
-        })
+    }
+    
+    func refresh(_ begin:Date, end:Date, count:Int) {
+
+        self.dateLabel.text = "\(begin.month)月\(begin.day)日" + " - \(end.month)月\(end.day)日"
+        self.dateLabel.sizeToFit()
+        self.countLabel.text = "共计次数：\(count)次"
+        self.countLabel.sizeToFit()
+        
     }
     
     override func layoutSubviews() {
@@ -66,6 +66,8 @@ class XBMultiReportView: UIScrollView {
         min.right = width - 25
         min.top = avg.bottom + 16
     }
+    
+    //MARK:- Private
     
     private func makeButton(_ img:UIImage, title:String) -> UIButton {
         let btn = UIButton()

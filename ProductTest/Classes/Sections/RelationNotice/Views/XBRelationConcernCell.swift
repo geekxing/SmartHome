@@ -18,7 +18,7 @@ class XBRelationConcernCell: UITableViewCell {
     var model:XBRelationConcernModel! {
         didSet {
             let user = model.user!
-            avatarView.setHeader(url: XBImagePrefix + user.image, uid:user.email)
+            avatarView.setHeader(url: user.image, uid:user.email)
             nameLabel.text = user.name ?? user.Name()
             nameLabel.sizeToFit()
             emailLabel.text = user.email!
@@ -33,16 +33,18 @@ class XBRelationConcernCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
 
     func setup() {
+        self.selectionStyle = .none
         avatarView = UIImageView(frame: CGRect.zero)
         avatarView.isUserInteractionEnabled = true
         nameLabel = UILabel()
-        nameLabel.font = UIFontSize(size: 16)
+        nameLabel.font = UIFontSize(16)
         nameLabel.textColor = XB_DARK_TEXT
         emailLabel = UILabel()
-        emailLabel.font = UIFontSize(size: 11)
+        emailLabel.font = UIFontSize(11)
         emailLabel.textColor = UIColorHex("595757", 1.0)
         shadowLineview = UIImageView(image: UIImage(named: "horizontalShadow"))
         shadowLineview.isHidden = true

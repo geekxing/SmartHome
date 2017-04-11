@@ -11,43 +11,78 @@ import SVProgressHUD
 
 class XBMultiSelectHealthHistoryController: XBSingleSelectHealthHistoryController {
     
-    fileprivate var minTapIndex     = -1
-    fileprivate var nowTapIndex     = -1
-    fileprivate var previouTapIndex = -1
+    var selItemIdxSet = IndexSet(integer: 0)
+    override var url:String {
+        return type == .me ? DEVICE_DATA : DEVICE_OTHERDATA
+    }
+    
+    override var params:[String:String] {
+        
+        let startTime = headerView.beginDate.string(format: .custom("MM/dd/yyyy"))
+        let endTime =  headerView.endDate.string(format: .custom("MM/dd/yyyy"))
+        
+        var params:Dictionary = ["token":token,
+                                 "startTime":startTime,
+                                 "endTime":endTime]
+        if type == .other {
+            params["email"] = other!.email
+        }
+        return params
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
     
     override func setupHeader() {
         headerView = XBHealthCareHeaderView(.multiple)
         headerView.frame = CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 198)
     }
     
+    override func beginSearch() {
+        
+        if self.group.count == 0 {
+            self.view.makeToast("There is no data")
+            return
+        }
+        let selectModels = (group as NSArray).objects(at: selItemIdxSet) as! [XBSleepData]
+        if selectModels.count <= 1 {
+            UIAlertView(title: "请选择至少两个条目", message: nil, delegate: nil, cancelButtonTitle: "DONE").show()
+        } else {
+            let mutiVC = XBMultiReportViewController()
+            mutiVC.modelArray = selectModels
+            self.navigationController?.pushViewController(mutiVC, animated: true)
+        }
+        
+    }
+    
     //MARK: - Private
     fileprivate func makeCellChosen() {
-        
-        var chooseNum  = 0;
+
+        //1.清理所有条目的选中状态
         for item in group {
-            if item.selected == true {
-                chooseNum += 1
-            }
             item.selected = false
         }
-        let beginIndex = minTapIndex
-        let endIndex   = chooseNum == 1 && previouTapIndex - nowTapIndex > 0 ? previouTapIndex : nowTapIndex
-        
-        for i in beginIndex ... endIndex {
-            group[i].selected = true
-        }
-        if previouTapIndex == nowTapIndex && (endIndex - beginIndex == 0) {
-            group[nowTapIndex].selected = !group[nowTapIndex].selected
-            if group[nowTapIndex].selected == false {
-                nowTapIndex = -1
-                minTapIndex = -1
-                previouTapIndex = -1
+        //2.判断当前点选条目的选中状态
+        if selItemIdxSet.count == 0 {
+            selItemIdxSet.insert(nowTapIndex)
+        } else if selItemIdxSet.contains(nowTapIndex) {
+            selItemIdxSet.remove(nowTapIndex)
+        } else {
+            if nowTapIndex < selItemIdxSet.first! {
+                selItemIdxSet.insert(integersIn: nowTapIndex ..< selItemIdxSet.first!)
+            } else if nowTapIndex > selItemIdxSet.last! {
+                selItemIdxSet.insert(integersIn: selItemIdxSet.last!+1 ... nowTapIndex)
+            } else {
+                selItemIdxSet.insert(nowTapIndex)
             }
+        }
+        
+        if selItemIdxSet.count != 0 {
+            selItemIdxSet.forEach({ (idx) in
+                group[idx].selected = true
+            })
         }
         
         tableView.reloadData()
@@ -63,19 +98,8 @@ extension XBMultiSelectHealthHistoryController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         nowTapIndex = indexPath.row
-        minTapIndex = min(nowTapIndex, minTapIndex)
-        if minTapIndex == -1 {
-            minTapIndex = nowTapIndex
-        }
-        
-        let date = dateFormatter?.date(from: self.group[indexPath.row].date)
-        
-        var configDate = (indexPath.row == minTapIndex) ? headerView.beginDate : headerView.endDate
-        headerView.setDate(date!, for: &configDate)
         
         makeCellChosen()
-        
-        previouTapIndex = nowTapIndex
         
     }
     

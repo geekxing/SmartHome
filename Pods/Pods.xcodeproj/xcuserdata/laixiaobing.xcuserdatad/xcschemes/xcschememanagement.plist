@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>CocoaLumberjack.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>DropDown.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,27 +92,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>06F20CC96D2DD3A53BB3BAC792257519</key>
+		<key>1192399218016C46455872C4313054CB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>13757B543E934BBC66B9F911FA70835C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>1D49ED62178F8CC4141BC92D3578FC06</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>23D2C1E5CB1B73CA5D709E36A249A6D7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3A9C70BB7792F0177E9CD1C4FF002D76</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,7 +112,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>70AA6B0ADD53CDE09C69C4456EFF351F</key>
+		<key>545109141B456ED513D5CB9C58E0B8D7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5F7A71129A5A490E3C05DF43E7CC74CD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>84A11D3C41AB948358A0588124693C5D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -142,22 +142,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C2C684138BE0E76FA4783573A07E28AF</key>
+		<key>B8CCFBC0CF82F9FD1A946BD2A868649C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C71526EAE7A0B382C1B3270E73BE5DC2</key>
+		<key>BBE7230FB9A3FF190A41D3F9F5F1789E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D27AADF5A6A9F2D2667081DEB50C0604</key>
+		<key>C20915CC2DA3F81D0532F146255DC43E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DAD11451CC7C02CC537FD6B2CFC7EB2C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>E14A62900910444707A5504D25EC98DC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E7EDF6ABBFF798456E95DE7CDF048A6B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -13,6 +13,7 @@
 #import "SVProgressHUD.h"
 #import "BLEInfoManagerViewController.h"
 #import "BLEInfoCell.h"
+#import "ProductTest-Swift.h"
 
 @interface CBCentralViewController()<UITableViewDelegate,UITableViewDataSource>
 
@@ -35,15 +36,15 @@
 }
 -(void)viewDidAppear:(BOOL)animated {
     
-    BLECentralManager * manager = [BLECentralManager shareInstance];
-    [manager cancelAllConnect];  
-    if (manager.bluetoothState == BluetoothStateOpen) {
-        [manager startScan];
-    }else if (manager.bluetoothState == BluetoothStateUnknown) {
-        NSLog(@"蓝牙状态未知");
-    }else if (manager.bluetoothState == BluetoothStateClose) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_not_reachable",nil)];
-    }
+//    BLECentralManager * manager = [BLECentralManager shareInstance];
+//    [manager cancelAllConnect];  
+//    if (manager.bluetoothState == BluetoothStateOpen) {
+//        [manager startScan];
+//    }else if (manager.bluetoothState == BluetoothStateUnknown) {
+//        NSLog(@"蓝牙状态未知");
+//    }else if (manager.bluetoothState == BluetoothStateClose) {
+//        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_not_reachable",nil)];
+//    }
 }
 
 - (void)viewDidLoad {
@@ -140,6 +141,49 @@
     }
     [dataSource addObjectsFromArray:arr];
     [myTableView reloadData];
+    
+    NSInteger index = [self checkIfBindingDeviceAppear:dataSource];
+    if (index != NSNotFound) {
+        [self connectBLEWhenTap:[NSIndexPath indexPathForRow:index inSection:0]];
+    }
+}
+
+- (NSInteger )checkIfBindingDeviceAppear:(NSArray*)devices {
+
+    NSString *sn = [[XBUserManager shared].loginUser Device].firstObject;
+    __block NSInteger indexOfMyDevice = NSNotFound;
+    [devices enumerateObjectsUsingBlock:^(BLEDeviceInfo* obj, NSUInteger idx, BOOL * stop) {
+        NSString *nameLast8 = [obj.peripheral.name substringFromIndex:obj.peripheral.name.length - 8];
+        NSString *snLast8  = [sn substringFromIndex:sn.length - 8];
+        if ([nameLast8 isEqualToString:snLast8]) {
+            indexOfMyDevice = idx;
+            *stop = YES;
+        }
+    }];
+    return indexOfMyDevice;
+    
+}
+
+- (void)connectBLEWhenTap:(NSIndexPath*)indexPath {
+    _currentIndex=indexPath.row;
+    if (_currentIndex >= 0 && _currentIndex < dataSource.count) {
+        BLEDeviceInfo *info = [dataSource objectAtIndex:_currentIndex];
+        NSLog(@"%@",info);
+        //蓝牙连接处理
+        [[BLECentralManager shareInstance] beginConnectWithPeripheral:info.peripheral connectCompleted:^(CBPeripheral *peripheral, BOOL success, NSError *error) {
+            [SVProgressHUD show];
+            if (success) {
+                [SVProgressHUD showSuccessWithStatus:@"连接成功"];
+                BLEInfoManagerViewController * bleInfoManager = [[BLEInfoManagerViewController alloc] init];
+                bleInfoManager.numOfVCNeedPop = 2;
+                [self.navigationController pushViewController:bleInfoManager animated:YES];
+            }else{
+                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_connect_fail",nil)];
+                NSLog(@"蓝牙连接失败=%@",error);
+            }
+        }];
+    }
+    _currentIndex = -1;
 }
 
 #pragma mark - 数据初始化
@@ -196,25 +240,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _currentIndex=indexPath.row;
-    if (_currentIndex >= 0 && _currentIndex < dataSource.count) {
-        BLEDeviceInfo *info = [dataSource objectAtIndex:_currentIndex];
-        NSLog(@"%@",info);
-        //蓝牙连接处理
-        [[BLECentralManager shareInstance] beginConnectWithPeripheral:info.peripheral connectCompleted:^(CBPeripheral *peripheral, BOOL success, NSError *error) {
-            [SVProgressHUD show];
-            if (success) {
-                [SVProgressHUD showSuccessWithStatus:@"连接成功"];
-                BLEInfoManagerViewController * bleInfoManager = [[BLEInfoManagerViewController alloc] init];
-                bleInfoManager.numOfVCNeedPop = 2;
-                [self.navigationController pushViewController:bleInfoManager animated:YES];
-            }else{
-                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_connect_fail",nil)];
-                NSLog(@"蓝牙连接失败=%@",error);
-            }
-        }];
-    }
-    _currentIndex = -1;
+    [self connectBLEWhenTap:indexPath];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

@@ -34,18 +34,18 @@ class XBDateSelectView: UIView {
     private let monthLabel = UILabel()
     private let dayLabel  = UILabel()
     
-    
     private var selectButton:UIButton!
     private var btnClickTimes = 0
     
     var date:Date? {
         didSet {
-            let cmps = XBOperateUtils.shared.components(for: date!)
-            yearField.text = "\(cmps.year)"
-            monthField.text = "\(cmps.month)"
-            dayField.text   = "\(cmps.day)"
+            yearField.text = "\(date!.year)"
+            monthField.text = "\(date!.month)"
+            dayField.text   = "\(date!.day)"
         }
     }
+    
+    var beginDate:Date?
     
     lazy var toolbar:UIToolbar? = {
         let tool = UIToolbar(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 44))
@@ -67,6 +67,7 @@ class XBDateSelectView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
     
     override func layoutSubviews() {
@@ -118,7 +119,7 @@ class XBDateSelectView: UIView {
     }
     
     private func commonInitField(_ textfield:XBRoundedTextField) {
-        textfield.font = UIFontSize(size: 14)
+        textfield.font = UIFontSize(14)
         textfield.textColor = UIColorHex("777777", 1.0)
         textfield.textAlignment = .center
         textfield.isEnabled = false
@@ -140,6 +141,7 @@ class XBDateSelectView: UIView {
     }
     
     private func showCalendar() {
+        datePicker!.minimumDate = beginDate
         datePicker!.date = date!
         textField.inputView = datePicker
         textField.inputAccessoryView = self.toolbar
@@ -162,6 +164,7 @@ class XBDateSelectView: UIView {
         if self.didPickDateBlock != nil {
             self.didPickDateBlock!(self.date!)
         }
+        NotificationCenter.default.post(name: Notification.Name(rawValue: XBDateSelectViewDidSelectDate), object: date!)
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -171,7 +174,5 @@ class XBDateSelectView: UIView {
         }
         return view
     }
-    
-    
 
 }

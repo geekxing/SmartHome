@@ -7,12 +7,9 @@
 //
 
 import UIKit
-import Alamofire
 import Toast_Swift
 import SVProgressHUD
 import SwiftyJSON
-
-let token = XBLoginManager.shared.currentLoginData!.token
 
 class XBMainViewController: XBBaseViewController {
     
@@ -33,18 +30,16 @@ class XBMainViewController: XBBaseViewController {
         view.backgroundColor = UIColor.white
         setupMainView()
         setupNaviItem()
-        mainView.tapAvatar = { [weak self](user) in
-            let editUserVC = XBEditUserInfoViewController()
-            editUserVC.loginUser = user
-            self?.navigationController?.pushViewController(editUserVC, animated: true)
+        mainView.tapAvatar = { [weak self] (_) in
+            self!.editUser()
         }
         view.addSubview(mainView)
         
         NotificationCenter.default.addObserver(self, selector: #selector(onUserInfoUpdated(notification:)), name: NSNotification.Name(rawValue: XBUserInfoHasChangedNotification), object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if self.isMember(of: XBMainViewController.self) {
             //登录主页面后禁止侧滑手势，需要点击左上角“注销”按钮退出！
             (self.navigationController! as! XBNavigationController).shouldPopBlock = {}
@@ -54,14 +49,12 @@ class XBMainViewController: XBBaseViewController {
     public func setupMainView() {
         mainView = XBMainView(frame: view.bounds)
         self.mainView.clickSquare = {[weak self] in
-            let title = $0.titleLabel?.text
             switch $0.tag {
             case 0: self!.smartMattress()
             case 3: self!.relationConcern()
             case 4: self!.productVersion()
             default: break
             }
-            self?.view.makeToast(title!)
         }
     }
     
@@ -85,18 +78,26 @@ class XBMainViewController: XBBaseViewController {
     }
     
     //MARK: - Private
+    
+    private func editUser() {
+        
+        let editUserVC = XBEditUserInfoViewController()
+        editUserVC.loginUser = mainView.currentUser
+        self.navigationController?.pushViewController(editUserVC, animated: true)
+        
+    }
 
     @objc private func settings() {
-        
+        editUser()
     }
     
     @objc private func back() {
         
-        let params:Dictionary = ["token":XBLoginManager.shared.currentLoginData!.token]
+        let params:Dictionary = ["token":token]
         
+        SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: LOGOUT, paras: params,
-                                        success: {[weak self]result in
-                                            let json:JSON = result as! JSON
+                                        success: {[weak self] json in
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == 1 {
                                                 let current = XBLoginManager.shared.currentLoginData
@@ -127,4 +128,5 @@ class XBMainViewController: XBBaseViewController {
         let vc = XBProductVersionController()
         navigationController?.pushViewController(vc, animated: true)
     }
+    
 }

@@ -22,14 +22,6 @@ class XBRealDetailTableCell: XBRealDataTableCell {
     var noBody:XBSquareButton!
     var realtimeState:XBDisplayRealStateView!
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -51,13 +43,15 @@ class XBRealDetailTableCell: XBRealDataTableCell {
     
     override func setup() {
         super.setup()
+        valueLabel.isHidden =  true
         self.shouldEnableEcgDisplay = false
-        offline = self.pileButton(#imageLiteral(resourceName: "dot2"), title: "离线")
+        offline = self.pileButton(#imageLiteral(resourceName: "offline"), title: "离线")
         onBed = self.pileButton(#imageLiteral(resourceName: "onBed"), title: "在床")
         motivate = self.pileButton(#imageLiteral(resourceName: "motivate"), title: "体动")
         noBody = self.pileButton(#imageLiteral(resourceName: "nobody"), title: "无人")
         realtimeState = XBDisplayRealStateView(frame: CGRect.zero)
         addSubview(realtimeState)
+        
     }
     
     

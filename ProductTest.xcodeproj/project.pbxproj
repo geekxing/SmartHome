@@ -15,10 +15,12 @@
 		1A018D8A1E2C57E100B1629D /* XBRelationConcernModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A018D891E2C57E100B1629D /* XBRelationConcernModel.swift */; };
 		1A018D8C1E2C59E400B1629D /* XBRelationConcernCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A018D8B1E2C59E400B1629D /* XBRelationConcernCell.swift */; };
 		1A018D8E1E2C5D3900B1629D /* XBApplyConcernCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A018D8D1E2C5D3900B1629D /* XBApplyConcernCell.swift */; };
+		1A0426801E96091500D2FC9B /* NSObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A04267F1E96091500D2FC9B /* NSObject+Extension.swift */; };
 		1A10733A1E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1073381E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift */; };
 		1A10733B1E5A0AF400D06DBB /* XBDeleteDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A1073391E5A0AF400D06DBB /* XBDeleteDeviceViewController.xib */; };
 		1A14D6421DE6B81E00CE719B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A14D6411DE6B81E00CE719B /* MBProgressHUD.m */; };
 		1A14D6441DE6C10700CE719B /* MBProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A14D6431DE6C10700CE719B /* MBProgressHUD+Extension.swift */; };
+		1A1A944F1E9637C60076DD86 /* XBLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A944E1E9637C60076DD86 /* XBLog.swift */; };
 		1A31D5801DE440F900B9BB33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A31D57F1DE440F900B9BB33 /* AppDelegate.swift */; };
 		1A31D5871DE440F900B9BB33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A31D5861DE440F900B9BB33 /* Assets.xcassets */; };
 		1A31D58A1DE440F900B9BB33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A31D5881DE440F900B9BB33 /* LaunchScreen.storyboard */; };
@@ -148,12 +150,14 @@
 		1A018D891E2C57E100B1629D /* XBRelationConcernModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRelationConcernModel.swift; sourceTree = "<group>"; };
 		1A018D8B1E2C59E400B1629D /* XBRelationConcernCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRelationConcernCell.swift; sourceTree = "<group>"; };
 		1A018D8D1E2C5D3900B1629D /* XBApplyConcernCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBApplyConcernCell.swift; sourceTree = "<group>"; };
+		1A04267F1E96091500D2FC9B /* NSObject+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
 		1A1073381E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBDeleteDeviceViewController.swift; sourceTree = "<group>"; };
 		1A1073391E5A0AF400D06DBB /* XBDeleteDeviceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBDeleteDeviceViewController.xib; sourceTree = "<group>"; };
 		1A14D63F1DE6B81E00CE719B /* MBProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
 		1A14D6401DE6B81E00CE719B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		1A14D6411DE6B81E00CE719B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		1A14D6431DE6C10700CE719B /* MBProgressHUD+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+Extension.swift"; sourceTree = "<group>"; };
+		1A1A944E1E9637C60076DD86 /* XBLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBLog.swift; sourceTree = "<group>"; };
 		1A31D57C1DE440F900B9BB33 /* ProductTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProductTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A31D57F1DE440F900B9BB33 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A31D5861DE440F900B9BB33 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -534,6 +538,7 @@
 				1AC239F61E8FAAEC005C7AD5 /* UITextField+Extension.swift */,
 				1A9923241E92275B00C1E02B /* UIDevice+Extension.swift */,
 				1AFA7F771E935EC9000F7B9F /* NSString+Extension.swift */,
+				1A04267F1E96091500D2FC9B /* NSObject+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -547,6 +552,7 @@
 				1A9BCADF1E2B37D70001A880 /* XBOperateUtils.swift */,
 				1ABA44C11E83C3CC009AED65 /* Math.swift */,
 				1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */,
+				1A1A944E1E9637C60076DD86 /* XBLog.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1001,6 +1007,7 @@
 				1ABA44C01E83A710009AED65 /* XBSingleReportView.swift in Sources */,
 				1A99230D1E91EE1400C1E02B /* AlertHelper.m in Sources */,
 				1A018D881E2BB9AD00B1629D /* XBTableGroupItem.swift in Sources */,
+				1A0426801E96091500D2FC9B /* NSObject+Extension.swift in Sources */,
 				1A3F78BA1E8E2500000AD173 /* XBRequestURLs.swift in Sources */,
 				1ABA44C91E8407B1009AED65 /* XBDoubleSetLineView.swift in Sources */,
 				1A10733A1E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift in Sources */,
@@ -1015,6 +1022,7 @@
 				1A99230F1E91EE1400C1E02B /* UIActionSheet+Blocks.m in Sources */,
 				1ABA44C21E83C3CC009AED65 /* Math.swift in Sources */,
 				1A8AC67F1DE809E4009CC8F6 /* XBNetworking.swift in Sources */,
+				1A1A944F1E9637C60076DD86 /* XBLog.swift in Sources */,
 				1AFB62271E62723400AB254E /* XBSleepHistoryTableCell.swift in Sources */,
 				1AEC2C801E614B48005E181D /* XBSingleSelectHealthHistoryController.swift in Sources */,
 				1AC7B5BA1E5A7B2C0080BABD /* XBSplitView.swift in Sources */,
@@ -1183,6 +1191,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 996VZ6TFPW;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1209,6 +1218,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 996VZ6TFPW;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

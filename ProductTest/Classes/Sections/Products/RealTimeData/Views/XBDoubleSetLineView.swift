@@ -15,6 +15,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
     private let legend2 = XBButton()
     
     var pointYsB = [Double]()
+    
     var datasB = [0.0] {
         didSet {
             if datasB.count != 0 {
@@ -25,6 +26,10 @@ class XBDoubleSetLineView:XBSingleReportView  {
                 setChartDataB()
             }
         }
+    }
+    
+    override var rightYLabelFormat:String {   //右边坐标label展示数据格式转化的字符串的format
+        return "%.1f"
     }
     
     override func layoutSubviews() {
@@ -78,7 +83,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
         leftAxis.axisMinimum = 0
         leftAxis.labelCount = 5
         leftAxis.labelPosition = .outsideChart
-        leftAxis.labelFont = UIFontSize(size: 10)
+        leftAxis.labelFont = UIFontSize(10)
         leftAxis.labelTextColor = XB_DARK_TEXT
         leftAxis.valueFormatter = XBHourValueFormatter()
         leftAxis.drawGridLinesEnabled = false
@@ -94,7 +99,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
         legend1.xb_imageView.width = #imageLiteral(resourceName: "legend2").size.width
         legend1.xb_label.text = "睡眠总时长"
         legend1.xb_label.textColor = XB_DARK_TEXT
-        legend1.xb_label.font = UIFontSize(size: 10)
+        legend1.xb_label.font = UIFontSize(10)
         legend1.xb_label.textAlignment = .right
         legend1.xb_label.sizeToFit()
         
@@ -102,7 +107,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
         legend2.xb_imageView.sizeToFit()
         legend2.xb_label.text = "深度睡眠时长"
         legend2.xb_label.textColor = XB_DARK_TEXT
-        legend2.xb_label.font = UIFontSize(size: 10)
+        legend2.xb_label.font = UIFontSize(10)
         legend2.xb_label.textAlignment = .right
         legend2.xb_label.sizeToFit()
         
@@ -135,6 +140,12 @@ class XBDoubleSetLineView:XBSingleReportView  {
         lineData!.setDrawValues(false)
         lineChart.data = lineData
         
+    }
+    
+    //MARK: - Misc
+    
+    override func makeScoreAttributeString(score:String, text:String) -> NSAttributedString {
+        return NSMutableAttributedString(string: score + text, attributes: [NSFontAttributeName:UIFontSize(10)])
     }
     
 

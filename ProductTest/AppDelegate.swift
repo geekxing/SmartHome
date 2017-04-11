@@ -57,6 +57,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SVProgressHUD.setMaximumDismissTimeInterval(2.0)
         SVProgressHUD.setDefaultAnimationType(.native)
         
+        XBLog.configDDLog()
+        
         setupMainViewController()
         commenInitListenEvents()
         

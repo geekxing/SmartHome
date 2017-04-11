@@ -10,6 +10,8 @@ import UIKit
 
 class XBBaseViewController: UIViewController {
     
+    let token = XBLoginManager.shared.currentLoginData!.token
+    
     var naviBackgroundImage:UIImage? {
         return nil
     }
@@ -22,6 +24,11 @@ class XBBaseViewController: UIViewController {
             return user
         }
         return nil
+    }
+    
+    deinit {
+        XBNetworking.share.cancel()
+        print("deinit")
     }
     
     private var naviBackground:UIImageView!
@@ -39,7 +46,7 @@ class XBBaseViewController: UIViewController {
         titleLabel = UILabel()
         titleLabel.text = naviTitle
         titleLabel.textColor = UIColor.black
-        titleLabel.font = UIFontSize(size: 27)
+        titleLabel.font = UIFontSize(27)
         titleLabel.sizeToFit()
         titleLabel.centerX = naviBackground.centerX
         titleLabel.top = UIRate * 32

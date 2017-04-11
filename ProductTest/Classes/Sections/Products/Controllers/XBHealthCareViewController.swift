@@ -8,9 +8,19 @@
 
 import UIKit
 
+public enum XBCheckReportType:Int {
+    
+    case me
+    case other
+    
+}
+
 class XBHealthCareViewController: XBBaseViewController {
     
     static let splitViewH          = CGFloat(69)
+    
+    var other:XBUser? = XBUserManager.shared.loginUser()
+    var type:XBCheckReportType = .me
     
     private var singleVC:XBSingleSelectHealthHistoryController!
     private var multiVC:XBMultiSelectHealthHistoryController!
@@ -32,6 +42,13 @@ class XBHealthCareViewController: XBBaseViewController {
     private var childViews:[UIView] = []
     private var splitView:XBSplitView!
     private var scollView:UIScrollView!
+    
+    ///查看他人信息的初始化方法
+    convenience init(_ user:XBUser?, type:XBCheckReportType) {
+        self.init()
+        self.other = user
+        self.type = type
+    }
     
     //MARK: - Life Cycle
 
@@ -100,8 +117,8 @@ class XBHealthCareViewController: XBBaseViewController {
     }
 
     private func setupChildViewControllers() {
-        singleVC = XBSingleSelectHealthHistoryController()
-        multiVC  = XBMultiSelectHealthHistoryController()
+        singleVC = XBSingleSelectHealthHistoryController(other, type: type)
+        multiVC  = XBMultiSelectHealthHistoryController(other, type: type)
         
         self.addChildViewController(singleVC)
         self.addChildViewController(multiVC)

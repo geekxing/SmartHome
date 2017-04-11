@@ -149,6 +149,10 @@
         if (cellIndex == 2) {
             cellIndex = 0;
             [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"hk_modify_success",nil)];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSInteger index = [self.navigationController.childViewControllers indexOfObject:self];
+                [self.navigationController popToViewController:self.navigationController.childViewControllers[index - 3] animated:YES];
+            });
         }else if ( cellIndex == 1 ){
             [self sendText:_secInfo andScript:BLE_SET_CODE_WIFI_PWD];
         }

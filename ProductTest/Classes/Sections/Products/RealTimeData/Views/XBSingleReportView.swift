@@ -13,19 +13,22 @@ class XBSingleReportView: UIView {
     
     //MARK: - Properties
     let drawHeight = CGFloat(145.0)  //Debug测得的实际绘图区域高度
+    var rightYLabelFormat:String {   //右边坐标label展示数据格式转化的字符串的format
+        return "%.0f"
+    }
     var title: String = "" {
         didSet {
             titleLabel.text = title
             titleLabel.sizeToFit()
         }
     }
-    var beginValue = -1
+    var beginValue = -1.0
     var lineDataSet:LineChartDataSet?
     var lineData:LineChartData?
     
-    private(set) var maxPoint = 0
-    private(set) var avgPoint = 0
-    private(set) var lowPoint = 0
+    private(set) var maxPoint = 0.0
+    private(set) var avgPoint = 0.0
+    private(set) var lowPoint = 0.0
     private(set) var xScale = CGFloat(0.0)
     private(set) var yScale = CGFloat(0.0)
     private(set) var pointYs = [Double]()
@@ -40,27 +43,30 @@ class XBSingleReportView: UIView {
             if datas.count != 0 {
                 
                 xScale = (self.width-90)/CGFloat(datas.count) //比例：宽度/x轴分度
-                maxPoint = Int(maxOf(numbers: datas))
-                avgPoint = Int(averageOf(numbers: datas))
-                lowPoint = Int(minOf(numbers: datas))
+                maxPoint = maxOf(numbers: datas)
+                avgPoint = averageOf(numbers: datas)
+                lowPoint = minOf(numbers: datas)
                 if beginValue == -1 {
                     beginValue = lowPoint
                 }
                 //算出y轴最值
-                let maxY = max(lineChart.leftAxis.axisMaximum, lineChart.rightAxis.axisMaximum, Double(maxPoint))
-                yScale = drawHeight / CGFloat(maxY-Double(beginValue)) //比例：高度/y轴分度
+                let maxY = max(lineChart.leftAxis.axisMaximum, lineChart.rightAxis.axisMaximum, maxPoint)
+                yScale = maxY-beginValue == 0 ? 0 : drawHeight / CGFloat(maxY-beginValue) //比例：高度/y轴分度
                 for value in datas {
-                    let newValue = value - Double(beginValue)
+                    let newValue = value - beginValue
                     pointYs.append(newValue)
                 }
                 setChartData()
                 drawLimitLine()
                 
-                maxButton.setAttributedTitle(self.makeScoreAttributeString(score: "\(maxPoint)", text: danwei), for: .normal)
+                let maxStr = String(format: rightYLabelFormat, maxPoint)
+                let avgStr = String(format: rightYLabelFormat, avgPoint)
+                let minStr = String(format: rightYLabelFormat, lowPoint)
+                maxButton.setAttributedTitle(self.makeScoreAttributeString(score: maxStr, text: danwei), for: .normal)
                 maxButton.sizeToFit()
-                avgButton.setAttributedTitle(self.makeScoreAttributeString(score: "\(avgPoint)", text: danwei), for: .normal)
+                avgButton.setAttributedTitle(self.makeScoreAttributeString(score: avgStr, text: danwei), for: .normal)
                 avgButton.sizeToFit()
-                minButton.setAttributedTitle(self.makeScoreAttributeString(score: "\(lowPoint)", text: danwei), for: .normal)
+                minButton.setAttributedTitle(self.makeScoreAttributeString(score: minStr, text: danwei), for: .normal)
                 minButton.sizeToFit()
                 //setNeedsDisplay()
             }
@@ -111,9 +117,9 @@ class XBSingleReportView: UIView {
         addSubview(titleLabel)
         makeChart()
         
-        maxButton = makeButton(#imageLiteral(resourceName: "up"))
-        avgButton = makeButton(#imageLiteral(resourceName: "mid"))
-        minButton = makeButton(#imageLiteral(resourceName: "down"))
+        maxButton = makeButton(#imageLiteral(resourceName: "up_small"))
+        avgButton = makeButton(#imageLiteral(resourceName: "round_small"))
+        minButton = makeButton(#imageLiteral(resourceName: "down_small"))
         addSubview(maxButton)
         addSubview(avgButton)
         addSubview(minButton)
@@ -192,9 +198,9 @@ class XBSingleReportView: UIView {
         return btn
     }
     
-    private func makeScoreAttributeString(score:String, text:String) -> NSAttributedString {
-        let scoreAttri = NSMutableAttributedString(string: score, attributes: [NSFontAttributeName:UIFontSize(size: 20)])
-        let textAttri = NSMutableAttributedString(string: "\n\(text)", attributes: [NSFontAttributeName:UIFontSize(size: 12)])
+    func makeScoreAttributeString(score:String, text:String) -> NSAttributedString {
+        let scoreAttri = NSMutableAttributedString(string: score, attributes: [NSFontAttributeName:UIFontSize(20)])
+        let textAttri = NSMutableAttributedString(string: "\n\(text)", attributes: [NSFontAttributeName:UIFontSize(12)])
         scoreAttri.append(textAttri)
         return scoreAttri
     }

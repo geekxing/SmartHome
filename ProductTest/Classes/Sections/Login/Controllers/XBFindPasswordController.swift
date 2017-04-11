@@ -12,19 +12,39 @@ import SVProgressHUD
 
 class XBFindPasswordController: UIViewController {
 
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var tipLabel: UILabel!
+    @IBOutlet weak var headLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var smallBackground: UIView!
+    
     var email:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        if self.isMember(of: XBFindPasswordController.self) {
+            emailField.text = email
+        }
         backButton.layer.cornerRadius = backButton.height * 0.5
         submitButton.layer.cornerRadius = submitButton.height * 0.5
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        titleLabel.sizeToFit()
+        titleLabel.centerX = view.width * 0.5
+    }
+    
+    //MARK: - Action
+    @IBAction func textDidTapReturnKey(_ sender: UITextField) {
+        submit(submitButton)
+    }
 
     @IBAction func submit(_ sender: UIButton) {
-        email = emailField.text
+        email = emailField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         if (emailField.isBlank()) {
             self.view.makeToast("Message is not Completed")
             return
@@ -34,12 +54,9 @@ class XBFindPasswordController: UIViewController {
         
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: FORGET, paras: params,
-                                        success: {[weak self]result in
-                                            print(result)
-                                            let json:JSON = result as! JSON
+                                        success: {[weak self] json in
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == normalSuccess {
-                                                SVProgressHUD.showSuccess(withStatus: message)
                                                 let verify = XBVerifyCodeViewController(nibName: "XBFindPasswordController", bundle: nil)
                                                 verify.email = self?.email
                                                 self!.navigationController?.pushViewController(verify, animated: true)
@@ -58,4 +75,5 @@ class XBFindPasswordController: UIViewController {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+    
 }

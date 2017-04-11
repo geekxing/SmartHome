@@ -22,6 +22,7 @@ class XBRelationNoticeController: XBBaseViewController {
     }
 
     private var splitView:XBSplitView!
+    fileprivate var realCurIndex = 0
     
     private var currentIndex:Int = -1;
     private var childViews:[UIView] = []
@@ -39,8 +40,14 @@ class XBRelationNoticeController: XBBaseViewController {
         setupScrollView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        splitView.currentIndex = realCurIndex
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        realCurIndex = currentIndex
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     }
     
@@ -50,9 +57,7 @@ class XBRelationNoticeController: XBBaseViewController {
     func getConcern(_ url:String , complete:@escaping ((_ data:JSON?, _ error:Error?)->())) {
         let params:Dictionary = ["token":token]
         
-        XBNetworking.share.postWithPath(path: url, paras: params, success: {(result) in
-            let json = result as! JSON
-            debugPrint(json)
+        XBNetworking.share.postWithPath(path: url, paras: params, success: {(json) in
             let message = json[Message].stringValue
             if json[Code] != 1 {
                 SVProgressHUD.showError(withStatus: message)
@@ -63,42 +68,6 @@ class XBRelationNoticeController: XBBaseViewController {
             complete(nil, error)
         }
     }
-    
-    //MARK: - misc
-    
-//    private func makeTableData(_ json:JSON) {
-//        let applyConcernJson = json[data]["applyConcern"].arrayValue
-//        let concernMeJson = json[data]["concernMe"].arrayValue
-//        let myConcernJson = json[data]["myConcern"].arrayValue
-//        
-//        deal(dataArary: &applyGroup, with: applyConcernJson, and: ApplyConcern)
-//        deal(dataArary: &concernMe, with: concernMeJson, and: ConcernMe)
-//        deal(dataArary: &myConcern, with: myConcernJson, and: MyConcern)
-//    }
-//    
-//    private func deal(dataArary: inout [XBRelationConcernModel], with jsonArray:[JSON], and tag:String) {
-//        let groupItem = XBTableGroupItem()
-//        groupItem.headerTitle = tag
-//        
-//        for i in 0..<jsonArray.count {
-//            let json = jsonArray[i]
-//            let email = json["Email"].stringValue
-//            self.checkUserExistInDB(userJson: json)
-//            let user = XBUserManager.shared.user(uid: email)
-//            
-//            let model = XBRelationConcernModel()
-//            model.tag = tag
-//            model.user = user
-//            dataArary.append(model)
-//        }
-//        groupItem.items = dataArary
-//        tableGroups.append(groupItem)
-//    }
-    
-    private func checkUserExistInDB(userJson:JSON) {
-        XBUserManager.shared.addUser(userJson: userJson)
-    }
-
     
     //MARK: - UI Setting
     

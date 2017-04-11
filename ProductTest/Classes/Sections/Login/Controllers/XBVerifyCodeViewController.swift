@@ -11,45 +11,33 @@ import SVProgressHUD
 import SwiftyJSON
 
 class XBVerifyCodeViewController: XBFindPasswordController {
-
-    let codeField = XBRoundedTextField()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        codeField.placeholder = "Verify code"
-        view.addSubview(codeField)
+        titleLabel.text = "Verify Code"
+        tipLabel.text = "Enter received Verify Code"
+        headLabel.text = "Verify code"
+        headLabel.sizeToFit()
+        ///因为继承方便，此处的emailField 用作验证码的textField
+        emailField.placeholder = "Verify code"
         
-        emailField.isEnabled = false
-        emailField.text = email
-        
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        codeField.width = emailField.width*UIRate
-        codeField.height = 29
-        codeField.centerX = view.centerX
-        codeField.top = UIRateH*200 + 229
     }
     
     @IBAction override func submit(_ sender: UIButton) {
-        if (emailField.isBlank() || codeField.isBlank()) {
+        if (email == nil || emailField.isBlank()) {
             self.view.makeToast("Message is not Completed")
             return
         }
         let params = ["email":email!,
-                      "verifi":codeField.text!]
+                      "verifi":emailField.text!]
         emailField.resignFirstResponder()
         
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: VERIFY_CODE, paras: params,
-                                        success: {[weak self]result in
-                                            print(result)
-                                            let json:JSON = result as! JSON
+                                        success: {[weak self] json in
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == normalSuccess {
-                                                SVProgressHUD.showSuccess(withStatus: message)
                                                 let modifyPwd = XBModifyPasswordViewController(nibName: "XBFindPasswordController", bundle: nil)
                                                 modifyPwd.email = self?.email
                                                 self!.navigationController?.pushViewController(modifyPwd, animated: true)

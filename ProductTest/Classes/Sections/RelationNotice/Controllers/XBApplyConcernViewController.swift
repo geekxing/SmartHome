@@ -12,6 +12,7 @@ import SwiftyJSON
 
 class XBApplyConcernViewController: UIViewController {
     
+    let token = XBLoginManager.shared.currentLoginData!.token
     var loginUser: XBUser? {
         return XBUserManager.shared.loginUser()
     }
@@ -23,8 +24,8 @@ class XBApplyConcernViewController: UIViewController {
     
     private var scrollView:UIScrollView!
     private var lineView:UIView!
-    fileprivate var tableView:UITableView!
     private var searchButton:UIButton!
+    fileprivate var tableView:UITableView!
     
     
     //MARK: - Life Cycle
@@ -34,14 +35,20 @@ class XBApplyConcernViewController: UIViewController {
         setupScrollView()
         setupSearchComponent()
         setupTableView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.frame = view.bounds
         scrollView.contentSize = CGSize(width: view.width, height: view.height+10)
+        tableView.frame = CGRect(x:0, y:lineView.bottom, width:view.width, height:view.height-lineView.bottom)
     }
     
     
     //MARK: - Setup
     
     private func setupScrollView() {
-        scrollView = UIScrollView(frame:view.bounds)
+        scrollView = UIScrollView()
         scrollView.delegate = self
         view.addSubview(scrollView)
     }
@@ -68,7 +75,7 @@ class XBApplyConcernViewController: UIViewController {
     }
     
     private func setupTableView() {
-        tableView = UITableView(frame: CGRect(x:0, y:lineView.bottom, width:view.width, height:view.height-159))
+        tableView = UITableView()
         tableView.contentInset = UIEdgeInsetsMake(27, 0, 0, 0)
         tableView.separatorStyle = .none
         tableView.delegate = self
@@ -85,12 +92,10 @@ class XBApplyConcernViewController: UIViewController {
     //MARK: - Operate
     private func search(email:String, complete:@escaping ((_ email:String)->())){
         let params:Dictionary = ["email":email]
-        XBNetworking.share.postWithPath(path: QUERY, paras: params, success: { (result) in
-            let json = result as! JSON
-            debugPrint(json)
+        XBNetworking.share.postWithPath(path: QUERY, paras: params, success: { [weak self] json in
             let message = json[Message].stringValue
             if json[Code] == 1 {
-                if email != self.loginUser!.email {
+                if email != self!.loginUser!.email {
                     let userData = json[XBData]
                     XBUserManager.shared.addUser(userJson: userData)
                 }
@@ -106,9 +111,7 @@ class XBApplyConcernViewController: UIViewController {
     func apply(email:String) {
         let params:Dictionary = ["token":token,
                                  "email":email]
-        XBNetworking.share.postWithPath(path: APPLY, paras: params, success: {[weak self] (result) in
-            let json = result as! JSON
-            debugPrint(json)
+        XBNetworking.share.postWithPath(path: APPLY, paras: params, success: {[weak self] json in
             let message = json[Message].stringValue
             if json[Code].intValue == normalSuccess {
                 self?.view.makeToast(message, duration: 1.0, position: .center)

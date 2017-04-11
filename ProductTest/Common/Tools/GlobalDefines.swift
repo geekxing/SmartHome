@@ -17,6 +17,35 @@ let UIRateH = SCREEN_HEIGHT / 667
 
 let XB_DARK_TEXT = UIColorHex("333333", 1)
 
+///产品类型枚举
+public enum XBProductType:Int {
+    case bed
+    case pillow
+    case ring
+}
+
+func errorMsg(_ code:Int) -> String {
+    
+    var errorMsg = ""
+    switch code {
+    case 0:
+        errorMsg = "Unknown Error"
+    case 1000:
+        errorMsg = "Invalid Email or Password"
+    case 1001:
+        errorMsg = "Email not exsits"
+    case 1002:
+        errorMsg = "Email already exsits"
+    case 2000:
+        errorMsg = "Error type"
+    case 2001:
+        errorMsg = "Params Empty"
+    default:break
+    }
+    return NSLocalizedString(errorMsg, comment: "")
+    
+}
+
 func RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor{
     return UIColor (red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a)
 }
@@ -53,10 +82,13 @@ func UIColorHex(_ hex:String, _ alpha:CGFloat) -> UIColor {
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
 }
 
-func UIFontSize(size:CGFloat) -> UIFont {
+func UIFontSize(_ size:CGFloat) -> UIFont {
     return UIFont.systemFont(ofSize: size)
 }
 
 //MARK: - Notifications
 
-let XBSearchSleepCareHistoryNotification = "kXBSearchSleepCareHistoryNotification"
+let XBSearchSleepCareHistoryNotification = "kSearchSleepCareHistoryNotification"
+let XBDrawFrequecyDidChanged = "kDrawFrequecyDidChanged"
+let XBDateSelectViewDidSelectDate = "kDateSelectViewDidSelectDate"
+

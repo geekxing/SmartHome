@@ -160,7 +160,7 @@ UIAlertViewDelegate {
     private lazy var textLabel1: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.font = UIFontSize(size: 15*UIRate)
+        label.font = UIFontSize(15*UIRate)
         label.text = "将二维码置于扫描区域"
         return label
     }()
@@ -168,7 +168,7 @@ UIAlertViewDelegate {
     private lazy var textLabel2: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.font = UIFontSize(size: 15*UIRate)
+        label.font = UIFontSize(15*UIRate)
         return label
     }()
     
@@ -255,7 +255,10 @@ UIAlertViewDelegate {
         print("扫描结果：\(metadataObjects)")
         
         if self.returnScan != nil {
-            self.returnScan!("\(metadataObjects)")
+            if let metadata = metadataObjects.first {
+                let metaObj = metadata as! AVMetadataMachineReadableCodeObject
+                self.returnScan!(metaObj.stringValue)
+            }
         }
         
         if metadataObjects.count > 0 {
@@ -267,15 +270,7 @@ UIAlertViewDelegate {
             }
         }
         self.session.stopRunning()
-        //输出结果
-        let alertView = UIAlertView(title: "二维码", message: stringValue,
-                                    delegate: self, cancelButtonTitle: "确定")
-        alertView.show()
-    }
-    
-    //消息框确认后消失
-    func alertView(_ alertView: UIAlertView, willDismissWithButtonIndex buttonIndex: Int) {
-        //继续扫描
         self.navigationController!.popViewController(animated: true)
     }
+    
 }
