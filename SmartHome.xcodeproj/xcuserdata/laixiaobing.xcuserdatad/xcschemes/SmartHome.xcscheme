@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1A31D57B1DE440F900B9BB33"
-               BuildableName = "ProductTest.app"
-               BlueprintName = "ProductTest"
-               ReferencedContainer = "container:ProductTest.xcodeproj">
+               BuildableName = "SmartHome.app"
+               BlueprintName = "SmartHome"
+               ReferencedContainer = "container:SmartHome.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1A31D57B1DE440F900B9BB33"
-            BuildableName = "ProductTest.app"
-            BlueprintName = "ProductTest"
-            ReferencedContainer = "container:ProductTest.xcodeproj">
+            BuildableName = "SmartHome.app"
+            BlueprintName = "SmartHome"
+            ReferencedContainer = "container:SmartHome.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1A31D57B1DE440F900B9BB33"
-            BuildableName = "ProductTest.app"
-            BlueprintName = "ProductTest"
-            ReferencedContainer = "container:ProductTest.xcodeproj">
+            BuildableName = "SmartHome.app"
+            BlueprintName = "SmartHome"
+            ReferencedContainer = "container:SmartHome.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1A31D57B1DE440F900B9BB33"
-            BuildableName = "ProductTest.app"
-            BlueprintName = "ProductTest"
-            ReferencedContainer = "container:ProductTest.xcodeproj">
+            BuildableName = "SmartHome.app"
+            BlueprintName = "SmartHome"
+            ReferencedContainer = "container:SmartHome.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

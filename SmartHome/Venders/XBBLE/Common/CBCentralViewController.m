@@ -13,7 +13,7 @@
 #import "SVProgressHUD.h"
 #import "BLEInfoManagerViewController.h"
 #import "BLEInfoCell.h"
-#import "ProductTest-Swift.h"
+#import "SmartHome-Swift.h"
 
 @interface CBCentralViewController()<UITableViewDelegate,UITableViewDataSource>
 

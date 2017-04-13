@@ -2,7 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, ‘8.0’
 use_frameworks!
 
-target 'ProductTest' do
+target ‘SmartHome’ do
     pod 'Alamofire', '~> 4.0'
     pod 'IQKeyboardManagerSwift'
     pod 'SwiftyJSON'
