@@ -24,23 +24,31 @@ public enum XBProductType:Int {
     case ring
 }
 
-func errorMsg(_ code:Int) -> String {
+func errorMsg(_ url:String, code:Int) -> String {
     
     var errorMsg = ""
-    switch code {
-    case 0:
-        errorMsg = "Unknown Error"
-    case 1000:
-        errorMsg = "Invalid Email or Password"
-    case 1001:
-        errorMsg = "Email not exsits"
-    case 1002:
-        errorMsg = "Email already exsits"
-    case 2000:
-        errorMsg = "Error type"
-    case 2001:
-        errorMsg = "Params Empty"
-    default:break
+    if url == LOGIN {
+        switch code {
+        case 1001:
+            errorMsg = "Email not exsits"
+        case 1000:
+            errorMsg = "Invalid Email or Password"
+        default:break
+        }
+    } else if url == REGIST {
+        switch code {
+        case 1002:
+            errorMsg = "Email already exsits"
+        case 0, 1005:
+            errorMsg = "Server Error"
+        default:break
+        }
+    } else if url == MODIFY {
+        switch code {
+        case 3005:
+            errorMsg = "Server Error"
+        default:break
+        }
     }
     return NSLocalizedString(errorMsg, comment: "")
     

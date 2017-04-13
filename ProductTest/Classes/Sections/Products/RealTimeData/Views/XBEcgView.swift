@@ -12,7 +12,7 @@ class XBEcgView: UIView {
     
     var ecgLine:CALayer?
     
-    var duration:CFTimeInterval = 1.0 {
+    var speed:Float = 1.0 {
         didSet {
             animation()
         }
@@ -22,6 +22,7 @@ class XBEcgView: UIView {
         [0,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,0,2,-10,0,-2,5,-8,0,0,0,0,0,2,-10,0,-2,5,-8]
     
     var xScale:CGFloat = 0
+    var moveAnim:CABasicAnimation?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -50,11 +51,28 @@ class XBEcgView: UIView {
         
         self.backgroundColor = UIColor.white
         NotificationCenter.default.addObserver(self, selector: #selector(changeDrawingMode(_:)), name: Notification.Name.init(rawValue: XBDrawFrequecyDidChanged), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomActive), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
         
     }
     
     @objc private func changeDrawingMode(_ aNote:Notification) {
-        self.duration = (aNote.userInfo!["obj"] as! Double) == 0 ? 0.0 : 140.0 / (aNote.userInfo!["obj"] as! Double)
+        self.speed = (aNote.userInfo!["obj"] as! Float) / 100.0
+    }
+    
+    //MARK: - Notification
+    
+    func didBecomActive() {
+        if let ecg = ecgLine {
+            XBAnimator.resumeAnim(for: ecg, with: 1)
+        }
+        
+    }
+    
+    func didEnterBackground() {
+        
+        XBAnimator.pauseAnim(for: ecgLine)
+        
     }
     
     //MARK: - Draw ECG Graph 
@@ -80,20 +98,25 @@ class XBEcgView: UIView {
         r.instanceTransform = CATransform3DMakeTranslation(width , 0.0, 0.0)
         r.masksToBounds = true
         
+        let move = CABasicAnimation(keyPath: "position.x")
+        move.toValue = bar.position.x - width
+        move.duration = 1.5
+        move.speed = 0
+        move.repeatCount = Float.infinity
+        move.isRemovedOnCompletion = false
+        bar.add(move, forKey: "move")
+        moveAnim = move
+        
     }
     
     func animation() {
         
         if let ecg = ecgLine {
-            ecg.setNeedsDisplay()
+            
             ecg.removeAnimation(forKey: "move")
-            if duration != 0 {
-                let move = CABasicAnimation(keyPath: "position.x")
-                move.toValue = ecg.position.x - width
-                move.duration = 0
-                move.repeatCount = Float.infinity
-                ecg.add(move, forKey: "move")
-            }
+            moveAnim?.speed = speed
+            ecg.add(moveAnim!, forKey: "move")
+        
         }
         
     }

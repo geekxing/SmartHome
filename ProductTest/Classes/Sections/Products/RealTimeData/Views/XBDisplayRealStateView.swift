@@ -41,12 +41,12 @@ class XBDisplayRealStateView: UIView {
                     dataWidth[dataWidth.count-1] = dataWidth[dataWidth.count-1]+xScale
                 }
                 
-                collection.reloadData()
                 lastEvent = event
             } else if (lastEvent != 0) {
                 //对于非第一次的无效的信号则画上一次的信号
                 dataWidth[dataWidth.count-1] = dataWidth[dataWidth.count-1]+xScale
             }
+            collection.reloadData()
             
             print("\(event)")
         }

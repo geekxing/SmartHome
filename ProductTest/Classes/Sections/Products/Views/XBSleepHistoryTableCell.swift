@@ -22,7 +22,7 @@ class XBSleepHistoryTableCell: UITableViewCell {
         didSet {
             //self.isSelected = model!.selected
             if model != nil {
-                let date = Date(timeIntervalSince1970: model!.date)
+                let date = Date(timeIntervalSince1970: model!.creatTime)
                 dateLabel.text = "\(date.year)/\(date.month)/\(date.day)"
                 dateLabel.sizeToFit()
                 hourLabel.text = "\(Int(model!.sleepTime()))"

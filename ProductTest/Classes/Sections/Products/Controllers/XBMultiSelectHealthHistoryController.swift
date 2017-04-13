@@ -11,7 +11,6 @@ import SVProgressHUD
 
 class XBMultiSelectHealthHistoryController: XBSingleSelectHealthHistoryController {
     
-    var selItemIdxSet = IndexSet(integer: 0)
     override var url:String {
         return type == .me ? DEVICE_DATA : DEVICE_OTHERDATA
     }

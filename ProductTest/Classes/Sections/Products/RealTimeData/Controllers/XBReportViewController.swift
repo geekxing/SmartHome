@@ -168,7 +168,7 @@ class XBReportViewController: XBBaseViewController {
         
         if let model = self.model {
             
-            let date = Date(timeIntervalSince1970: model.date)
+            let date = Date(timeIntervalSince1970: model.creatTime)
             self.dateLabel.text = "检测日期：\(date.month)月\(date.day)日"
             self.dateLabel.sizeToFit()
             self.ringView.maxValue = CGFloat(model.score)/100.0
@@ -186,7 +186,7 @@ class XBReportViewController: XBBaseViewController {
             let fallSleepGap = model.sleepStart - model.goToBed ///上床->睡眠
             
             if timeGap != 0 {
-                self.sleepTimeLineView.maxValue = CGFloat(fallSleepGap / timeGap)
+                self.sleepTimeLineView.maxValue = max(CGFloat(fallSleepGap / timeGap), 0.2)
                 self.sleepTimeLineView.increment = self.sleepTimeLineView.maxValue/60
                 self.sleepTimeLineView.thumbnailButton.setTitle("\(sleep.hour):\(sleep.minute)", for: .normal)
             }

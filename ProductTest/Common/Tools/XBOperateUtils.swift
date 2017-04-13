@@ -36,7 +36,7 @@ class XBOperateUtils: NSObject {
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: LOGIN, paras: params,
                                         success: { json in
-                                            let message = errorMsg(json[Code].intValue)
+                                            let message = errorMsg(LOGIN, code: json[Code].intValue)
                                             let tk = json[XBData]["token"].stringValue
                                             if json[Code].intValue == 1 {  //登录成功
                                                 //登录信息本地缓存

@@ -21,6 +21,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     var nowTapIndex     = 0
     var tableView:UITableView!
     var group:[XBSleepData] = []
+    var selItemIdxSet = IndexSet(integer: 0)
     
     var other:XBUser?
     var type:XBCheckReportType = .me
@@ -134,6 +135,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == 1 {
                                                 self?.group.removeAll()
+                                                self?.selItemIdxSet.removeAll()
                                                 for (_ ,subJson):(String, JSON) in json[XBData] {
                                                     let model = XBSleepData()
                                                     model.add(subJson)
@@ -164,7 +166,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
         if self.group.count > 0 {
             self.group.sort(by: { (obj1, obj2) -> Bool in
                 
-                return obj1.date > obj2.date
+                return obj1.creatTime > obj2.creatTime
                 
             })
         }

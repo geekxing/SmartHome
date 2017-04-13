@@ -76,8 +76,8 @@ class XBMultiReportViewController: XBBaseViewController {
         
         if modelArray.count > 0 {
             
-            scrollView.refresh( Date(timeIntervalSince1970: modelArray.last!.date),
-                                end: Date(timeIntervalSince1970: modelArray.first!.date),
+            scrollView.refresh( Date(timeIntervalSince1970: modelArray.last!.creatTime),
+                                end: Date(timeIntervalSince1970: modelArray.first!.creatTime),
                                 count: modelArray.count)
         }
         

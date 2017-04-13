@@ -15,6 +15,7 @@ class XBRealDataViewController: XBBaseViewController {
     static var netError:Int = 0
     static let dataCellId = "dataCellId"
     static let detailCellId = "detailCellId"
+    var timer:DispatchSourceTimer?
     
     var realData:XBRealData? {
         didSet {}
@@ -53,7 +54,25 @@ class XBRealDataViewController: XBBaseViewController {
         
         view.backgroundColor = UIColor.white
         setupTableView()
-        makeData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupTimer()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.cancel()
+    }
+    
+    private func setupTimer()  {
+        timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.main)
+        timer?.setEventHandler( handler: {
+            self.makeData()
+        })
+        timer?.scheduleRepeating(deadline: .now(), interval: .seconds(10))
+        timer?.resume()
     }
     
     //MARK: - UI Setting
@@ -92,13 +111,7 @@ class XBRealDataViewController: XBBaseViewController {
                                                     SVProgressHUD.showError(withStatus: message)
                                                 }
                                             }
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-                                                self?.makeData()
-                                            })
-            }, failure: {[weak self] (error) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-                    self?.makeData()
-                })
+            }, failure: { (error) in
                 XBRealDataViewController.netError += 1
                 if XBRealDataViewController.netError == 3 {
                     SVProgressHUD.showError(withStatus: error.localizedDescription)
@@ -140,7 +153,7 @@ class XBRealDataViewController: XBBaseViewController {
                 
             }
             
-            NotificationCenter.default.post(name: Notification.Name(rawValue: XBDrawFrequecyDidChanged), object: nil, userInfo:["obj":Double(realData!.heart)])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: XBDrawFrequecyDidChanged), object: nil, userInfo:["obj":Float(realData!.heart)])
             
             self.tableView.reloadData()
         }

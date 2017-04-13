@@ -29,6 +29,7 @@
 		1A31D5A01DE56E2700B9BB33 /* XBNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A31D59F1DE56E2700B9BB33 /* XBNavigationController.swift */; };
 		1A31D5A31DE586CE00B9BB33 /* XBRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A31D5A11DE586CE00B9BB33 /* XBRegisterViewController.swift */; };
 		1A31D5A41DE586CE00B9BB33 /* XBRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A31D5A21DE586CE00B9BB33 /* XBRegisterViewController.xib */; };
+		1A3352E71E9DD62200C24CD7 /* XBAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3352E61E9DD62200C24CD7 /* XBAnimator.swift */; };
 		1A37A3C61DF71684003B006C /* XBFindPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A37A3C41DF71684003B006C /* XBFindPasswordController.swift */; };
 		1A37A3C71DF71684003B006C /* XBFindPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A37A3C51DF71684003B006C /* XBFindPasswordController.xib */; };
 		1A3F78BA1E8E2500000AD173 /* XBRequestURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */; };
@@ -168,6 +169,7 @@
 		1A31D59F1DE56E2700B9BB33 /* XBNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBNavigationController.swift; sourceTree = "<group>"; };
 		1A31D5A11DE586CE00B9BB33 /* XBRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRegisterViewController.swift; sourceTree = "<group>"; };
 		1A31D5A21DE586CE00B9BB33 /* XBRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBRegisterViewController.xib; sourceTree = "<group>"; };
+		1A3352E61E9DD62200C24CD7 /* XBAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBAnimator.swift; sourceTree = "<group>"; };
 		1A37A3C41DF71684003B006C /* XBFindPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBFindPasswordController.swift; sourceTree = "<group>"; };
 		1A37A3C51DF71684003B006C /* XBFindPasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBFindPasswordController.xib; sourceTree = "<group>"; };
 		1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRequestURLs.swift; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 				1ABA44C11E83C3CC009AED65 /* Math.swift */,
 				1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */,
 				1A1A944E1E9637C60076DD86 /* XBLog.swift */,
+				1A3352E61E9DD62200C24CD7 /* XBAnimator.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1058,6 +1061,7 @@
 				1A9BCAE01E2B37D70001A880 /* XBOperateUtils.swift in Sources */,
 				1A973C2D1E65CF7900FB2431 /* XBShadowButton.swift in Sources */,
 				1AF364211E5B0924008AD8FC /* XBSearchApplyCell.swift in Sources */,
+				1A3352E71E9DD62200C24CD7 /* XBAnimator.swift in Sources */,
 				1A37A3C61DF71684003B006C /* XBFindPasswordController.swift in Sources */,
 				1A9923251E92275B00C1E02B /* UIDevice+Extension.swift in Sources */,
 				1A018D8E1E2C5D3900B1629D /* XBApplyConcernCell.swift in Sources */,
