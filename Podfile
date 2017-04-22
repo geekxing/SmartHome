@@ -19,4 +19,5 @@ target ‘SmartHome’ do
     pod 'ChameleonFramework'
     pod 'MJRefresh'
     pod 'CocoaLumberjack/Swift'
+    pod 'RealmSwift'
 end

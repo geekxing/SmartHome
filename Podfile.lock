@@ -3,24 +3,29 @@ PODS:
   - ChameleonFramework (2.1.0):
     - ChameleonFramework/Default (= 2.1.0)
   - ChameleonFramework/Default (2.1.0)
-  - Charts (3.0.1):
-    - Charts/Core (= 3.0.1)
-  - Charts/Core (3.0.1)
+  - Charts (3.0.2):
+    - Charts/Core (= 3.0.2)
+  - Charts/Core (3.0.2)
   - CocoaLumberjack/Default (3.1.0)
   - CocoaLumberjack/Swift (3.1.0):
     - CocoaLumberjack/Default
   - DropDown (2)
-  - FTPopOverMenu_Swift (0.0.6)
-  - IQKeyboardManagerSwift (4.0.8)
-  - LGAlertView (2.1.1)
+  - FTPopOverMenu_Swift (0.0.7)
+  - IQKeyboardManagerSwift (4.0.9)
+  - LGAlertView (2.3.1)
   - MJRefresh (3.1.12)
+  - Realm (2.6.2):
+    - Realm/Headers (= 2.6.2)
+  - Realm/Headers (2.6.2)
+  - RealmSwift (2.6.2):
+    - Realm (= 2.6.2)
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
   - SnapKit (3.1.2)
   - SVProgressHUD (2.1.2)
-  - SwiftDate (4.0.13)
-  - SwiftRichString (0.9.5)
+  - SwiftDate (4.1.1)
+  - SwiftRichString (0.9.8)
   - SwiftyJSON (3.1.4)
   - Toast-Swift (2.0.0)
 
@@ -34,6 +39,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - LGAlertView
   - MJRefresh
+  - RealmSwift
   - SDWebImage
   - SnapKit (~> 3.1.2)
   - SVProgressHUD
@@ -45,21 +51,23 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
-  Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
+  Charts: 236d6ccdd0ce6feae151d89e829a7397381a21fd
   CocoaLumberjack: 8311463ddf9ee86a06ef92a071dd656c89244500
   DropDown: 744784d9c9aa505100e942c16acd05430cbb2f0a
-  FTPopOverMenu_Swift: ddc5689b89d375e22efd7ccd0c022392f33785ea
-  IQKeyboardManagerSwift: c04bc9f68473823f825eb44d958fce98d921bead
-  LGAlertView: e9bcdb5eff9eeabdafdb3d804994ac80188b6a1c
+  FTPopOverMenu_Swift: 8939e3c98a72217c761e806c915101227ed7c8fc
+  IQKeyboardManagerSwift: 2eefe6c429b86aa08bfbc1b5c891164d754adf91
+  LGAlertView: ea9218d8469730aae56f87add0bbcad2e54e7a3b
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  Realm: 29222766425b9f831228f81b63f0e38a97a4d700
+  RealmSwift: d161a80f96cb91ae88391a7d5a9cf08024a7bc8e
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SnapKit: 12b24f569cb7c143acc9c22b9d91b23e7b1c84a2
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
-  SwiftDate: 8ec416bb1b5129d1f35e8efaed720421f41d42df
-  SwiftRichString: 6dc9a413f03b1761003ff4f6802c916b19159a6b
+  SwiftDate: ae615078806a322183e5f64e02e80ca8d939bf48
+  SwiftRichString: d42eeaefceea340e27b8a33945e0fac1ee21f58f
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Toast-Swift: 5b2f8f720f7e78e48511f693df1f9c9a6e38a25a
 
-PODFILE CHECKSUM: 7b8d26b532dbfea1c23c5cad3ae873da15ec6d20
+PODFILE CHECKSUM: 8739e4e00fa138aa12d5d054256be2aa400338ca
 
 COCOAPODS: 1.1.1

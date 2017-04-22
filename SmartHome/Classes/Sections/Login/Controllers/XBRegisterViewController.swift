@@ -196,7 +196,9 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     private func showCalendar() {
         var date = Date().add(components: [.year:-50])
         if !birthField.isBlank() {
-            date = try! birthField.text!.date(format: .custom("MM/dd/yyyy")).absoluteDate
+            if let dateFromStr = birthField.text!.date(format: .custom("MM/dd/yyyy"))?.absoluteDate {
+                date = dateFromStr
+            }
         }
         datePicker!.date = date
         birthField.inputView = datePicker
