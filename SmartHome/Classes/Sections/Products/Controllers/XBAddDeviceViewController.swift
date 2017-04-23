@@ -79,7 +79,7 @@ class XBAddDeviceViewController: UIViewController {
     func cameraAvailable() -> Bool {
         let available = UIImagePickerController.isSourceTypeAvailable(.camera)
         if !available {
-            let alert = UIAlertView(title: NSLocalizedString("your device has no access to camera", comment: ""), message: "", delegate: nil, cancelButtonTitle: "DONE")
+            let alert = UIAlertView(title: NSLocalizedString("your device has no access to camera", comment: ""), message: "", delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: ""))
             alert.show()
         }
         return available
@@ -109,7 +109,7 @@ class XBAddDeviceViewController: UIViewController {
     private func addDevice(sn:String) {
         
         if (sn as NSString).length < 20 {
-            UIAlertView(title: "sn长度小于20位", message: nil, delegate: nil, cancelButtonTitle: "DONE").show()
+            UIAlertView(title: NSLocalizedString("SN is less than 20 bits", comment: ""), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: "")).show()
             return
         }
         

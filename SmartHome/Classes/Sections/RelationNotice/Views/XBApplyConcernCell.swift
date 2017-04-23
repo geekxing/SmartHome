@@ -21,8 +21,8 @@ class XBApplyConcernCell: XBRelationConcernCell {
     
     override func setup() {
         super.setup()
-        agreeButton = XBRoundedButton.init(selector:#selector(clickAgree(_:)),target:self, title: "批准")
-        refuseButton = XBRoundedButton.init(selector: #selector(clickRefuse(_:)),target:self, title: "拒绝")
+        agreeButton = XBRoundedButton.init(selector:#selector(clickAgree(_:)),target:self, title: NSLocalizedString("Approve", comment: ""))
+        refuseButton = XBRoundedButton.init(selector: #selector(clickRefuse(_:)),target:self, title: NSLocalizedString("Refuse", comment: ""))
         shadowLineview.isHidden = false
         contentView.addSubview(agreeButton)
         contentView.addSubview(refuseButton)

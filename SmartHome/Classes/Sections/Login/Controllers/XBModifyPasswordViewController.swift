@@ -17,18 +17,18 @@ class XBModifyPasswordViewController: XBFindPasswordController, UITextFieldDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        titleLabel.text = "Reset Password"
+        titleLabel.text = NSLocalizedString("Reset Password", comment: "")
         tipLabel.removeFromSuperview()
         headLabel.removeFromSuperview()
         
         //此处emailField用作密码输入框
-        emailField.placeholder = "New Password"
+        emailField.placeholder = NSLocalizedString("New Password", comment: "")
         emailField.isSecureTextEntry = true
         emailField.delegate = self
         
         confirmPasswordField.font = UIFontSize(14)
         confirmPasswordField.isSecureTextEntry = true
-        confirmPasswordField.placeholder = "Confirm Password"
+        confirmPasswordField.placeholder = NSLocalizedString("Confirm Password", comment: "")
         confirmPasswordField.returnKeyType = .done
         confirmPasswordField.delegate = self
         
@@ -53,7 +53,7 @@ class XBModifyPasswordViewController: XBFindPasswordController, UITextFieldDeleg
     
     @IBAction override func submit(_ sender: UIButton) {
         if (email == nil || emailField.isBlank() || confirmPasswordField.isBlank()) {
-            self.view.makeToast("Message is not Completed")
+            self.view.makeToast(NSLocalizedString("Please enter full information", comment: ""))
             return
         }
         if !XBOperateUtils.validatePassword(emailField.text!, confirmPwd: confirmPasswordField.text!) {

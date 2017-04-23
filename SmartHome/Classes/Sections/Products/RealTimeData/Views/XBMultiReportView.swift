@@ -32,9 +32,9 @@ class XBMultiReportView: UIScrollView {
         dateLabel = makeLabel()
         countLabel = makeLabel()
         
-        max = makeButton(#imageLiteral(resourceName: "up"), title: "最高值")
-        avg = makeButton(#imageLiteral(resourceName: "mid"), title: "平均值")
-        min = makeButton(#imageLiteral(resourceName: "down"), title: "最低值")
+        max = makeButton(#imageLiteral(resourceName: "up"), title: NSLocalizedString("Maximum", comment: ""))
+        avg = makeButton(#imageLiteral(resourceName: "mid"), title: NSLocalizedString("Average", comment: ""))
+        min = makeButton(#imageLiteral(resourceName: "down"), title: NSLocalizedString("Minimum", comment: ""))
 
         self.dateLabel.text = "*月*日" + " - *月*日"
         self.dateLabel.sizeToFit()
@@ -61,9 +61,9 @@ class XBMultiReportView: UIScrollView {
         countLabel.top = dateLabel.bottom + 12
         max.right = width - 25
         max.top = 16
-        avg.right = width - 25
+        avg.left = max.left
         avg.top = max.bottom + 16
-        min.right = width - 25
+        min.left = max.left
         min.top = avg.bottom + 16
     }
     

@@ -56,7 +56,7 @@ typedef void (^BLEPeripheralWritePartialDataBlock)(NSData *writeData);
 /**
  *  发送数据
  *
- *  @param sendData 要发送的数据 NSData类型
+ *  @param msgData 要发送的数据 NSData类型
  */
 - (void)sendData:(NSData *)msgData;
 

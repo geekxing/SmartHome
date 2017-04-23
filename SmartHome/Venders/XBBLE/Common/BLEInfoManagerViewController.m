@@ -80,13 +80,13 @@
     wifiNameLabel.numberOfLines = 0;
     wifiNameLabel.tag = 11;
     wifiNameLabel.font = [UIFont systemFontOfSize:14];
-    wifiNameLabel.text = @"WiFi名称";
+    wifiNameLabel.text = NSLocalizedString(@"Wifi Name", @"");
     [self.view addSubview:wifiNameLabel];
     
     wifiName = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(wifiNameLabel.frame) + 5, CGRectGetMidY(wifiNameLabel.frame) - 20, [[UIScreen mainScreen]bounds].size.width - CGRectGetWidth(wifiNameLabel.frame) - 25, 40)];
     wifiName.tag = 12;
     wifiName.borderStyle = UITextBorderStyleRoundedRect;
-    wifiName.placeholder = @"输入信息";
+    wifiName.placeholder = NSLocalizedString(@"Enter Wifi Name", @"");
     NSString * getWifiName = [NSString stringWithFormat:@"%@",[self getWifiName]];
     if (getWifiName && ![getWifiName isEqualToString:@"nil"] && ![getWifiName isEqualToString:@"(null)"]) {
         wifiName.text = getWifiName;
@@ -99,13 +99,13 @@
     wifiPwdLabel.numberOfLines = 0;
     wifiPwdLabel.tag = 13;
     wifiPwdLabel.font = [UIFont systemFontOfSize:14];
-    wifiPwdLabel.text = @"WiFi密码";
+    wifiPwdLabel.text = NSLocalizedString(@"Wifi Password", @"");
     [self.view addSubview:wifiPwdLabel];
     
     wifiPwd = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(wifiPwdLabel.frame) + 5, CGRectGetMidY(wifiPwdLabel.frame) - 20, [[UIScreen mainScreen]bounds].size.width - CGRectGetWidth(wifiNameLabel.frame) - 25, 40)];
     wifiPwd.tag = 14;
     wifiPwd.borderStyle = UITextBorderStyleRoundedRect;
-    wifiPwd.placeholder = @"输入信息";
+    wifiPwd.placeholder = NSLocalizedString(@"Enter Wifi Password", @"");
     wifiName.delegate = self;
     [self.view addSubview:wifiPwd];
     
@@ -353,7 +353,7 @@
 }
 -(NSString *)getWifiName
 {
-    NSString *wifiName = nil;
+    NSString *wifi = nil;
     
     CFArrayRef wifiInterfaces = CNCopySupportedInterfaces();
     
@@ -369,14 +369,14 @@
         if (dictRef) {
             NSDictionary *networkInfo = (__bridge NSDictionary *)dictRef;
             NSLog(@"network info -> %@", networkInfo);
-            wifiName = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeySSID];
+            wifi = [networkInfo objectForKey:(__bridge NSString *)kCNNetworkInfoKeySSID];
             
             CFRelease(dictRef);
         }
     }
     
     CFRelease(wifiInterfaces);
-    return wifiName;
+    return wifi;
 }
 
 @end

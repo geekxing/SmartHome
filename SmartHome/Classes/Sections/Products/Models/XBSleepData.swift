@@ -63,7 +63,7 @@ class XBSleepData: NSObject {
         var des = ""
         let properties = XBSleepData.properties_name()
         for property in properties {
-            des += " \(property) : \(self.value(forKey: property)) "
+            des += " \(property) : \(String(describing: self.value(forKey: property))) "
         }
         return des
         

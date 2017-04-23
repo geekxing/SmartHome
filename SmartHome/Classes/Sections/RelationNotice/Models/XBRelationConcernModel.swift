@@ -9,9 +9,9 @@
 import UIKit
 
 let SearchApply  = "SearchApply"
-let ApplyConcern = "批准申请"
+let ApplyConcern = NSLocalizedString("Approve the Request", comment: "")
 let MyConcern    = "我的关注"
-let ConcernMe    = "关注我的"
+let ConcernMe    = NSLocalizedString("Already Care Me", comment: "")
 
 class XBRelationConcernModel: NSObject {
 

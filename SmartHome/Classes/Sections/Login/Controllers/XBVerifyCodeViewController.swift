@@ -15,18 +15,18 @@ class XBVerifyCodeViewController: XBFindPasswordController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        titleLabel.text = "Verify Code"
-        tipLabel.text = "Enter received Verify Code"
-        headLabel.text = "Verify code"
+        titleLabel.text = NSLocalizedString("Verify Code", comment: "")
+        tipLabel.text = NSLocalizedString("Please enter the verification code", comment: "")
+        headLabel.text = NSLocalizedString("Verify Code", comment: "")
         headLabel.sizeToFit()
         ///因为继承方便，此处的emailField 用作验证码的textField
-        emailField.placeholder = "Verify code"
+        emailField.placeholder = NSLocalizedString("Enter Verify Code", comment: "")
         
     }
     
     @IBAction override func submit(_ sender: UIButton) {
         if (email == nil || emailField.isBlank()) {
-            self.view.makeToast("Message is not Completed")
+            self.view.makeToast(NSLocalizedString("Please enter full information", comment: ""))
             return
         }
         let params = ["email":email!,

@@ -49,7 +49,7 @@ class XBSleepHistoryTableCell: UITableViewCell {
         commonInit(label: hourTextLabel, font: 12)
         commonInit(label: scoreLabel, font: 16)
         
-        hourTextLabel.text = "小时"
+        hourTextLabel.text = NSLocalizedString("hour", comment: "")
         hourTextLabel.sizeToFit()
     }
     

@@ -34,7 +34,7 @@ class XBDeleteDeviceViewController: UIViewController {
     
     @IBAction func submit(_ sender: UIButton) {
         if (snField.text! as NSString).length == 0 {
-            UIAlertView(title: "未绑定设备号sn", message: nil, delegate: nil, cancelButtonTitle: "DONE").show()
+            UIAlertView(title: NSLocalizedString("SN is empty", comment: ""), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: "")).show()
         } else {
             deleteDeviceAlert()
         }
@@ -47,7 +47,7 @@ class XBDeleteDeviceViewController: UIViewController {
     //MARK: - Private
     
     private func deleteDeviceAlert() {
-        let vc = XBAlertController(title: "确定删除此设备？", message: "")
+        let vc = XBAlertController(title: NSLocalizedString("Be sure to delete this device?", comment: ""), message: "")
         vc.clickAction = { [weak self] index in
             switch index {
             case 0: self?.deletDevice(sn: self?.snField.text ?? "")

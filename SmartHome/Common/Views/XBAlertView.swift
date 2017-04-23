@@ -63,8 +63,8 @@ class XBAlertView: UIView {
         titleLabel.numberOfLines = 0
         addSubview(titleLabel)
         
-        leftButton = commonInitButton(tag: 0, title: "确定")
-        rightButton = commonInitButton(tag: 1, title: "取消")
+        leftButton = commonInitButton(tag: 0, title: NSLocalizedString("ALERTDONE", comment: ""))
+        rightButton = commonInitButton(tag: 1, title: NSLocalizedString("ALERTCANCEL", comment: ""))
     }
     
     private func commonInitButton(tag:Int, title:String) -> XBRoundedButton {

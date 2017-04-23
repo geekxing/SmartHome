@@ -45,10 +45,10 @@ class XBRealDetailTableCell: XBRealDataTableCell {
         super.setup()
         valueLabel.isHidden =  true
         self.shouldEnableEcgDisplay = false
-        offline = self.pileButton(#imageLiteral(resourceName: "offline"), title: "离线")
-        onBed = self.pileButton(#imageLiteral(resourceName: "onBed"), title: "在床")
-        motivate = self.pileButton(#imageLiteral(resourceName: "motivate"), title: "体动")
-        noBody = self.pileButton(#imageLiteral(resourceName: "nobody"), title: "无人")
+        offline = self.pileButton(#imageLiteral(resourceName: "offline"), title: NSLocalizedString("Off-Line", comment: ""))
+        onBed = self.pileButton(#imageLiteral(resourceName: "onBed"), title: NSLocalizedString("In bed", comment: ""))
+        motivate = self.pileButton(#imageLiteral(resourceName: "motivate"), title: NSLocalizedString("Body\nmoving", comment: ""))
+        noBody = self.pileButton(#imageLiteral(resourceName: "nobody"), title: NSLocalizedString("nobody", comment: ""))
         realtimeState = XBDisplayRealStateView(frame: CGRect.zero)
         addSubview(realtimeState)
         
@@ -59,10 +59,10 @@ class XBRealDetailTableCell: XBRealDataTableCell {
         let btn = XBSquareButton()
         btn.setImage(img, for: .normal)
         btn.setTitle(title, for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: UIRate*14)
         btn.setTitleColor(XB_DARK_TEXT, for: .normal)
-        btn.width = 30
-        btn.height = 45
+        btn.width = UIRate*30
+        btn.height = UIRate*45
         contentView.addSubview(btn)
         return btn
     }

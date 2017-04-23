@@ -36,7 +36,7 @@ class XBHealthCareViewController: XBBaseViewController {
     }
     
     override var naviTitle: String? {
-        return "健康档案"
+        return NSLocalizedString("HEALTH ARCHIVES", comment: "")
     }
     
     private var childViews:[UIView] = []
@@ -76,7 +76,9 @@ class XBHealthCareViewController: XBBaseViewController {
     //MARK: - UI Setting
     
     private func setupSplitView() {
-        splitView = XBSplitView(titles: ["查询单次睡眠", "查询多次睡眠"])
+        splitView = XBSplitView(titles:
+            [NSLocalizedString("One Report", comment: ""),
+             NSLocalizedString("Multiple Reports", comment: "")])
         splitView.frame = CGRect(x: 0, y: naviBackgroundImage!.size.height*UIRate, width: view.width, height: XBHealthCareViewController.splitViewH)
         splitView.cornerRadius = 5
         for (index, button) in splitView.buttons.enumerated() {
@@ -141,7 +143,7 @@ class XBHealthCareViewController: XBBaseViewController {
         bottomSearchView.backgroundColor = RGBA(r: 237, g: 238, b: 239, a: 1.0)
         view.addSubview(bottomSearchView)
         
-        searchButton = XBRoundedButton(selector: #selector(clickSearchBtn(_:)), target: self, font: 18, title: "查询")
+        searchButton = XBRoundedButton(selector: #selector(clickSearchBtn(_:)), target: self, font: 18, title: NSLocalizedString("Inquiry", comment: ""))
         bottomSearchView.addSubview(searchButton)
     }
     

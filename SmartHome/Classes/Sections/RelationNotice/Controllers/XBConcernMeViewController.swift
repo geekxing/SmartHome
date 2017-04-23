@@ -186,7 +186,8 @@ class XBConcernMeViewController: UIViewController {
     ///删除关注我的人
     
     func cancelAlert(_ otherEmail:String, type:String) {
-        let vc = XBAlertController(title: "确定不再被此人关注？", message: "")
+        let title = type == "myConcern" ? NSLocalizedString("No longer care the person?", comment: "") : NSLocalizedString("No longer be cared\nby the person?", comment: "")
+        let vc = XBAlertController(title:title ,message: "")
         vc.clickAction = { [weak self] index in
             switch index {
             case 0: self?.cancelConcern(otherEmail, type: type)

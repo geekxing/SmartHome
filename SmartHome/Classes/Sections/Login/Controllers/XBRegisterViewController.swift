@@ -135,7 +135,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func submit(_ sender: UIButton) {
         if (!fullFilled || !checkboxButton.isSelected) {
-            self.view.makeToast("Message is not Completed")
+            self.view.makeToast("Please enter full information")
             return
         }
         view.endEditing(true)

@@ -43,7 +43,7 @@ typedef void (^FTConnectorWritePartialDataBlock)(NSData *writeData);
 /**
  *  表示是否已连接
  *
- *  @return
+ *  @return 结果
  */
 - (BOOL)isConnected;
 
@@ -51,14 +51,14 @@ typedef void (^FTConnectorWritePartialDataBlock)(NSData *writeData);
 /**
  *  发送文本内容
  *
- *  @param message
+ *  @param message 消息
  */
 - (void)sendMessage:(NSString *)message;
 
 /**
  *  发送数据
  *
- *  @param sendData 要发送的数据 NSData类型
+ *  @param msgData 要发送的数据 NSData类型
  */
 - (void)sendData:(NSData *)msgData;
 

@@ -27,7 +27,7 @@ class XBPhotoPickerManager: NSObject, UIImagePickerControllerDelegate, UINavigat
     
     func pickIn(vc:UIViewController) {
         chooser = vc
-        let alert = LGAlertView(title: "Choose a way to select your avatar", message: nil, style: .actionSheet, buttonTitles: ["PhotoLibrary","Camera"], cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, delegate: self)
+        let alert = LGAlertView(title: NSLocalizedString("Choose a way to select your avatar", comment: ""), message: nil, style: .actionSheet, buttonTitles: [NSLocalizedString("PhotoLibrary", comment: ""),NSLocalizedString("Camera", comment: "")], cancelButtonTitle: NSLocalizedString("Cancel", comment: ""), destructiveButtonTitle: nil, delegate: self)
         alert.showAnimated()
     }
     
@@ -54,7 +54,7 @@ class XBPhotoPickerManager: NSObject, UIImagePickerControllerDelegate, UINavigat
         if UIImagePickerController.isSourceTypeAvailable(sourceType) {
             return true
         } else {
-            let alert = LGAlertView(title: "your device have no access to camera", message: nil, style: .alert, buttonTitles: ["DONE"], cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            let alert = LGAlertView(title: NSLocalizedString("your device have no access to camera", comment: ""), message: nil, style: .alert, buttonTitles: [NSLocalizedString("DONE", comment: "")], cancelButtonTitle: nil, destructiveButtonTitle: nil)
             alert.showAnimated()
             return false
         }
@@ -74,12 +74,12 @@ class XBPhotoPickerManager: NSObject, UIImagePickerControllerDelegate, UINavigat
     }
     
     //MARK: - LGAlertViewDelegate
-    func alertView(_ alertView: LGAlertView, buttonPressedWithTitle title: String?, index: UInt) {
+    func alertView(_ alertView: LGAlertView, clickedButtonAt index: UInt, title: String?) {
         if index == 0  {
             self.sourceType = .photoLibrary
             guard self.hasAccessTo(sourceType: .photoLibrary) else {return }
             guard photoLibraryAuth() else {
-                let alert = LGAlertView(title: "you have no permission to photoLibrary", message: nil, style: .alert, buttonTitles: ["DONE"], cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                let alert = LGAlertView(title: NSLocalizedString("you have no permission to photoLibrary", comment: ""), message: nil, style: .alert, buttonTitles: ["DONE"], cancelButtonTitle: nil, destructiveButtonTitle: nil)
                 alert.showAnimated()
                 return
             }
@@ -87,7 +87,7 @@ class XBPhotoPickerManager: NSObject, UIImagePickerControllerDelegate, UINavigat
             self.sourceType = .camera
             guard self.hasAccessTo(sourceType: .camera) else {return }
             guard photoLibraryAuth() else {
-                let alert = LGAlertView(title: "you have no permission to camera", message: nil, style: .alert, buttonTitles: ["DONE"], cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                let alert = LGAlertView(title: NSLocalizedString("you have no permission to camera", comment: ""), message: nil, style: .alert, buttonTitles: [NSLocalizedString("DONE", comment: "")], cancelButtonTitle: nil, destructiveButtonTitle: nil)
                 alert.showAnimated()
                 return
             }

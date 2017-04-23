@@ -14,7 +14,7 @@ class XBProductVersionController: XBBaseViewController {
     static let reuseHeaderId = "reuseHeaderId"
     
     override var naviTitle: String? {
-        return "增值服务"
+        return NSLocalizedString("VALUE-ADDED\nSERVICES", comment: "")
     }
     
     override var naviBackgroundImage: UIImage? {
@@ -55,7 +55,7 @@ class XBProductVersionController: XBBaseViewController {
     //MARK: - Data
     private func makeData() {
         let groupItem1 = XBTableGroupItem()
-        groupItem1.headerTitle = "公司新闻"
+        groupItem1.headerTitle = NSLocalizedString("News", comment: "")
         var newsArray = [String]()
         for i in 0..<5 {
             newsArray.append("新闻\(i)")
@@ -64,17 +64,17 @@ class XBProductVersionController: XBBaseViewController {
         tableGroups.append(groupItem1)
         
         let groupItem2 = XBTableGroupItem()
-        groupItem2.headerTitle = "新品发布"
+        groupItem2.headerTitle = NSLocalizedString("New Arrivals", comment: "")
         groupItem2.items = newsArray as [AnyObject]
         tableGroups.append(groupItem2)
         
         let groupItem3 = XBTableGroupItem()
-        let item = XBProductModel(productName:"智能床垫", typesn: loginUser!.type1sn, typeIp: loginUser!.type1Ip, level: loginUser!.level1, deadline: loginUser!.deadline1)
-        let item2 = XBProductModel(productName:"智能枕", typesn: loginUser!.type1sn, typeIp: loginUser!.type1Ip, level: loginUser!.level1, deadline: loginUser!.deadline1)
-        let item3 = XBProductModel(productName:"智能手环", typesn: loginUser!.type1sn, typeIp: loginUser!.type1Ip, level: loginUser!.level1, deadline: loginUser!.deadline1)
+        let item = XBProductModel(productName:NSLocalizedString("Smart Mattress Pad", comment: ""), typesn: loginUser!.type1sn, typeIp: loginUser!.type1Ip, level: loginUser!.level1, deadline: loginUser!.deadline1)
+        let item2 = XBProductModel(productName:NSLocalizedString("Smart Pillow", comment: ""), typesn: loginUser!.type1sn, typeIp: loginUser!.type1Ip, level: loginUser!.level1, deadline: loginUser!.deadline1)
+        let item3 = XBProductModel(productName:NSLocalizedString("Smart Bracelet", comment: ""), typesn: loginUser!.type1sn, typeIp: loginUser!.type1Ip, level: loginUser!.level1, deadline: loginUser!.deadline1)
         groupItem3.items = [item, item2, item3]
         
-        groupItem3.headerTitle = "产品升级\n\n您当前拥有的产品:"
+        groupItem3.headerTitle = NSLocalizedString("Value-Added Services\n\nYour Devices:", comment: "")
         tableGroups.append(groupItem3)
     }
     
@@ -121,7 +121,7 @@ extension XBProductVersionController: UITableViewDelegate {
         switch indexPath.section {
         case 0: return 44
         case 1: return 44
-        default: return 60
+        default: return 66
         }
     }
     

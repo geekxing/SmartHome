@@ -19,28 +19,9 @@ class XBSquareButton: UIButton {
         }
     }
     
-    //重写enabled
-    override var isEnabled: Bool {
-        set {
-            super.isEnabled = newValue
-            if super.isEnabled {
-                //self.backgroundColor = UIColorHex("0x77716C", 1.0)
-            } else {
-                //self.backgroundColor = RGBA(r: 174, g: 178, b: 179, a: 1)
-                //self.setTitleColor(UIColor.darkGray, for: .normal)
-            }
-        }
-        get {
-            return super.isEnabled
-        }
-    }
-    
     ///从代码加载
     override init(frame: CGRect) {
         super.init(frame:frame)
-        titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        titleLabel?.textAlignment = .center
-        self.setTitleColor(XB_DARK_TEXT, for: .normal)
         commonInit()
     }
     
@@ -51,6 +32,11 @@ class XBSquareButton: UIButton {
     }
     
     private func commonInit() {
+        titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        titleLabel?.textAlignment = .center
+        titleLabel?.numberOfLines = 2
+        self.setTitleColor(XB_DARK_TEXT, for: .normal)
+        
         subTitleLabel.textColor = UIColor.white
         subTitleLabel.numberOfLines = 0
         subTitleLabel.textAlignment = .center
@@ -65,9 +51,23 @@ class XBSquareButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         imageView!.frame = CGRect(x: 0, y: 0, width: bounds.width, height: 2*bounds.height/3)
-        titleLabel?.sizeToFit()
+        if let title = titleLabel!.text {
+            var size = (title as NSString).size(attributes: [NSFontAttributeName:titleLabel!.font])
+            var fontSize = titleLabel!.font.pointSize
+            while size.width > self.width && titleLabel!.adjustsFontSizeToFitWidth {
+                fontSize -= 1
+                let font = UIFontSize(fontSize)
+                size = (title as NSString).size(attributes: [NSFontAttributeName:font])
+            }
+            titleLabel?.width = size.width
+            titleLabel?.height = size.height
+        }
         titleLabel!.centerX = self.width * 0.5
-        titleLabel!.frame.origin.y = imageView!.bottom + 8
+        if imageView!.image != nil {
+            titleLabel?.top = imageView!.bottom + 4
+        } else {
+            titleLabel?.bottom = self.height * 0.9
+        }
         subTitleLabel.centerX = titleLabel!.centerX
     }
 

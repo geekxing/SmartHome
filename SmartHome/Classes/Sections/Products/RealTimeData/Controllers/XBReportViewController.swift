@@ -29,6 +29,7 @@ class XBReportViewController: XBBaseViewController {
     @IBOutlet weak var sleepLabel: UILabel!
     @IBOutlet weak var totalSleepView: XBSliderView!
     @IBOutlet weak var totalSleepLabel: UILabel!
+    @IBOutlet var squareButtons: [XBSquareButton]!
     
     var model:XBSleepData?
     var timer:Timer?
@@ -39,7 +40,7 @@ class XBReportViewController: XBBaseViewController {
     }
     
     override var naviTitle: String? {
-        return "检测报告"
+        return NSLocalizedString("TRACKING REPORT", comment: "")
     }
 
     override func viewDidLoad() {
@@ -72,45 +73,49 @@ class XBReportViewController: XBBaseViewController {
         self.ringView.width = self.ringView.height
         self.ringView.strokeColor = RGBA(r: 82, g: 83, b: 74, a: 1)
         
-        heatRateButton.setTitle("平均心率", for: .normal)
-        breathButton.setTitle("平均呼吸率", for: .normal)
-        fanshenButton.setTitle("翻身次数", for: .normal)
-        qiyeButton.setTitle("起夜次数", for: .normal)
+        heatRateButton.setTitle(NSLocalizedString("Average\nHeart Rate", comment: ""), for: .normal)
+        breathButton.setTitle(NSLocalizedString("Average\nRespiration", comment: ""), for: .normal)
+        fanshenButton.setTitle(NSLocalizedString("Sleep-turning\ntimes", comment: ""), for: .normal)
+        qiyeButton.setTitle(NSLocalizedString("Bed Exits", comment: ""), for: .normal)
+        squareButtons.forEach { (btn) in
+            btn.titleLabel?.font = UIFontSize(UIRate*14)
+        }
         
     }
     
     private func setupBottomPart() {
         
-        self.pileRoundButton(btn: sleepButton, text: "上床")
-        self.pileRoundButton(btn: getupButton, text: "起床")
+        self.pileRoundButton(btn: sleepButton, text: NSLocalizedString("go to\nbed", comment: ""))
+        self.pileRoundButton(btn: getupButton, text: NSLocalizedString("get up", comment: ""))
         
         self.pileSliderView(slider: sleepTimeLineView,
                             width: 18,
                             leftColor: UIColorHex("edebea", 1),
                             rightColor:  UIColorHex("c6bdb5", 1),
                             dotImage: #imageLiteral(resourceName: "dot1"),
-                            tagText: "入眠")
+                            tagText: NSLocalizedString("fall sleep", comment: ""))
+        sleepTimeLineView.thumbnailButton.titleLabel?.font = sleepButton.titleLabel?.font
         
         self.pileSliderView(slider: deepSleepView,
                             width: 18,
                             leftColor: UIColorHex("65655c", 1),
                             rightColor:  UIColor.white ,
                             dotImage: #imageLiteral(resourceName: "dot2"),
-                            tagText: "深睡")
+                            tagText: NSLocalizedString("deep", comment: ""))
         
         self.pileSliderView(slider: sleepView,
                             width: 18,
                             leftColor: UIColorHex("8a847f", 1),
                             rightColor:  UIColor.white,
                             dotImage: #imageLiteral(resourceName: "dot3"),
-                            tagText: "浅睡")
+                            tagText: NSLocalizedString("light", comment: ""))
         
         self.pileSliderView(slider: totalSleepView,
                             width: 18,
                             leftColor: UIColorHex("c6bdb5", 1),
                             rightColor: UIColor.white,
                             dotImage: #imageLiteral(resourceName: "dot4"),
-                            tagText: "总长")
+                            tagText: NSLocalizedString("total", comment: ""))
 
         
     }
@@ -133,7 +138,7 @@ class XBReportViewController: XBBaseViewController {
         btn.setImage(#imageLiteral(resourceName: "dot0"), for: .normal)
         btn.subTitleLabel.text = text
         btn.subTitleLabel.textColor = UIColor.black
-        btn.subTitleLabel.font = UIFont.boldSystemFont(ofSize: 13)
+        btn.subTitleLabel.font = UIFont.boldSystemFont(ofSize: UIRate*13)
         btn.subTitleRatioToImageView = 0.2
         btn.subTitleLabel.centerY = sleepButton.imageView!.centerY
     }
@@ -144,6 +149,7 @@ class XBReportViewController: XBBaseViewController {
         slider.leftTrackColor = leftColor
         slider.thumbnailButton.setImage(dotImage, for: .normal)
         slider.thumbnailButton.subTitleLabel.text = tagText
+        slider.thumbnailButton.subTitleLabel.font = UIFontSize(UIRate*13)
     }
 
     private func makeScoreAttributeString(score:String, text:String) -> NSAttributedString {
@@ -174,25 +180,29 @@ class XBReportViewController: XBBaseViewController {
             self.ringView.maxValue = CGFloat(model.score)/100.0
             self.ringView.increment = self.ringView.maxValue/60
             
-            self.heatRateButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.avgHeart)", text: "次/分")
-            self.breathButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.avgBreath)", text: "次/分")
-            self.fanshenButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.turnNum)", text: "次")
-            self.qiyeButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.outNum)", text: "次")
+            self.heatRateButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.avgHeart)", text: NSLocalizedString("bpm", comment: ""))
+            self.breathButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.avgBreath)", text: NSLocalizedString("bpm", comment: ""))
+            self.fanshenButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.turnNum)", text: NSLocalizedString("times", comment: ""))
+            self.qiyeButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.outNum)", text: NSLocalizedString("times", comment: ""))
             
             let gotoBed = Date(timeIntervalSince1970: model.goToBed)
+            let gotoBedStr = gotoBed.string(format: .custom("hh:mm"))
             let getup = Date(timeIntervalSince1970: model.outOfBed)
+            let getupStr = getup.string(format: .custom("hh:mm"))
             let sleep = Date(timeIntervalSince1970: model.sleepStart)
+            let sleepStr = sleep.string(format: .custom("hh:mm"))
+            
             let timeGap = model.outOfBed - model.goToBed ///上床->起床
             let fallSleepGap = model.sleepStart - model.goToBed ///上床->睡眠
             
             if timeGap != 0 {
                 self.sleepTimeLineView.maxValue = max(CGFloat(fallSleepGap / timeGap), 0.2)
                 self.sleepTimeLineView.increment = self.sleepTimeLineView.maxValue/60
-                self.sleepTimeLineView.thumbnailButton.setTitle("\(sleep.hour):\(sleep.minute)", for: .normal)
+                self.sleepTimeLineView.thumbnailButton.setTitle(sleepStr, for: .normal)
             }
             
-            self.sleepButton.setTitle("\(gotoBed.hour):\(gotoBed.minute)", for: .normal)
-            self.getupButton.setTitle("\(getup.hour):\(getup.minute)", for: .normal)
+            self.sleepButton.setTitle(gotoBedStr, for: .normal)
+            self.getupButton.setTitle(getupStr, for: .normal)
             
             let gap = model.deepSleepTime+model.lightSleepTime
             if gap != 0 {

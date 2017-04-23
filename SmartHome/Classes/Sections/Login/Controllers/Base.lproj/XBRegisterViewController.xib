@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="XBRegisterViewController" customModule="ProductTest" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="XBRegisterViewController" customModule="SmartHome" customModuleProvider="target">
             <connections>
                 <outlet property="addressField" destination="Ofa-fd-TmT" id="1Kk-0k-oSS"/>
                 <outlet property="backButton" destination="o75-pp-iFL" id="fzG-kw-cA9"/>
@@ -258,7 +258,7 @@
         <image name="check" width="16" height="16"/>
         <image name="checkbox" width="15" height="15"/>
         <image name="narrowField" width="309" height="30"/>
-        <image name="publicHeader" width="375" height="170"/>
+        <image name="publicHeader" width="375" height="169"/>
         <image name="pullDownBtn" width="30" height="30"/>
     </resources>
 </document>

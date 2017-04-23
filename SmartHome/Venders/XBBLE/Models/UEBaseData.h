@@ -12,16 +12,16 @@
 
 @interface UEBaseData : NSObject
 
-@property (nonatomic,assign) NSUInteger      packetId; //<! 指令码
-@property (nonatomic,strong) NSString        *extStr; //<! 扩展字段
-@property (nonatomic,strong) NSMutableData   *bodyData; //<! body数据
+@property (nonatomic,assign) NSUInteger      packetId; ///< 指令码
+@property (nonatomic,strong) NSString        *extStr; ///<! 扩展字段
+@property (nonatomic,strong) NSMutableData   *bodyData; ///<! body数据
 
 /**
  *  解码处理
  *
  *  @param characteristicValue 需要解码的数据
  *
- *  @return
+ *  @return any
  */
 - (id)initWithData:(NSData *)characteristicValue;
 
@@ -30,7 +30,7 @@
  *
  *  @param characteristicValue 需要解码的数据
  *
- *  @return
+ *  @return any
  */
 + (id)decodeWithData:(NSData *)characteristicValue;
 
@@ -38,42 +38,43 @@
 /**
  *  蓝牙编码处理
  *
- *  @return
+ *  @return data
  */
 - (NSData *)encodeData;
 
 /**
  *  添加接收或者发送数据内容
  *
- *  @param data
+ *  @param data 数据内容
+ *
  */
 - (void)addReadData:(NSData *)data;
 
 /**
  *  取得扩展内容
  *
- *  @return
+ *  @return fileExt
  */
 - (NSString *)getExtString;
 
 /**
  *  取得发送或者接收进度
  *
- *  @return
+ *  @return float
  */
 - (float)progress;
 
 /**
  *  接收或者发送是否完成
  *
- *  @return
+ *  @return bool
  */
 - (BOOL)isFinished;
 
 /**
  *  取得保存的文件
  *
- *  @return
+ *  @return string
  */
 - (NSString *)getCacheFilePath;
 
@@ -81,25 +82,25 @@
 
 /**
  * @brief 读取1个byte,未判断data的数据长度(读取指令码)
- * @return
+ * @return 字节
  */
 + (NSUInteger)readByte:(NSData *)data;
 
 /**
  * @brief 读取2个byte,未判断data的数据长度(读取扩展长度)
- * @return
+ * @return 字节
  */
 + (NSUInteger)readShort:(NSData *)data;
 
 /**
  * @brief 读取4个byte,未判断data的数据长度(读取Body数据的长度)
- * @return
+ * @return 字节
  */
 + (NSUInteger)readInt:(NSData *)data;
 
 /**
  * @brief 读取2+N个byte,未判断data的数据长度(读取扩展字段)
- * @return
+ * @return 字符串
  */
 + (NSString*)readString:(NSData *)data;
 

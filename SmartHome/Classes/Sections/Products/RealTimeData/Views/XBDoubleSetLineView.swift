@@ -97,7 +97,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
         legend1.xb_imageView.image = UIImage.imageWith(UIColorHex("c6bdb5", 1))
         legend1.xb_imageView.sizeToFit()
         legend1.xb_imageView.width = #imageLiteral(resourceName: "legend2").size.width
-        legend1.xb_label.text = "睡眠总时长"
+        legend1.xb_label.text = NSLocalizedString("Total Sleep", comment: "")
         legend1.xb_label.textColor = XB_DARK_TEXT
         legend1.xb_label.font = UIFontSize(10)
         legend1.xb_label.textAlignment = .right
@@ -105,7 +105,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
         
         legend2.xb_imageView.image = #imageLiteral(resourceName: "legend2")
         legend2.xb_imageView.sizeToFit()
-        legend2.xb_label.text = "深度睡眠时长"
+        legend2.xb_label.text = NSLocalizedString("Deep Sleep", comment: "")
         legend2.xb_label.textColor = XB_DARK_TEXT
         legend2.xb_label.font = UIFontSize(10)
         legend2.xb_label.textAlignment = .right

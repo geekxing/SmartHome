@@ -65,7 +65,7 @@ class XBUser: Object {
         var des = ""
         let properties = XBUser.properties_name()
         for property in properties {
-            des += " \(property) : \(self.value(forKey: property)) "
+            des += " \(property) : \(String(describing: self.value(forKey: property))) "
         }
         return des
         
@@ -168,8 +168,6 @@ class XBUserManager: NSObject {
     
     ///
     /// 从服务器返回指定账号的用户信息
-    ///
-    /// - Parameter uid:用户id
     ///
     /// - Returns:查询到的用户信息
     

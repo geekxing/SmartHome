@@ -109,7 +109,7 @@ class XBLoginViewController: UIViewController, UITextFieldDelegate, XBRegisterVi
         
         if let uid = username, let pwd = password {
             if (uid as NSString).length == 0 || (pwd as NSString).length == 0 {
-                self.view.makeToast("Message is not Completed")
+                self.view.makeToast("Please enter full information")
             } else {
                 
                 XBOperateUtils.shared.login(email: uid, pwd: pwd, success: { [weak self] (result) in

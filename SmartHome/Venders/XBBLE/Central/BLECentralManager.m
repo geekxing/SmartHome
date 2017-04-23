@@ -286,7 +286,7 @@
 /**
  *  添加扫描到的设备
  *
- *  @param mod
+ *  @param mod 设备
  */
 - (void)addBluetoothWithModel:(BLEDeviceInfo *)mod{
     

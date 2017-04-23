@@ -42,6 +42,7 @@ class XBRealDataTableCell: UITableViewCell {
         self.textLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         self.textLabel?.textColor = XB_DARK_TEXT
         self.textLabel?.textAlignment = .left
+        self.textLabel?.numberOfLines = 0
         shadowLineview = UIImageView(image: UIImage(named: "horizontalShadow"))
         valueLabel = UILabel()
         valueLabel.numberOfLines = 0
@@ -59,7 +60,7 @@ class XBRealDataTableCell: UITableViewCell {
         self.imageView?.top  = 41
         
         textLabel?.sizeToFit()
-        textLabel?.left = 25 * UIRate + self.imageView!.right
+        textLabel?.left = 10 * UIRate + self.imageView!.right
         textLabel?.centerY = self.imageView!.centerY
     
         valueLabel.width = 50

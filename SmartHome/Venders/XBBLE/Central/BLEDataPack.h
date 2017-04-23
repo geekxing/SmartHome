@@ -40,7 +40,7 @@
 /**
  *  取得分段发送数据
  *
- *  @return
+ *  @return data
  */
 - (NSData *)beginSendData;
 

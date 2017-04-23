@@ -18,7 +18,7 @@ class XBRelationNoticeController: XBBaseViewController {
     }
     
     override var naviTitle: String? {
-        return "亲情关注"
+        return NSLocalizedString("FAMILY CARE", comment: "")
     }
 
     private var splitView:XBSplitView!
@@ -72,7 +72,10 @@ class XBRelationNoticeController: XBBaseViewController {
     //MARK: - UI Setting
     
     private func setupSplitView() {
-        splitView = XBSplitView(titles: ["申请关注", "我的关注", "关注我的"])
+        splitView = XBSplitView(titles:
+            [NSLocalizedString("Care\nRequest", comment: ""),
+             NSLocalizedString("My\nCare", comment: ""),
+             NSLocalizedString("Care\nMe", comment: "")])
         splitView.frame = CGRect(x: 0, y: (naviBackgroundImage!.size.height*UIRate), width: view.width, height: 82)
         splitView.cornerRadius = 5
         splitView.tapSplitButton = { [weak self] (index) in

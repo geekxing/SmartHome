@@ -29,7 +29,7 @@ class XBRealDataViewController: XBBaseViewController {
     }
     
     override var naviTitle: String? {
-        return "实时数据"
+        return NSLocalizedString("REAL-TIME DATA", comment: "")
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -59,11 +59,13 @@ class XBRealDataViewController: XBBaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupTimer()
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         timer?.cancel()
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
     private func setupTimer()  {
@@ -189,26 +191,29 @@ extension XBRealDataViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier:identifier) as! XBRealDataTableCell
         if indexPath.row == 0 {
             cell.imageView?.image = #imageLiteral(resourceName: "heart")
-            cell.textLabel?.text = "心率"
+            cell.textLabel?.text = NSLocalizedString("Heart\nRate", comment: "")
             cell.shouldEnableEcgDisplay = true
         } else if indexPath.row == 1 {
             cell.imageView?.image = #imageLiteral(resourceName: "breath-1")
-            cell.textLabel?.text = "呼吸率"
+            cell.textLabel?.text = NSLocalizedString("Respiration", comment: "")
         } else {
             cell.imageView?.image = #imageLiteral(resourceName: "sleep")
-            cell.textLabel?.text = "状态"
+            cell.textLabel?.text = NSLocalizedString("Status", comment: "")
         }
         var score = "--"
+        var danwei = ""
         if self.realData != nil {
             if indexPath.row == 0 {
                 score = "\(realData!.heart)"
+                danwei = NSLocalizedString("bpm", comment: "")
             } else if indexPath.row == 1 {
                 score = "\(realData!.breath)"
+                danwei = NSLocalizedString("breaths/min", comment: "")
             } else {
                 cell.event = realData!.event
             }
         }
-        cell.valueLabel.attributedText = self.makeScoreAttributeString(score: score, text: "次/分")
+        cell.valueLabel.attributedText = self.makeScoreAttributeString(score: score, text: danwei)
         
         return cell
     }

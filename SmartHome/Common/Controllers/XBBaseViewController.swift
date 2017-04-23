@@ -46,10 +46,12 @@ class XBBaseViewController: UIViewController {
         titleLabel = UILabel()
         titleLabel.text = naviTitle
         titleLabel.textColor = UIColor.black
-        titleLabel.font = UIFontSize(27)
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .center
+        titleLabel.font = UIFontSize(27*UIRate)
         titleLabel.sizeToFit()
         titleLabel.centerX = naviBackground.centerX
-        titleLabel.top = UIRate * 32
+        titleLabel.top = UIRate * 24
         naviBackground.addSubview(titleLabel)
         view.addSubview(naviBackground)
     }

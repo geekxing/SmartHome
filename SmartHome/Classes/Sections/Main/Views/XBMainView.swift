@@ -35,7 +35,13 @@ class XBMainView: UIView {
     }
     
     var mainItems:[MainItemModel] {
-        let btnTitles = ["智能床垫", "智能枕", "智能手环", "亲情关注", "增值服务", "名医坐堂"]
+        let btnTitles =
+            [NSLocalizedString("Smart\nMattress Pad", comment: ""),
+             NSLocalizedString("Smart\nPillow", comment: ""),
+             NSLocalizedString("Smart\nBracelet", comment: ""),
+             NSLocalizedString("Family\nCare", comment: ""),
+             NSLocalizedString("Value-Added\nServices", comment: ""),
+             NSLocalizedString("Doctor's Hall", comment: "")]
         let btnImages = ["Sbed", "Spillow", "Sring", "Relation", "Product", "Doctor"]
         let itemEnables = [true, false, false, true, true, false]
         var array = [MainItemModel]()
@@ -70,8 +76,6 @@ class XBMainView: UIView {
             if let user = userMgr.user(uid: uid) {
                 self.currentUser = user
             }
-        } else {
-            print("无法获取登录用户信息！")
         }
     }
     
@@ -116,7 +120,7 @@ class XBMainView: UIView {
             var x = CGFloat(XBMainView.edgeMargin)
             x += CGFloat(i%maxColsCount)*(CGFloat(interMargin)+buttonW)
             
-            let square = XBSquareButton.init(image: UIImage(named: mainItem.image!), backImage: UIImage(named: mainItem.backImage!), color:nil, target: self, sel: #selector(click(btn:)), title:mainItem.title)
+            let square = XBSquareButton(image: UIImage(named: mainItem.image!), backImage: UIImage(named: mainItem.backImage!), color:nil, target: self, sel: #selector(click(btn:)), title:mainItem.title)
             
             if mainItem.enabled == false {
                 square.isEnabled = mainItem.enabled

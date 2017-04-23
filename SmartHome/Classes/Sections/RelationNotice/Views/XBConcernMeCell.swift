@@ -11,7 +11,6 @@ import UIKit
 class XBConcernMeCell: XBRelationConcernCell {
     
     static let maxNameLen = CGFloat(100.0*UIRate)
-    static let maxEmailLen = CGFloat(150.0*UIRate)
     
     var cancelConcernButton:UIButton!
     var clickCancelButton:((XBUser)->())?
@@ -31,11 +30,11 @@ class XBConcernMeCell: XBRelationConcernCell {
         nameLabel.width = XBConcernMeCell.maxNameLen
         nameLabel.centerY = avatarView.centerY
         nameLabel.left = avatarView.right + 8*UIRate
-        emailLabel.width = XBConcernMeCell.maxEmailLen
-        emailLabel.centerY = avatarView.centerY
-        emailLabel.left = nameLabel.right
         cancelConcernButton.right = width - 21
         cancelConcernButton.centerY = avatarView.centerY
+        emailLabel.width = cancelConcernButton.left - nameLabel.right - 10
+        emailLabel.centerY = avatarView.centerY
+        emailLabel.left = nameLabel.right
     }
     
     //MARK: - Action

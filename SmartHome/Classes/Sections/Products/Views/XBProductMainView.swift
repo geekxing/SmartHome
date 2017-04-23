@@ -11,7 +11,11 @@ import UIKit
 class XBProductMainView: XBMainView {
     
     override var mainItems:[MainItemModel] {
-        let btnTitles = ["实时数据", "健康档案", "添加设备", "删除设备"]
+        let btnTitles =
+            [NSLocalizedString("Real-time\nData", comment: ""),
+             NSLocalizedString("Health\nArchives", comment: ""),
+             NSLocalizedString("Add/Change\nDevice", comment: ""),
+             NSLocalizedString("Delete\nDevice", comment: "")]
         let btnImages = ["RealTimeData", "HealthReport", "AddDevice", "DeleteDevice"]
         let itemEnables = [true, true, true, true]
         var array = [MainItemModel]()

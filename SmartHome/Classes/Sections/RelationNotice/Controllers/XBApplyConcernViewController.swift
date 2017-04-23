@@ -91,6 +91,10 @@ class XBApplyConcernViewController: UIViewController {
     
     //MARK: - Operate
     private func search(email:String, complete:@escaping ((_ email:String)->())){
+        if !XBOperateUtils.validateEmail(email) {
+            SVProgressHUD.showError(withStatus: NSLocalizedString("Email format error", comment: ""))
+            return
+        }
         let params:Dictionary = ["email":email]
         XBNetworking.share.postWithPath(path: QUERY, paras: params, success: { [weak self] json in
             let message = json[Message].stringValue

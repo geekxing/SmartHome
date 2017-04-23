@@ -20,13 +20,8 @@ class XBHealthCareHeaderView: UIView {
         
     }
     
-    static let outerMargin = (25.0*UIRate)
-    static let interMargin = (54.0*UIRate)
-    
     var beginDate = Date(timeIntervalSinceNow: -7*24*3600) //一周前
     var endDate = Date()
-    
-    private let areaWidth   = (SCREEN_WIDTH - 2*outerMargin - 2*interMargin)/3
 
     private var selectType:XBHealthCareHeaderViewSelectType?
     
@@ -37,7 +32,9 @@ class XBHealthCareHeaderView: UIView {
     private var shawdowLine:UIImageView!
     private var container:UIView!
 
-    private var titles = ["测试日期", "睡眠时长", "睡眠评分"]
+    private var titles = [NSLocalizedString("Report Date", comment: ""),
+                          NSLocalizedString("Sleep Time", comment: ""),
+                          NSLocalizedString("Sleep Score", comment: "")]
     private var tipLabels = [UILabel]()
     
     convenience init(_ type:XBHealthCareHeaderViewSelectType) {
@@ -55,7 +52,9 @@ class XBHealthCareHeaderView: UIView {
         container.bottom = height
         
         for (index, label) in self.tipLabels.enumerated() {
-            label.left = XBHealthCareHeaderView.outerMargin+CGFloat(index)*(areaWidth+XBHealthCareHeaderView.interMargin)
+            let labelWidth = self.width/3
+            label.width = labelWidth
+            label.left = CGFloat(index) * labelWidth
             label.centerY = container.height * 0.5
         }
         
@@ -104,7 +103,7 @@ class XBHealthCareHeaderView: UIView {
                 self?.selectViewB?.beginDate = date
             }
             
-            toLabel.text = "至"
+            toLabel.text = NSLocalizedString("to", comment: "")
             toLabel.font = UIFont.boldSystemFont(ofSize: 18)
             toLabel.textColor = UIColorHex("ffffff", 1.0)
             toLabel.sizeToFit()
@@ -140,9 +139,10 @@ class XBHealthCareHeaderView: UIView {
     private func setupLabel() {
         for (title) in titles {
             let label = UILabel()
-            label.font = UIFont.boldSystemFont(ofSize: 16)
+            label.font = UIFont.boldSystemFont(ofSize: UIRate*16)
             label.textColor = XB_DARK_TEXT
             label.text = title
+            label.textAlignment = .center
             label.sizeToFit()
             tipLabels.append(label)
             container.addSubview(label)

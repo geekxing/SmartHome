@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1A018D7C1E2B6A0400B1629D /* XBAddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A018D7A1E2B6A0400B1629D /* XBAddDeviceViewController.swift */; };
-		1A018D7D1E2B6A0400B1629D /* XBAddDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A018D7B1E2B6A0400B1629D /* XBAddDeviceViewController.xib */; };
 		1A018D7F1E2B7EBE00B1629D /* XBQRCodeScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A018D7E1E2B7EBE00B1629D /* XBQRCodeScanViewController.swift */; };
 		1A018D851E2BAE5200B1629D /* XBRelationNoticeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A018D841E2BAE5200B1629D /* XBRelationNoticeController.swift */; };
 		1A018D881E2BB9AD00B1629D /* XBTableGroupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A018D871E2BB9AD00B1629D /* XBTableGroupItem.swift */; };
@@ -17,7 +16,6 @@
 		1A018D8E1E2C5D3900B1629D /* XBApplyConcernCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A018D8D1E2C5D3900B1629D /* XBApplyConcernCell.swift */; };
 		1A0426801E96091500D2FC9B /* NSObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A04267F1E96091500D2FC9B /* NSObject+Extension.swift */; };
 		1A10733A1E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1073381E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift */; };
-		1A10733B1E5A0AF400D06DBB /* XBDeleteDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A1073391E5A0AF400D06DBB /* XBDeleteDeviceViewController.xib */; };
 		1A14D6421DE6B81E00CE719B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A14D6411DE6B81E00CE719B /* MBProgressHUD.m */; };
 		1A14D6441DE6C10700CE719B /* MBProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A14D6431DE6C10700CE719B /* MBProgressHUD+Extension.swift */; };
 		1A1A944F1E9637C60076DD86 /* XBLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A944E1E9637C60076DD86 /* XBLog.swift */; };
@@ -25,13 +23,10 @@
 		1A31D5871DE440F900B9BB33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A31D5861DE440F900B9BB33 /* Assets.xcassets */; };
 		1A31D58A1DE440F900B9BB33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A31D5881DE440F900B9BB33 /* LaunchScreen.storyboard */; };
 		1A31D59D1DE569D800B9BB33 /* XBLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A31D59B1DE569D800B9BB33 /* XBLoginViewController.swift */; };
-		1A31D59E1DE569D800B9BB33 /* XBLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A31D59C1DE569D800B9BB33 /* XBLoginViewController.xib */; };
 		1A31D5A01DE56E2700B9BB33 /* XBNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A31D59F1DE56E2700B9BB33 /* XBNavigationController.swift */; };
 		1A31D5A31DE586CE00B9BB33 /* XBRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A31D5A11DE586CE00B9BB33 /* XBRegisterViewController.swift */; };
-		1A31D5A41DE586CE00B9BB33 /* XBRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A31D5A21DE586CE00B9BB33 /* XBRegisterViewController.xib */; };
 		1A3352E71E9DD62200C24CD7 /* XBAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3352E61E9DD62200C24CD7 /* XBAnimator.swift */; };
 		1A37A3C61DF71684003B006C /* XBFindPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A37A3C41DF71684003B006C /* XBFindPasswordController.swift */; };
-		1A37A3C71DF71684003B006C /* XBFindPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A37A3C51DF71684003B006C /* XBFindPasswordController.xib */; };
 		1A3F78BA1E8E2500000AD173 /* XBRequestURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */; };
 		1A42B1DD1DF3C26300A407B7 /* XBSquareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A42B1DC1DF3C26300A407B7 /* XBSquareButton.swift */; };
 		1A42B1DF1DF3C3E000A407B7 /* XBMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A42B1DE1DF3C3E000A407B7 /* XBMainView.swift */; };
@@ -41,7 +36,6 @@
 		1A42B1EA1DF4634100A407B7 /* XBLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A42B1E91DF4634100A407B7 /* XBLoginManager.swift */; };
 		1A4A75F51E2A2DA600A40787 /* MainItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4A75F41E2A2DA600A40787 /* MainItemModel.swift */; };
 		1A4A75F81E2A622D00A40787 /* XBEditUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4A75F61E2A622D00A40787 /* XBEditUserInfoViewController.swift */; };
-		1A4A75F91E2A622D00A40787 /* XBEditUserInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A4A75F71E2A622D00A40787 /* XBEditUserInfoViewController.xib */; };
 		1A7720471DF4FC9200257F02 /* XBUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7720461DF4FC9200257F02 /* XBUserManager.swift */; };
 		1A8AC67F1DE809E4009CC8F6 /* XBNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8AC67E1DE809E4009CC8F6 /* XBNetworking.swift */; };
 		1A973C2D1E65CF7900FB2431 /* XBShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A973C2C1E65CF7900FB2431 /* XBShadowButton.swift */; };
@@ -78,6 +72,13 @@
 		1ABA44CC1E84313F009AED65 /* XBHourValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44CB1E84313F009AED65 /* XBHourValueFormatter.swift */; };
 		1ABA44CE1E84C335009AED65 /* XBDisplayRealStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44CD1E84C335009AED65 /* XBDisplayRealStateView.swift */; };
 		1ABA44D01E8502F0009AED65 /* XBButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44CF1E8502F0009AED65 /* XBButton.swift */; };
+		1ABA912F1EAC7BD200EA9F3D /* XBLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1ABA91311EAC7BD200EA9F3D /* XBLoginViewController.xib */; };
+		1ABA91351EAC7EDC00EA9F3D /* XBRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1ABA91371EAC7EDC00EA9F3D /* XBRegisterViewController.xib */; };
+		1ABA913C1EAC7FDD00EA9F3D /* XBFindPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1ABA913E1EAC7FDD00EA9F3D /* XBFindPasswordController.xib */; };
+		1ABA91431EAC806200EA9F3D /* XBEditUserInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1ABA91451EAC806200EA9F3D /* XBEditUserInfoViewController.xib */; };
+		1ABA914B1EAC86E200EA9F3D /* XBAddDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1ABA914D1EAC86E200EA9F3D /* XBAddDeviceViewController.xib */; };
+		1ABA91521EAC873F00EA9F3D /* XBDeleteDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1ABA91541EAC873F00EA9F3D /* XBDeleteDeviceViewController.xib */; };
+		1ABA915D1EACA2F100EA9F3D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ABA915F1EACA2F100EA9F3D /* Localizable.strings */; };
 		1ABFB3F71DF56C0100A9B212 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABFB3F61DF56C0100A9B212 /* libsqlite3.0.tbd */; };
 		1AC239F31E8F9016005C7AD5 /* XBVerifyCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC239F21E8F9016005C7AD5 /* XBVerifyCodeViewController.swift */; };
 		1AC239F51E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC239F41E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift */; };
@@ -124,7 +125,6 @@
 
 /* Begin PBXFileReference section */
 		1A018D7A1E2B6A0400B1629D /* XBAddDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBAddDeviceViewController.swift; sourceTree = "<group>"; };
-		1A018D7B1E2B6A0400B1629D /* XBAddDeviceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBAddDeviceViewController.xib; sourceTree = "<group>"; };
 		1A018D7E1E2B7EBE00B1629D /* XBQRCodeScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBQRCodeScanViewController.swift; sourceTree = "<group>"; };
 		1A018D841E2BAE5200B1629D /* XBRelationNoticeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRelationNoticeController.swift; sourceTree = "<group>"; };
 		1A018D871E2BB9AD00B1629D /* XBTableGroupItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBTableGroupItem.swift; sourceTree = "<group>"; };
@@ -133,7 +133,6 @@
 		1A018D8D1E2C5D3900B1629D /* XBApplyConcernCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBApplyConcernCell.swift; sourceTree = "<group>"; };
 		1A04267F1E96091500D2FC9B /* NSObject+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
 		1A1073381E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBDeleteDeviceViewController.swift; sourceTree = "<group>"; };
-		1A1073391E5A0AF400D06DBB /* XBDeleteDeviceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBDeleteDeviceViewController.xib; sourceTree = "<group>"; };
 		1A14D63F1DE6B81E00CE719B /* MBProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
 		1A14D6401DE6B81E00CE719B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		1A14D6411DE6B81E00CE719B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -145,14 +144,11 @@
 		1A31D5891DE440F900B9BB33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A31D58B1DE440F900B9BB33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A31D59B1DE569D800B9BB33 /* XBLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBLoginViewController.swift; sourceTree = "<group>"; };
-		1A31D59C1DE569D800B9BB33 /* XBLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBLoginViewController.xib; sourceTree = "<group>"; };
 		1A31D59F1DE56E2700B9BB33 /* XBNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBNavigationController.swift; sourceTree = "<group>"; };
 		1A31D5A11DE586CE00B9BB33 /* XBRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRegisterViewController.swift; sourceTree = "<group>"; };
-		1A31D5A21DE586CE00B9BB33 /* XBRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBRegisterViewController.xib; sourceTree = "<group>"; };
 		1A3352E61E9DD62200C24CD7 /* XBAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBAnimator.swift; sourceTree = "<group>"; };
 		1A3352EF1E9F6D4700C24CD7 /* SmartHome-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SmartHome-Bridging-Header.h"; sourceTree = "<group>"; };
 		1A37A3C41DF71684003B006C /* XBFindPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBFindPasswordController.swift; sourceTree = "<group>"; };
-		1A37A3C51DF71684003B006C /* XBFindPasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBFindPasswordController.xib; sourceTree = "<group>"; };
 		1A3F78B91E8E2500000AD173 /* XBRequestURLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRequestURLs.swift; sourceTree = "<group>"; };
 		1A42B1DC1DF3C26300A407B7 /* XBSquareButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBSquareButton.swift; sourceTree = "<group>"; };
 		1A42B1DE1DF3C3E000A407B7 /* XBMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBMainView.swift; sourceTree = "<group>"; };
@@ -162,7 +158,6 @@
 		1A42B1E91DF4634100A407B7 /* XBLoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBLoginManager.swift; sourceTree = "<group>"; };
 		1A4A75F41E2A2DA600A40787 /* MainItemModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainItemModel.swift; sourceTree = "<group>"; };
 		1A4A75F61E2A622D00A40787 /* XBEditUserInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBEditUserInfoViewController.swift; sourceTree = "<group>"; };
-		1A4A75F71E2A622D00A40787 /* XBEditUserInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XBEditUserInfoViewController.xib; sourceTree = "<group>"; };
 		1A7720461DF4FC9200257F02 /* XBUserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBUserManager.swift; sourceTree = "<group>"; };
 		1A8AC67E1DE809E4009CC8F6 /* XBNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBNetworking.swift; sourceTree = "<group>"; };
 		1A973C2C1E65CF7900FB2431 /* XBShadowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBShadowButton.swift; sourceTree = "<group>"; };
@@ -217,6 +212,25 @@
 		1ABA44CB1E84313F009AED65 /* XBHourValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBHourValueFormatter.swift; sourceTree = "<group>"; };
 		1ABA44CD1E84C335009AED65 /* XBDisplayRealStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBDisplayRealStateView.swift; sourceTree = "<group>"; };
 		1ABA44CF1E8502F0009AED65 /* XBButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBButton.swift; sourceTree = "<group>"; };
+		1ABA91331EAC7BD600EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBLoginViewController.strings"; sourceTree = "<group>"; };
+		1ABA91341EAC7C7B00EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBLoginViewController.xib; sourceTree = "<group>"; };
+		1ABA91361EAC7EDC00EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBRegisterViewController.xib; sourceTree = "<group>"; };
+		1ABA91391EAC7EE300EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBRegisterViewController.strings; sourceTree = "<group>"; };
+		1ABA913B1EAC7EE800EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBRegisterViewController.strings"; sourceTree = "<group>"; };
+		1ABA913D1EAC7FDD00EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBFindPasswordController.xib; sourceTree = "<group>"; };
+		1ABA91421EAC7FE000EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBFindPasswordController.strings"; sourceTree = "<group>"; };
+		1ABA91441EAC806200EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBEditUserInfoViewController.xib; sourceTree = "<group>"; };
+		1ABA91471EAC806400EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBEditUserInfoViewController.strings; sourceTree = "<group>"; };
+		1ABA91491EAC806600EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBEditUserInfoViewController.strings"; sourceTree = "<group>"; };
+		1ABA914A1EAC80C400EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBLoginViewController.strings; sourceTree = "<group>"; };
+		1ABA914C1EAC86E200EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBAddDeviceViewController.xib; sourceTree = "<group>"; };
+		1ABA914F1EAC86E400EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBAddDeviceViewController.strings; sourceTree = "<group>"; };
+		1ABA91511EAC86E500EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBAddDeviceViewController.strings"; sourceTree = "<group>"; };
+		1ABA91531EAC873F00EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBDeleteDeviceViewController.xib; sourceTree = "<group>"; };
+		1ABA91561EAC874000EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBDeleteDeviceViewController.strings; sourceTree = "<group>"; };
+		1ABA91581EAC874100EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBDeleteDeviceViewController.strings"; sourceTree = "<group>"; };
+		1ABA91601EACA2F300EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1ABA91611EACA2F400EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1ABFB3F61DF56C0100A9B212 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		1AC239F21E8F9016005C7AD5 /* XBVerifyCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBVerifyCodeViewController.swift; sourceTree = "<group>"; };
 		1AC239F41E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBModifyPasswordViewController.swift; sourceTree = "<group>"; };
@@ -403,6 +417,7 @@
 				1A31D5911DE5698000B9BB33 /* Classes */,
 				1A31D5971DE5698000B9BB33 /* Common */,
 				1A31D57F1DE440F900B9BB33 /* AppDelegate.swift */,
+				1ABA915F1EACA2F100EA9F3D /* Localizable.strings */,
 				1A31D5861DE440F900B9BB33 /* Assets.xcassets */,
 				1A31D5881DE440F900B9BB33 /* LaunchScreen.storyboard */,
 				1A31D58B1DE440F900B9BB33 /* Info.plist */,
@@ -446,13 +461,13 @@
 			isa = PBXGroup;
 			children = (
 				1A31D59B1DE569D800B9BB33 /* XBLoginViewController.swift */,
-				1A31D59C1DE569D800B9BB33 /* XBLoginViewController.xib */,
+				1ABA91311EAC7BD200EA9F3D /* XBLoginViewController.xib */,
 				1A31D5A11DE586CE00B9BB33 /* XBRegisterViewController.swift */,
-				1A31D5A21DE586CE00B9BB33 /* XBRegisterViewController.xib */,
+				1ABA91371EAC7EDC00EA9F3D /* XBRegisterViewController.xib */,
 				1A37A3C41DF71684003B006C /* XBFindPasswordController.swift */,
-				1A37A3C51DF71684003B006C /* XBFindPasswordController.xib */,
+				1ABA913E1EAC7FDD00EA9F3D /* XBFindPasswordController.xib */,
 				1A4A75F61E2A622D00A40787 /* XBEditUserInfoViewController.swift */,
-				1A4A75F71E2A622D00A40787 /* XBEditUserInfoViewController.xib */,
+				1ABA91451EAC806200EA9F3D /* XBEditUserInfoViewController.xib */,
 				1AC239F21E8F9016005C7AD5 /* XBVerifyCodeViewController.swift */,
 				1AC239F41E8FA4F0005C7AD5 /* XBModifyPasswordViewController.swift */,
 			);
@@ -634,9 +649,9 @@
 			children = (
 				1A9BCAE71E2B5FB90001A880 /* XBProductMainController.swift */,
 				1A018D7A1E2B6A0400B1629D /* XBAddDeviceViewController.swift */,
-				1A018D7B1E2B6A0400B1629D /* XBAddDeviceViewController.xib */,
+				1ABA914D1EAC86E200EA9F3D /* XBAddDeviceViewController.xib */,
 				1A1073381E5A0AF400D06DBB /* XBDeleteDeviceViewController.swift */,
-				1A1073391E5A0AF400D06DBB /* XBDeleteDeviceViewController.xib */,
+				1ABA91541EAC873F00EA9F3D /* XBDeleteDeviceViewController.xib */,
 				1AEC2C791E612809005E181D /* XBHealthCareViewController.swift */,
 				1AEC2C7F1E614B48005E181D /* XBSingleSelectHealthHistoryController.swift */,
 				1AEC2C7D1E614B20005E181D /* XBMultiSelectHealthHistoryController.swift */,
@@ -838,7 +853,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = helloworld.com;
 				TargetAttributes = {
 					1A31D57B1DE440F900B9BB33 = {
@@ -856,6 +871,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 1A31D5731DE440F900B9BB33;
 			productRefGroup = 1A31D57D1DE440F900B9BB33 /* Products */;
@@ -873,14 +889,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A31D58A1DE440F900B9BB33 /* LaunchScreen.storyboard in Resources */,
-				1A37A3C71DF71684003B006C /* XBFindPasswordController.xib in Resources */,
-				1A10733B1E5A0AF400D06DBB /* XBDeleteDeviceViewController.xib in Resources */,
-				1A31D59E1DE569D800B9BB33 /* XBLoginViewController.xib in Resources */,
+				1ABA913C1EAC7FDD00EA9F3D /* XBFindPasswordController.xib in Resources */,
+				1ABA91521EAC873F00EA9F3D /* XBDeleteDeviceViewController.xib in Resources */,
+				1ABA912F1EAC7BD200EA9F3D /* XBLoginViewController.xib in Resources */,
 				1A31D5871DE440F900B9BB33 /* Assets.xcassets in Resources */,
-				1A018D7D1E2B6A0400B1629D /* XBAddDeviceViewController.xib in Resources */,
-				1A4A75F91E2A622D00A40787 /* XBEditUserInfoViewController.xib in Resources */,
+				1ABA915D1EACA2F100EA9F3D /* Localizable.strings in Resources */,
+				1ABA914B1EAC86E200EA9F3D /* XBAddDeviceViewController.xib in Resources */,
+				1ABA91431EAC806200EA9F3D /* XBEditUserInfoViewController.xib in Resources */,
 				1AECDDA21E752EAD00294A3F /* XBReportViewController.storyboard in Resources */,
-				1A31D5A41DE586CE00B9BB33 /* XBRegisterViewController.xib in Resources */,
+				1ABA91351EAC7EDC00EA9F3D /* XBRegisterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1068,6 +1085,74 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		1ABA91311EAC7BD200EA9F3D /* XBLoginViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1ABA91331EAC7BD600EA9F3D /* zh-Hans */,
+				1ABA91341EAC7C7B00EA9F3D /* Base */,
+				1ABA914A1EAC80C400EA9F3D /* en */,
+			);
+			name = XBLoginViewController.xib;
+			sourceTree = "<group>";
+		};
+		1ABA91371EAC7EDC00EA9F3D /* XBRegisterViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1ABA91361EAC7EDC00EA9F3D /* Base */,
+				1ABA91391EAC7EE300EA9F3D /* en */,
+				1ABA913B1EAC7EE800EA9F3D /* zh-Hans */,
+			);
+			name = XBRegisterViewController.xib;
+			sourceTree = "<group>";
+		};
+		1ABA913E1EAC7FDD00EA9F3D /* XBFindPasswordController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1ABA913D1EAC7FDD00EA9F3D /* Base */,
+				1ABA91421EAC7FE000EA9F3D /* zh-Hans */,
+			);
+			name = XBFindPasswordController.xib;
+			sourceTree = "<group>";
+		};
+		1ABA91451EAC806200EA9F3D /* XBEditUserInfoViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1ABA91441EAC806200EA9F3D /* Base */,
+				1ABA91471EAC806400EA9F3D /* en */,
+				1ABA91491EAC806600EA9F3D /* zh-Hans */,
+			);
+			name = XBEditUserInfoViewController.xib;
+			sourceTree = "<group>";
+		};
+		1ABA914D1EAC86E200EA9F3D /* XBAddDeviceViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1ABA914C1EAC86E200EA9F3D /* Base */,
+				1ABA914F1EAC86E400EA9F3D /* en */,
+				1ABA91511EAC86E500EA9F3D /* zh-Hans */,
+			);
+			name = XBAddDeviceViewController.xib;
+			sourceTree = "<group>";
+		};
+		1ABA91541EAC873F00EA9F3D /* XBDeleteDeviceViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1ABA91531EAC873F00EA9F3D /* Base */,
+				1ABA91561EAC874000EA9F3D /* en */,
+				1ABA91581EAC874100EA9F3D /* zh-Hans */,
+			);
+			name = XBDeleteDeviceViewController.xib;
+			sourceTree = "<group>";
+		};
+		1ABA915F1EACA2F100EA9F3D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1ABA91601EACA2F300EA9F3D /* en */,
+				1ABA91611EACA2F400EA9F3D /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1075,6 +1160,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -1112,7 +1198,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1126,6 +1212,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -1157,7 +1244,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/laixiaobing/Desktop/Learn/SmartHome/SmartHome/Venders/MBProgressHUD/SmartHome-Bridging-Header.h";
@@ -1170,6 +1257,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9747999DE36F1A85A7ACB267 /* Pods-SmartHome.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1196,6 +1284,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 686A3CF006294A054FA73D8C /* Pods-SmartHome.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

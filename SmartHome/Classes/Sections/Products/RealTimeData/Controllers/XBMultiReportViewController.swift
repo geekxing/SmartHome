@@ -13,8 +13,14 @@ class XBMultiReportViewController: XBBaseViewController {
     //MARK: - Properties
     let scrollView  = XBMultiReportView()
     var viewArray = [XBSingleReportView]()
-    let titles = ["心率","呼吸率","深度睡眠时长","睡眠质量曲线"]
-    let danweis = ["次/分","次/分","时","分"]
+    let titles = [NSLocalizedString("Heart Rate", comment: ""),
+                  NSLocalizedString("Respiration", comment: ""),
+                  NSLocalizedString("Deep Sleep Amount", comment: ""),
+                  NSLocalizedString("Sleep Quality Curve", comment: "")]
+    let danweis = [NSLocalizedString("bpm", comment: ""),
+                   NSLocalizedString("bpm", comment: ""),
+                   NSLocalizedString("h", comment: ""),
+                   NSLocalizedString("", comment: "")]
     var heartGroups = [Double]()
     var breathGroups = [Double]()
     var deepSleeps = [Double]()
@@ -38,7 +44,7 @@ class XBMultiReportViewController: XBBaseViewController {
     }
     
     override var naviTitle: String? {
-        return "统计分析"
+        return NSLocalizedString("DATA ANALYSIS", comment: "")
     }
 
     override func viewDidLoad() {

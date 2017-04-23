@@ -60,7 +60,7 @@ class XBMainViewController: XBBaseViewController {
     
     func setupNaviItem() {
         self.originBackButton = self.navigationItem.leftBarButtonItem
-        let backButton = UIButton(image: #imageLiteral(resourceName: "backButton"), backImage: nil, color: nil, target: self, sel:  #selector(back), title: "注销")
+        let backButton = UIButton(image: #imageLiteral(resourceName: "backButton"), backImage: nil, color: nil, target: self, sel:  #selector(back), title: NSLocalizedString("Log Out", comment: ""))
         backButton.setTitleColor(XB_DARK_TEXT, for: .normal)
         backButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -10)
         backButton.sizeToFit()

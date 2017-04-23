@@ -69,7 +69,7 @@ typedef void (^BLECentralDisconnectBlock) (CBPeripheral *peripheral,NSError *err
 /**
  *  获取第一个连接对象
  *
- *  @return
+ *  @return 连接对象
  */
 - (BLEConnector *)getFirstConnector;
 

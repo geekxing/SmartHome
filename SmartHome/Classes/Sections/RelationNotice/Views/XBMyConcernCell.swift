@@ -27,9 +27,9 @@ class XBMyConcernCell: XBConcernMeCell {
         }
     }
     
-    private let bedView = XBCheckProductView("智能床垫")
-    private let pillowView = XBCheckProductView("智能枕")
-    private let ringView = XBCheckProductView("智能手环")
+    private let bedView = XBCheckProductView(NSLocalizedString("Mattress Pad", comment: ""))
+    private let pillowView = XBCheckProductView(NSLocalizedString("Pillow", comment: ""))
+    private let ringView = XBCheckProductView(NSLocalizedString("Bracelet", comment: ""))
     
     var productViews:[XBCheckProductView]!
     
@@ -60,7 +60,8 @@ class XBMyConcernCell: XBConcernMeCell {
         arrowButton.left = 2
         arrowButton.centerY = avatarView.centerY;
         for (index, view) in productViews.enumerated() {
-            view.frame = CGRect(x: 0, y: 71 + CGFloat(index*40), width: 259, height: 20)
+            let size = view.sizeThatFits(CGSize(width: self.width, height: 20))
+            view.frame = CGRect(x: 0, y: 71 + CGFloat(index*40), width: size.width, height: 20)
             view.right = cancelConcernButton.centerX
         }
     }

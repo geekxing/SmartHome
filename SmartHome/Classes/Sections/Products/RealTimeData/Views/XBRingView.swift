@@ -16,10 +16,23 @@ class XBRingView: UIView {
     var maxValue:CGFloat = 0
     var increment:CGFloat = 0
     
+    let title = NSLocalizedString("Sleep Score", comment: "")
+    var titleSize:CGSize = CGSize.zero
+    
     var progress:CGFloat = 0 {
         didSet {
             self.setNeedsDisplay()
         }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        titleSize = (title as NSString).size(attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: UIRate*14)])
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        titleSize = (title as NSString).size(attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: UIRate*14)])
     }
     
     private var ringRect:CGRect {
@@ -38,8 +51,8 @@ class XBRingView: UIView {
         ctx?.addPath(backGroundPath.cgPath)
         ctx?.strokePath()
 
-        let startA = -M_PI_2
-        let endA   = -M_PI_2 + Double(self.progress) * M_PI * 2
+        let startA = -Double.pi/2
+        let endA   = -Double.pi/2 + Double(self.progress) * Double.pi * 2
         drawArc(startA: CGFloat(startA), endA: CGFloat(endA), color: self.strokeColor!, in: rect, ctx: ctx)
         
         drawText()
@@ -61,8 +74,7 @@ class XBRingView: UIView {
         //获取文字的rect
         let textRect = score.boundingRect(with: CGSize(width:70, height:40), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFontSize(40)], context: nil)
         score.draw(in: CGRect(x:(self.width-textRect.width)/2,y:self.height*0.5-37,width:textRect.width,height:textRect.height), withAttributes: [NSFontAttributeName:UIFontSize(40)])
-        let text = "睡眠评分" as NSString
-        text.draw(in: CGRect(x:self.width*0.5-30,y:self.height*0.5+15,width:60,height:20), withAttributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
+        (title as NSString).draw(at: CGPoint(x:(self.width-titleSize.width)*0.5,y:self.height*0.5+15), withAttributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: UIRate*14)])
     }
 
 }

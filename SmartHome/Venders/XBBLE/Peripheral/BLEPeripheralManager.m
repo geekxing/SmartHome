@@ -18,8 +18,8 @@
     CBPeripheralManager *_serverCM;
     NSUUID *_lastDeviceUUID;
     
-    NSMutableArray* dataPackList; //<! 待发送报文列表
-    BLEDataPack* sendingDataPack; //<! 当前正在发送报文
+    NSMutableArray* dataPackList; ///< 待发送报文列表
+    BLEDataPack* sendingDataPack; ///< 当前正在发送报文
 }
 
 @property (nonatomic,strong) CBCentral *central;

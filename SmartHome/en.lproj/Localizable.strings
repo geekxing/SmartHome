@@ -1,0 +1,13 @@
+/*
+ Localizable.strings
+ SmartHome
+ 
+ Created by 赖霄冰 on 2017/4/23.
+ Copyright © 2017年 helloworld.com. All rights reserved.
+ */
+
+"ALERTDONE" = "OK";
+
+"ALERTCANCEL" = "CANCEL";
+
+

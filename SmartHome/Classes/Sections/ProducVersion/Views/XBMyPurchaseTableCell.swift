@@ -19,7 +19,7 @@ class XBMyPurchaseTableCell: UITableViewCell {
             
             proNameLabel.text = model?.productName
             proNameLabel.sizeToFit()
-            if XBUserManager.shared.loginUser()!.Device().first != nil && model?.productName == "智能床垫" {
+            if XBUserManager.shared.loginUser()!.Device().first != nil && model?.productName == NSLocalizedString("Smart Mattress Pad", comment: "") {
                 purchaseButton.isEnabled = true
                 proNameLabel.textColor = XB_DARK_TEXT
                 vipLabel.textColor = UIColorHex("8a847f", 1.0)
@@ -49,10 +49,13 @@ class XBMyPurchaseTableCell: UITableViewCell {
         vipLabel = UILabel()
         vipLabel.font = UIFont.boldSystemFont(ofSize: 14)
         vipLabel.textColor = UIColorHex("8a847f", 1.0)
-        vipLabel.text = "高级版"
+        vipLabel.text = NSLocalizedString("*Advanced Version", comment: "")
         vipLabel.sizeToFit()
-        purchaseButton = XBRoundedButton.init(selector: #selector(purchase(_:)), target: self, font:19, title: "续费")
+        purchaseButton = XBRoundedButton.init(selector: #selector(purchase(_:)), target: self, font:19, title: NSLocalizedString("Renewal\nFee", comment: ""))
         purchaseButton.isEnabled = false
+        purchaseButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        purchaseButton.titleLabel?.numberOfLines = 2
+        purchaseButton.titleLabel?.minimumScaleFactor = 0.5
         addSubview(proNameLabel)
         addSubview(vipLabel)
         addSubview(purchaseButton)
@@ -63,14 +66,8 @@ class XBMyPurchaseTableCell: UITableViewCell {
         proNameLabel.left = 33
         proNameLabel.centerY = height * 0.5
         
-        let label = UILabel()
-        label.font = proNameLabel.font
-        label.text = "智能手环"
-        label.sizeToFit()
-        label.left = proNameLabel.left
-        
-        vipLabel.left = label.right+17
-        vipLabel.bottom = proNameLabel.bottom-1
+        vipLabel.left = proNameLabel.left
+        vipLabel.top = proNameLabel.bottom
         
         purchaseButton.height = 35
         purchaseButton.width = 77

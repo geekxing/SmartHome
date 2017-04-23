@@ -92,19 +92,19 @@ class XBSingleReportView: UIView {
         titleLabel.left = 22
         titleLabel.top  = 22
         
-        ///Chart最小值与绘图框的默认padding为10
-        let padding = height - 39
-        minButton.right = width - 25
-        minButton.centerY = padding - CGFloat(lowPoint-beginValue) * yScale
-        avgButton.right = width - 25
-        avgButton.centerY = padding - CGFloat(avgPoint-beginValue) * yScale
-        maxButton.right = width - 25
-        maxButton.centerY = padding - CGFloat(maxPoint-beginValue) * yScale
-        
-        lineChart.width = maxButton.centerX - titleLabel.left - 5
+        lineChart.width = width - titleLabel.left - UIRate * 60
         lineChart.height = drawHeight + 20
         lineChart.left = 22
         lineChart.top = 50
+        
+        ///Chart最小值与绘图框的默认padding为10
+        let padding = height - 39
+        minButton.left = lineChart.right
+        minButton.centerY = padding - CGFloat(lowPoint-beginValue) * yScale
+        avgButton.left = lineChart.right
+        avgButton.centerY = padding - CGFloat(avgPoint-beginValue) * yScale
+        maxButton.left = lineChart.right
+        maxButton.centerY = padding - CGFloat(maxPoint-beginValue) * yScale
     }
     
     //MARK: - Setup

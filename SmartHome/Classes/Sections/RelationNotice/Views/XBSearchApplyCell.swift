@@ -22,8 +22,8 @@ class XBSearchApplyCell: XBRelationConcernCell {
     override func setup() {
         super.setup()
     
-        cancelButton = XBRoundedButton.init(selector: #selector(clickCancel(_:)),target:self, title: "取消")
-        applyButton = XBRoundedButton.init(selector: #selector(clickApply(_:)),target:self, title: "申请")
+        cancelButton = XBRoundedButton.init(selector: #selector(clickCancel(_:)),target:self, title: NSLocalizedString("Cancel", comment: ""))
+        applyButton = XBRoundedButton.init(selector: #selector(clickApply(_:)),target:self, title: NSLocalizedString("Request", comment: ""))
         contentView.addSubview(cancelButton)
         contentView.addSubview(applyButton)
     }

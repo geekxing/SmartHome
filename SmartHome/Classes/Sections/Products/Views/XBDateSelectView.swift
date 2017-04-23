@@ -110,9 +110,9 @@ class XBDateSelectView: UIView {
         UIApplication.shared.keyWindow?.addSubview(textField)
 
         
-        commonInitLabel(yearLabel, "年")
-        commonInitLabel(monthLabel, "月")
-        commonInitLabel(dayLabel, "日")
+        commonInitLabel(yearLabel, NSLocalizedString("Y", comment: ""))
+        commonInitLabel(monthLabel, NSLocalizedString("M", comment: ""))
+        commonInitLabel(dayLabel, NSLocalizedString("D", comment: ""))
         
         setupButton()
         

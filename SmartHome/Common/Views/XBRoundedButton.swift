@@ -40,6 +40,9 @@ class XBRoundedButton: UIButton {
         self.setBackgroundImage(UIImage.imageWith(RGBA(r: 136, g: 132, b: 128, a: 1)), for: .normal)
         self.setTitleColor(UIColor.white, for: .normal)
         self.titleLabel?.textAlignment = .center
+        self.titleLabel?.numberOfLines = 0
+        self.titleLabel?.adjustsFontSizeToFitWidth = true
+        self.titleLabel?.minimumScaleFactor = 0.5
         self.layer.masksToBounds = true
         
     }
