@@ -194,11 +194,11 @@ class XBUserManager: NSObject {
     
     //MARK: - Class Func
     class func integerForGender(_ gender:String) -> Int {
-        return gender == "Male" ? 1 : 0;
+        return gender == NSLocalizedString("Male", comment: "") ? 1 : 0;
     }
     
     class func genderForInt(_ genderIndex:Int) -> String {
-        return genderIndex == 0 ? "Female" : "Male"
+        return genderIndex == 0 ? NSLocalizedString("Female", comment: "") : NSLocalizedString("Male", comment: "")
     }
     
 }

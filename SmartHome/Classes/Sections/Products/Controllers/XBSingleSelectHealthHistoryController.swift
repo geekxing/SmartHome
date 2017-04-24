@@ -116,7 +116,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     func beginSearch() {
 
         if self.group.count == 0 {
-            self.view.makeToast("There is no data")
+            self.view.makeToast(NSLocalizedString("No Data", comment: ""))
             return
         }
         let story = UIStoryboard(name: "XBReportViewController", bundle: Bundle.main)

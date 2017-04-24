@@ -15,15 +15,28 @@
 
 "DONE" = "确定";
 
-"ALERTDONE" = "好的";
+"ALERTDONE" = "确定";
 
 "ALERTCANCEL" = "取消";
 
 //MARK: - TIPS
 
+"No Data" = "暂无数据";
+
 "Email format error" = "邮箱格式错误";
 
+"Password can only be the combination of numbers and letters. It may not be less than 6 or more than 16 bits" =
+"密码只能是数字或字母组合且不能少于6位或多余16位";
+
+"Two passwords are not the same!" = "两次密码不一致";
+
+"Select one period from the list" = "请在列表中至少选择一个时间段";
+
 //MARK: - USER INFO
+
+"Male" = "男";
+
+"Female" = "女";
 
 "Reset Password" = "重置密码";
 
@@ -31,7 +44,7 @@
 
 "Confirm Password" = "确认密码";
 
-"Please enter full information" = "Message is not Completed";
+"Please enter full information" = "请输入完整信息";
 
 "Verify Code" = "验证码";
 
@@ -121,6 +134,10 @@
 
 "Multiple Reports" = "查询多次睡眠";
 
+"DATA_ANALYSIS_DATE_PERIOD" = "%1$@%2$zd日 - %3$@%4$zd日";
+
+"DATA_ANALYSIS_TOTAL_REPORTS" = "共计次数：%1$zd次";
+
 "Inquiry" = "查询";
 
 "Maximum" = "最高值";
@@ -138,6 +155,14 @@
 //MARK: - Single Report
 
 "TRACKING REPORT" = "检测报告";
+
+"TRACKING_REPORT_DATE" = "检测日期：%1$@%2$zd日";
+
+"TRACKING_TOTAL_SLEEP_TIME" = "总睡眠时长：%1$zd小时%2$zd分";
+
+"TRACKING_DEEP_SLEEP_TIME" = "深度睡眠时长：%1$zd小时%2$zd分";
+
+"TRACKING_LIGHT_SLEEP_TIME" = "浅度睡眠时长：%1$zd小时%2$zd分";
 
 "Average\nHeart Rate" = "平均心率";
 

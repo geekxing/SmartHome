@@ -36,7 +36,7 @@ class XBMultiReportView: UIScrollView {
         avg = makeButton(#imageLiteral(resourceName: "mid"), title: NSLocalizedString("Average", comment: ""))
         min = makeButton(#imageLiteral(resourceName: "down"), title: NSLocalizedString("Minimum", comment: ""))
 
-        self.dateLabel.text = "*月*日" + " - *月*日"
+        self.dateLabel.text = String(format: NSLocalizedString("DATA_ANALYSIS_DATE_PERIOD", comment: ""), "*","*","*","*")
         self.dateLabel.sizeToFit()
         self.countLabel.text = "共计次数：*次"
         self.countLabel.sizeToFit()
@@ -45,9 +45,9 @@ class XBMultiReportView: UIScrollView {
     
     func refresh(_ begin:Date, end:Date, count:Int) {
 
-        self.dateLabel.text = "\(begin.month)月\(begin.day)日" + " - \(end.month)月\(end.day)日"
+        self.dateLabel.text = String(format: NSLocalizedString("DATA_ANALYSIS_DATE_PERIOD", comment: ""), begin.shortMonthName,begin.day,end.shortMonthName,end.day)
         self.dateLabel.sizeToFit()
-        self.countLabel.text = "共计次数：\(count)次"
+        self.countLabel.text = String(format: NSLocalizedString("DATA_ANALYSIS_TOTAL_REPORTS", comment: ""), count)
         self.countLabel.sizeToFit()
         
     }

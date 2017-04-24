@@ -159,7 +159,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     //MARK: - Action
     @IBAction func submit(_ sender: UIButton) {
         if (!fullFilled) {
-            self.view.makeToast("Please enter full information")
+            self.view.makeToast(NSLocalizedString("Please enter full information", comment: ""))
             return
         }
         view.endEditing(true)
@@ -303,7 +303,7 @@ extension XBEditUserInfoViewController {
     }
     
     private func setupChooseGenderDropDown() {
-        configDropDown(chooseGenderDropDown, ["Male", "Female"], genderField)
+        configDropDown(chooseGenderDropDown, [NSLocalizedString("Male", comment: ""), NSLocalizedString("Female", comment: "")], genderField)
     }
     
     private func configDropDown(_ dropDown:DropDown, _ datasource:Array<String>, _ anchorField:UITextField) {

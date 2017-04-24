@@ -81,6 +81,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
         leftAxis.axisLineWidth = 1
         leftAxis.axisMaximum = 12
         leftAxis.axisMinimum = 0
+        leftAxis.drawLabelsEnabled = true
         leftAxis.labelCount = 5
         leftAxis.labelPosition = .outsideChart
         leftAxis.labelFont = UIFontSize(10)

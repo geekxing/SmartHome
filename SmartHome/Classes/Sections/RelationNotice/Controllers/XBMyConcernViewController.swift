@@ -55,6 +55,9 @@ class XBMyConcernViewController: XBConcernMeViewController {
         let cell = cell as! XBMyConcernCell
         cell.clickArrowButton = {[weak self] in
             self?.tableView.reloadRows(at: [idx], with: .automatic)
+            if cell.frame.intersects(self!.tableView.bounds) {
+                self!.tableView.scrollToRow(at: idx, at: .bottom, animated: true)
+            }
         }
         cell.clickCancelButton = {[weak self] user in
             self?.cancelAlert(user.email!, type:"myConcern")

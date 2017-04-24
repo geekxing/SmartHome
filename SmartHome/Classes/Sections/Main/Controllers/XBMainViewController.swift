@@ -105,7 +105,6 @@ class XBMainViewController: XBBaseViewController {
                                                 current?.token = ""
                                                 XBLoginManager.shared.currentLoginData = current
                                                 self!.navigationController!.popViewController(animated: true)
-                                                SVProgressHUD.showSuccess(withStatus: message)
                                             } else {
                                                 SVProgressHUD.showError(withStatus: message)
                                             }

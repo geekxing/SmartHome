@@ -175,7 +175,7 @@ class XBReportViewController: XBBaseViewController {
         if let model = self.model {
             
             let date = Date(timeIntervalSince1970: model.creatTime)
-            self.dateLabel.text = "检测日期：\(date.month)月\(date.day)日"
+            self.dateLabel.text = String(format: NSLocalizedString("TRACKING_REPORT_DATE", comment: ""), date.shortMonthName, date.day)
             self.dateLabel.sizeToFit()
             self.ringView.maxValue = CGFloat(model.score)/100.0
             self.ringView.increment = self.ringView.maxValue/60
@@ -210,19 +210,19 @@ class XBReportViewController: XBBaseViewController {
                 let timeCmp = XBOperateUtils.timeComps(gap)
                 self.totalSleepView.maxValue = 1
                 self.totalSleepView.increment = self.totalSleepView.maxValue/60
-                self.totalSleepLabel.text = "总睡眠时长：\(timeCmp.hour)小时\(timeCmp.minute)分"
+                self.totalSleepLabel.text = String(format: NSLocalizedString("TRACKING_TOTAL_SLEEP_TIME", comment: ""), timeCmp.hour, timeCmp.minute)
                 self.totalSleepLabel.sizeToFit()
                 
                 let timeCmp2 = XBOperateUtils.timeComps(model.deepSleepTime)
                 self.deepSleepView.maxValue = CGFloat(model.deepSleepTime / gap)
                 self.deepSleepView.increment = self.deepSleepView.maxValue/60
-                self.deepSleepLabel.text = "深度睡眠时长：\(timeCmp2.hour)小时\(timeCmp2.minute)分"
+                self.deepSleepLabel.text = String(format: NSLocalizedString("TRACKING_DEEP_SLEEP_TIME", comment: ""), timeCmp2.hour,timeCmp2.minute)
                 self.deepSleepLabel.sizeToFit()
                 
                 let timeCmp3 = XBOperateUtils.timeComps(model.lightSleepTime)
                 self.sleepView.maxValue = CGFloat(model.lightSleepTime / gap)
                 self.sleepView.increment = self.sleepView.maxValue/60
-                self.sleepLabel.text = "浅度睡眠时长：\(timeCmp3.hour)小时\(timeCmp3.minute)分"
+                self.sleepLabel.text = String(format: NSLocalizedString("TRACKING_LIGHT_SLEEP_TIME", comment: ""), timeCmp3.hour,timeCmp3.minute)
                 self.sleepLabel.sizeToFit()
                 
             }

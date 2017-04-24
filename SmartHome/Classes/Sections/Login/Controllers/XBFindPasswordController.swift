@@ -46,7 +46,7 @@ class XBFindPasswordController: UIViewController {
     @IBAction func submit(_ sender: UIButton) {
         email = emailField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         if (emailField.isBlank()) {
-            self.view.makeToast("Please enter full information")
+            self.view.makeToast(NSLocalizedString("Please enter full information", comment: ""))
             return
         }
         let params = ["email":email!]

@@ -112,7 +112,7 @@ class XBSingleReportView: UIView {
         self.backgroundColor = UIColor.white
         self.layer.cornerRadius = 23
         self.layer.masksToBounds = true
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: UIRate*20)
         titleLabel.textColor = XB_DARK_TEXT
         addSubview(titleLabel)
         makeChart()
@@ -130,15 +130,19 @@ class XBSingleReportView: UIView {
         lineChart = LineChartView()
         addSubview(lineChart)
         lineChart.backgroundColor = UIColor.white
-        lineChart.noDataText = "暂无数据"
+        lineChart.isUserInteractionEnabled = false
+        lineChart.noDataText = NSLocalizedString("No Data", comment: "")
         lineChart.scaleYEnabled = false
         lineChart.scaleXEnabled = false
         lineChart.pinchZoomEnabled = false
         lineChart.doubleTapToZoomEnabled = false
         lineChart.dragEnabled = false
         lineChart.xAxis.enabled = false
-        lineChart.leftAxis.enabled = false
         lineChart.rightAxis.enabled = false
+        lineChart.leftAxis.enabled = true
+        lineChart.leftAxis.drawGridLinesEnabled = false
+        lineChart.leftAxis.drawLabelsEnabled = false
+        lineChart.leftAxis.axisLineColor = UIColor.white
         lineChart.chartDescription?.text = "" //描述
         lineChart.legend.enabled = false  //图例说明
         lineChart.animate(yAxisDuration: 1.0)
@@ -157,13 +161,12 @@ class XBSingleReportView: UIView {
         ll3.lineDashLengths = [1,3]
         ll3.lineColor = UIColorHex("343434", 1)
         
-        var yAxis:YAxis?
         let rightYAxis = lineChart.rightAxis
-        yAxis = rightYAxis.enabled ? rightYAxis : lineChart.leftAxis
-        yAxis!.removeAllLimitLines()
-        yAxis!.addLimitLine(ll1)
-        yAxis!.addLimitLine(ll2)
-        yAxis!.addLimitLine(ll3)
+        let leftYAxis = lineChart.leftAxis
+        leftYAxis.removeAllLimitLines()
+        leftYAxis.addLimitLine(ll1)
+        leftYAxis.addLimitLine(ll2)
+        leftYAxis.addLimitLine(ll3)
         rightYAxis.axisMaximum = ll1.limit
         rightYAxis.axisMinimum = ll3.limit
         rightYAxis.drawZeroLineEnabled = false

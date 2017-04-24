@@ -135,7 +135,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func submit(_ sender: UIButton) {
         if (!fullFilled || !checkboxButton.isSelected) {
-            self.view.makeToast("Please enter full information")
+            self.view.makeToast(NSLocalizedString("Please enter full information", comment: ""))
             return
         }
         view.endEditing(true)
@@ -253,7 +253,7 @@ extension XBRegisterViewController {
     }
 
     private func setupChooseGenderDropDown() {
-        configDropDown(chooseGenderDropDown, ["Male", "Female"], genderField)
+        configDropDown(chooseGenderDropDown, [NSLocalizedString("Male", comment: ""), NSLocalizedString("Female", comment: "")], genderField)
     }
     
     private func configDropDown(_ dropDown:DropDown, _ datasource:Array<String>, _ anchorField:UITextField) {

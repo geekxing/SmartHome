@@ -99,7 +99,8 @@ class XBOperateUtils: NSObject {
         let isPwd = predicate.evaluate(with: pwd)
         
         if !isPwd {
-            SVProgressHUD.showError(withStatus: "密码由6-16位任意数字、字母组成")
+            SVProgressHUD.showError(withStatus:
+                NSLocalizedString("Password can only be the combination of numbers and letters. It may not be less than 6 or more than 16 bits", comment: ""))
             return false
         }
         if pwd != confirmPwd {

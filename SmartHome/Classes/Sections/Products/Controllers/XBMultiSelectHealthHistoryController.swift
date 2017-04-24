@@ -42,12 +42,12 @@ class XBMultiSelectHealthHistoryController: XBSingleSelectHealthHistoryControlle
     override func beginSearch() {
         
         if self.group.count == 0 {
-            self.view.makeToast("There is no data")
+            self.view.makeToast(NSLocalizedString("No Data", comment: ""))
             return
         }
         let selectModels = (group as NSArray).objects(at: selItemIdxSet) as! [XBSleepData]
         if selectModels.count <= 1 {
-            UIAlertView(title: "请选择至少两个条目", message: nil, delegate: nil, cancelButtonTitle: "DONE").show()
+            UIAlertView(title: NSLocalizedString("Select one period from the list", comment: ""), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: "")).show()
         } else {
             let mutiVC = XBMultiReportViewController()
             mutiVC.modelArray = selectModels
