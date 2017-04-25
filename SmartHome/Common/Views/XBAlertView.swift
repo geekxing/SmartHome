@@ -10,6 +10,8 @@ import UIKit
 
 class XBAlertView: UIView {
     
+    static let labelGap:CGFloat = 10
+    
     private(set) var title:String?
     private(set) var message:String?
     
@@ -27,6 +29,7 @@ class XBAlertView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
     
     convenience init(title:String?, message:String?) {
@@ -38,6 +41,12 @@ class XBAlertView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        if let titleText = titleLabel.text {
+            let rect = (titleText as NSString).boundingRect(with: CGSize(width: self.width - XBAlertView.labelGap, height: CGFloat.infinity), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSFontAttributeName:titleLabel.font], context: nil)
+            titleLabel.width = rect.width
+            titleLabel.height = rect.height
+        }
         
         self.height = 176 + titleLabel.height
         titleLabel.top = 50*UIRate
@@ -83,7 +92,6 @@ class XBAlertView: UIView {
     
     private func setData() {
         titleLabel.text = title
-        titleLabel.sizeToFit()
     }
     
     //MARK: - Action

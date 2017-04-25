@@ -100,7 +100,7 @@ class XBOperateUtils: NSObject {
         
         if !isPwd {
             SVProgressHUD.showError(withStatus:
-                NSLocalizedString("Password can only be the combination of numbers and letters. It may not be less than 6 or more than 16 bits", comment: ""))
+                NSLocalizedString("Password can only be the combination of numbers and letters. It may not be less than 6 or more than 16 characters", comment: ""))
             return false
         }
         if pwd != confirmPwd {

@@ -9,7 +9,6 @@
 import UIKit
 import SwiftyJSON
 import SVProgressHUD
-import Photos
 
 class XBAddDeviceViewController: UIViewController {
     
@@ -47,10 +46,10 @@ class XBAddDeviceViewController: UIViewController {
     
     @IBAction func beginScan(_ sender: UIButton) {
         
-        if !cameraAvailable() {
+        if !XBPhotoPickerManager.shared.hasAccessTo(.camera) {
             return
         }
-        checkCameraAuth {[weak self] (flag) in
+        XBPhotoPickerManager.shared.checkCameraAuth {[weak self] (flag) in
             if flag {
                 let qrVC = XBQRCodeScanViewController()
                 qrVC.returnScan = {[weak self] scan in
@@ -73,43 +72,12 @@ class XBAddDeviceViewController: UIViewController {
     @IBAction func back(_ sender: UIButton) {
         navigationController!.popViewController(animated: true)
     }
-    
-    
-    //MARK: - Camera Access
-    func cameraAvailable() -> Bool {
-        let available = UIImagePickerController.isSourceTypeAvailable(.camera)
-        if !available {
-            let alert = UIAlertView(title: NSLocalizedString("your device has no access to camera", comment: ""), message: "", delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: ""))
-            alert.show()
-        }
-        return available
-    }
-    
-    func checkCameraAuth(_ request:@escaping (Bool)->()) {
-        let authStatus = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
-        
-        if(authStatus == .denied || authStatus == .restricted) {
-            return
-        }else {
-            if authStatus == .authorized {
-                request(true)
-            } else {
-                AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (grand) in
-                    if grand {
-                        DispatchQueue.main.async(execute: {
-                            request(grand)
-                        })
-                    }
-                })
-            }
-        }
-    }
 
     //MARK: - Private
     private func addDevice(sn:String) {
         
         if (sn as NSString).length < 20 {
-            UIAlertView(title: NSLocalizedString("SN is less than 20 bits", comment: ""), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: "")).show()
+            UIAlertView(title: NSLocalizedString("Please enter at least 20 characters", comment: ""), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: "")).show()
             return
         }
         

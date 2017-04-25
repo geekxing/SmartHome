@@ -13,9 +13,9 @@ import SwiftyJSON
 class XBSingleSelectHealthHistoryController: UIViewController {
     
     let token = XBLoginManager.shared.currentLoginData!.token
+    let cellSelectedColor = UIColor(white: 0.82, alpha: 1)
     
     fileprivate let reuseIdentifier = "sleepCellID"
-    fileprivate let cellSelectedColor = RGBA(r: 220, g: 221, b: 222, a: 1.0)
     
     var headerView:XBHealthCareHeaderView!
     var nowTapIndex     = 0
@@ -129,22 +129,27 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     //MARK: - Make Data
     
     private func makeData() {
-        
+        SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: url, paras: params,
                                         success: {[weak self] json in
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == 1 {
                                                 self?.group.removeAll()
                                                 self?.selItemIdxSet.removeAll()
+                                                var models = [XBSleepData]()
                                                 for (_ ,subJson):(String, JSON) in json[XBData] {
                                                     let model = XBSleepData()
                                                     model.add(subJson)
-                                                    self!.group.append(model)
+                                                    models.append(model)
                                                 }
+                                                self!.sort(models)
+                                                self?.group = models
+                                                SVProgressHUD.dismiss()
                                                 if self!.group.count > 0 {
-                                                    let firstRow = IndexPath(row: 0, section: 0)
-                                                    self!.sort()
-                                                    self!.makeCellChosen(indexPath: firstRow)
+                                                    if self!.isMember(of: XBSingleSelectHealthHistoryController.self) {
+                                                        let firstRow = IndexPath(row: 0, section: 0)
+                                                        self!.makeCellChosen(indexPath: firstRow)
+                                                    }
                                                 } else {
                                                     self!.tableView.reloadData()
                                                 }
@@ -161,7 +166,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     
     //MARK: - Private
     
-    private func sort() {
+    private func sort(_ array:[XBSleepData]) {
         
         if self.group.count > 0 {
             self.group.sort(by: { (obj1, obj2) -> Bool in

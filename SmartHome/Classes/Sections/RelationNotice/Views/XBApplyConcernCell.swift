@@ -10,8 +10,8 @@ import UIKit
 
 class XBApplyConcernCell: XBRelationConcernCell {
     
-    static let maxNameLen = CGFloat(60.0*UIRate)
-    static let maxEmailLen = CGFloat(80.0*UIRate)
+    static let maxNameLen = CGFloat(100.0*UIRate)
+    static let maxEmailLen = CGFloat(100.0*UIRate)
     
     private var agreeButton:UIButton!
     private var refuseButton:UIButton!
@@ -33,11 +33,11 @@ class XBApplyConcernCell: XBRelationConcernCell {
         
         avatarView.top = 0;
         nameLabel.width = XBApplyConcernCell.maxNameLen
-        nameLabel.centerY = avatarView.centerY
+        nameLabel.bottom = avatarView.centerY-5
         nameLabel.left = avatarView.right + 8*UIRate
         emailLabel.width = XBApplyConcernCell.maxEmailLen
-        emailLabel.centerY = avatarView.centerY
-        emailLabel.left = nameLabel.right
+        emailLabel.top = avatarView.centerY+5
+        emailLabel.left = nameLabel.left
         refuseButton.right = width - 25*UIRate
         refuseButton.centerY = avatarView.centerY
         agreeButton.right = refuseButton.left - 8*UIRate

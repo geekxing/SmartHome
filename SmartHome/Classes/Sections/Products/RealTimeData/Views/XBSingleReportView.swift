@@ -138,11 +138,10 @@ class XBSingleReportView: UIView {
         lineChart.doubleTapToZoomEnabled = false
         lineChart.dragEnabled = false
         lineChart.xAxis.enabled = false
-        lineChart.rightAxis.enabled = false
-        lineChart.leftAxis.enabled = true
-        lineChart.leftAxis.drawGridLinesEnabled = false
-        lineChart.leftAxis.drawLabelsEnabled = false
-        lineChart.leftAxis.axisLineColor = UIColor.white
+        lineChart.rightAxis.enabled = true
+        lineChart.rightAxis.drawAxisLineEnabled = false
+        lineChart.rightAxis.drawLabelsEnabled = false
+        lineChart.leftAxis.enabled = false
         lineChart.chartDescription?.text = "" //描述
         lineChart.legend.enabled = false  //图例说明
         lineChart.animate(yAxisDuration: 1.0)
@@ -163,10 +162,11 @@ class XBSingleReportView: UIView {
         
         let rightYAxis = lineChart.rightAxis
         let leftYAxis = lineChart.leftAxis
-        leftYAxis.removeAllLimitLines()
-        leftYAxis.addLimitLine(ll1)
-        leftYAxis.addLimitLine(ll2)
-        leftYAxis.addLimitLine(ll3)
+        let yAxis = leftYAxis.isEnabled ? leftYAxis : rightYAxis
+        yAxis.removeAllLimitLines()
+        yAxis.addLimitLine(ll1)
+        yAxis.addLimitLine(ll2)
+        yAxis.addLimitLine(ll3)
         rightYAxis.axisMaximum = ll1.limit
         rightYAxis.axisMinimum = ll3.limit
         rightYAxis.drawZeroLineEnabled = false

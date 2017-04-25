@@ -173,7 +173,7 @@
         [[BLECentralManager shareInstance] beginConnectWithPeripheral:info.peripheral connectCompleted:^(CBPeripheral *peripheral, BOOL success, NSError *error) {
             [SVProgressHUD show];
             if (success) {
-                [SVProgressHUD showSuccessWithStatus:@"连接成功"];
+                [SVProgressHUD showSuccessWithStatus:@"hk_ble_connect_success"];
                 BLEInfoManagerViewController * bleInfoManager = [[BLEInfoManagerViewController alloc] init];
                 bleInfoManager.numOfVCNeedPop = 2;
                 [self.navigationController pushViewController:bleInfoManager animated:YES];
@@ -198,7 +198,7 @@
     } 
     //重连
     
-    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"重连"
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"reconnect", @"")
                                                                             style:UIBarButtonItemStylePlain
                                                                            target:self
                                                                            action:@selector(resetStartScan)];

@@ -11,7 +11,7 @@ import Photos
 import AVFoundation
 import MobileCoreServices
 import LGAlertView
-import Toast_Swift
+import SVProgressHUD
 
 public protocol XBPhotoPickerManagerDelegate:NSObjectProtocol {
     func imagePickerDidFinishPickImage(image:UIImage)
@@ -31,6 +31,42 @@ class XBPhotoPickerManager: NSObject, UIImagePickerControllerDelegate, UINavigat
         alert.showAnimated()
     }
     
+    //MARK: - Auths
+    
+    func checkCameraAuth(_ request:@escaping (Bool)->()) {
+        let authStatus = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        
+        if(authStatus == .denied || authStatus == .restricted) {
+            UIAlertView(title: NSLocalizedString("This app has no permission to camera" , comment: ""), message: NSLocalizedString("Please open the permission in Privacy Settings, otherwise the function cannot be used.", comment: ""), delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: "")).show()
+            return
+        }else {
+            if authStatus == .authorized {
+                request(true)
+            } else {
+                AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (grand) in
+                    if grand {
+                        DispatchQueue.main.async(execute: {
+                            request(grand)
+                        })
+                    }
+                })
+            }
+        }
+    }
+    
+    //MARK: - Camera Access
+    
+    func hasAccessTo(_ sourceType:UIImagePickerControllerSourceType) -> Bool {
+        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+            return true
+        } else {
+            let alert = LGAlertView(title: NSLocalizedString("your device have no access to camera", comment: ""), message: nil, style: .alert, buttonTitles: [NSLocalizedString("DONE", comment: "")], cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            alert.showAnimated()
+            return false
+        }
+    }
+    
+    //MARK: - Private
     private func open() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -40,25 +76,11 @@ class XBPhotoPickerManager: NSObject, UIImagePickerControllerDelegate, UINavigat
         chooser?.present(imagePicker, animated: true, completion: nil)
     }
     
-    private func cameraAuthentication() -> Bool {
-        let authStatus:AVAuthorizationStatus = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
-        return authStatus != .denied || authStatus != .restricted
-    }
-    
     private func photoLibraryAuth() -> Bool {
         let authStatus = PHPhotoLibrary.authorizationStatus()
-        return authStatus != .denied || authStatus != .restricted
+        return authStatus != .denied && authStatus != .restricted
     }
     
-    private func hasAccessTo(sourceType:UIImagePickerControllerSourceType) -> Bool {
-        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
-            return true
-        } else {
-            let alert = LGAlertView(title: NSLocalizedString("your device have no access to camera", comment: ""), message: nil, style: .alert, buttonTitles: [NSLocalizedString("DONE", comment: "")], cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            alert.showAnimated()
-            return false
-        }
-    }
     
     //MARK: - UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -77,21 +99,16 @@ class XBPhotoPickerManager: NSObject, UIImagePickerControllerDelegate, UINavigat
     func alertView(_ alertView: LGAlertView, clickedButtonAt index: UInt, title: String?) {
         if index == 0  {
             self.sourceType = .photoLibrary
-            guard self.hasAccessTo(sourceType: .photoLibrary) else {return }
-            guard photoLibraryAuth() else {
-                let alert = LGAlertView(title: NSLocalizedString("you have no permission to photoLibrary", comment: ""), message: nil, style: .alert, buttonTitles: ["DONE"], cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                alert.showAnimated()
-                return
-            }
+            guard self.hasAccessTo(.photoLibrary) else { return }
+            self.open()
         } else {
             self.sourceType = .camera
-            guard self.hasAccessTo(sourceType: .camera) else {return }
-            guard photoLibraryAuth() else {
-                let alert = LGAlertView(title: NSLocalizedString("you have no permission to camera", comment: ""), message: nil, style: .alert, buttonTitles: [NSLocalizedString("DONE", comment: "")], cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                alert.showAnimated()
-                return
-            }
+            guard self.hasAccessTo(.camera) else {return }
+            checkCameraAuth({ (grand) in
+                if grand {
+                    self.open()
+                }
+            })
         }
-        self.open()
     }
 }

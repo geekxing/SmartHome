@@ -47,7 +47,7 @@ class XBDeleteDeviceViewController: UIViewController {
     //MARK: - Private
     
     private func deleteDeviceAlert() {
-        let vc = XBAlertController(title: NSLocalizedString("Be sure to delete this device?", comment: ""), message: "")
+        let vc = XBAlertController(title: NSLocalizedString("Are you sure to delete the device?", comment: ""), message: "")
         vc.clickAction = { [weak self] index in
             switch index {
             case 0: self?.deletDevice(sn: self?.snField.text ?? "")

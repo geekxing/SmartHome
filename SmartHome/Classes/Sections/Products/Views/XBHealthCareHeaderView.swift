@@ -116,8 +116,10 @@ class XBHealthCareHeaderView: UIView {
             addSubview(selectViewB!)
             selectViewB?.didPickDateBlock = { [weak self] date in
                 self?.endDate = date
+                self?.selectViewA?.datePck?.maximumDate = date
             }
             
+            selectViewA?.datePck?.maximumDate = selectViewB?.date
         }
         
         setupContainer()

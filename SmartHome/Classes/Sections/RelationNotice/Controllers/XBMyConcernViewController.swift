@@ -60,7 +60,7 @@ class XBMyConcernViewController: XBConcernMeViewController {
             }
         }
         cell.clickCancelButton = {[weak self] user in
-            self?.cancelAlert(user.email!, type:"myConcern")
+            self?.cancelAlert(user.email!, otherName:user.name, type:"myConcern")
         }
         cell.checkRealTime = {[weak self] (user,_) in
             

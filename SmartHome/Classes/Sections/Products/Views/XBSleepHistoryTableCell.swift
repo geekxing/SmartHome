@@ -25,7 +25,7 @@ class XBSleepHistoryTableCell: UITableViewCell {
                 let date = Date(timeIntervalSince1970: model!.creatTime)
                 dateLabel.text = "\(date.year)/\(date.month)/\(date.day)"
                 dateLabel.sizeToFit()
-                hourLabel.text = "\(Int(model!.sleepTime()))"
+                hourLabel.text = String(format: "%.1f", model!.sleepTime())
                 hourLabel.sizeToFit()
                 scoreLabel.text = "\(model!.score)"
                 scoreLabel.sizeToFit()
@@ -40,6 +40,7 @@ class XBSleepHistoryTableCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
     }
     
     //MARK: - Setup

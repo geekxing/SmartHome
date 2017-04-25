@@ -148,29 +148,4 @@ extension UIImage {
         return image
     }
     
-    
-    /// base64编码数据字符串
-    ///
-    /// - Returns: 编码字符串
-    class func base64String(_ data:Data) -> String? {
-        return data.base64EncodedString(options: .lineLength64Characters)
-    }
-    
-    /// base64解码获取图片
-    ///
-    /// - Returns: 图片
-    class func base64DecodeToImage(_ base64:String) -> UIImage? {
-        
-        var image:UIImage?
-        
-        let decodeData = Data(base64Encoded: base64, options: .ignoreUnknownCharacters)
-        try! decodeData?.write(to: URL(fileURLWithPath: "/Users/laixiaobing/Desktop/211.png"))
-        
-        if decodeData != nil {
-            image = UIImage(data: decodeData!)
-        }
-        
-        return image
-    }
-    
 }

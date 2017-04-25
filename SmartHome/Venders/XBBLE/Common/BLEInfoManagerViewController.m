@@ -113,7 +113,7 @@
     setting.layer.cornerRadius = 8;
     setting.clipsToBounds = YES;
     setting.backgroundColor = [UIColor colorWithRed:((float)((0x2dc54c & 0xFF0000) >> 16))/255.0 green:((float)((0x2dc54c & 0xFF00) >> 8))/255.0 blue:((float)(0x2dc54c & 0xFF))/255.0 alpha:1.0];
-    [setting setTitle:NSLocalizedString(@"设置",nil) forState:UIControlStateNormal];
+    [setting setTitle:NSLocalizedString(@"set up",nil) forState:UIControlStateNormal];
     [setting addTarget:self action:@selector(setBLEInfo:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:setting];
 }
@@ -159,7 +159,7 @@
     }else if ([str isEqualToString:@"<01>"]) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_modify_fail",nil)];
     }else if ([str isEqualToString:@"<02>"]) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"修改失败,输入信息长度过长",nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_modify_fail",nil)];
     }
 }
 

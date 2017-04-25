@@ -10,6 +10,14 @@
 
 "ALERTCANCEL" = "CANCEL";
 
+//MARK: - FAMILY CARE
+
+"CANCEL_CARE_OTHER_TIP" = "No longer care %1$@?";
+
+"CANCEL_CARED_BY_OTHER_TIP" = "No longer be cared\nby %1$@?";
+
+//MARK: - REAL-TIME DATA
+
 "TRACKING_REPORT_DATE" = "Date：%1$@ %2$zd";
 
 "TRACKING_TOTAL_SLEEP_TIME" = "Sleep Time:%1$zd h %2$zd min";

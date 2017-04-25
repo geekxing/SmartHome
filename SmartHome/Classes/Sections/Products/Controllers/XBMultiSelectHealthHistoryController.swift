@@ -11,6 +11,19 @@ import SVProgressHUD
 
 class XBMultiSelectHealthHistoryController: XBSingleSelectHealthHistoryController {
     
+    override var group: [XBSleepData] {
+        didSet {
+            if group.count >= 1 {
+                let enumrator = group.enumerated()
+                for (index, obj) in enumrator {
+                    obj.selected = true
+                    selItemIdxSet.insert(index)
+                }
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
     override var url:String {
         return type == .me ? DEVICE_DATA : DEVICE_OTHERDATA
     }
@@ -41,19 +54,27 @@ class XBMultiSelectHealthHistoryController: XBSingleSelectHealthHistoryControlle
     
     override func beginSearch() {
         
+        let selectModels = (group as NSArray).objects(at: selItemIdxSet) as! [XBSleepData]
         if self.group.count == 0 {
             self.view.makeToast(NSLocalizedString("No Data", comment: ""))
-            return
-        }
-        let selectModels = (group as NSArray).objects(at: selItemIdxSet) as! [XBSleepData]
-        if selectModels.count <= 1 {
-            UIAlertView(title: NSLocalizedString("Select one period from the list", comment: ""), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("DONE", comment: "")).show()
+            
+        } else if selectModels.count <= 1 {
+            self.view.makeToast(NSLocalizedString(NSLocalizedString("Select one period from the list", comment: ""), comment: ""))
+            
         } else {
             let mutiVC = XBMultiReportViewController()
             mutiVC.modelArray = selectModels
             self.navigationController?.pushViewController(mutiVC, animated: true)
         }
         
+    }
+    
+    override func onDateDidChanged() {
+        if headerView.beginDate.add(components: [.month : 3]).isBefore(date: headerView.endDate, granularity: .day) {
+            self.view.makeToast(NSLocalizedString("The period you select is too long", comment: ""))
+            return
+        }
+        super.onDateDidChanged()
     }
     
     //MARK: - Private
@@ -100,6 +121,11 @@ extension XBMultiSelectHealthHistoryController {
         
         makeCellChosen()
         
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let model = group[indexPath.row]
+        cell.backgroundColor = !model.selected ? UIColor.white : cellSelectedColor
     }
     
 }

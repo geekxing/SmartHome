@@ -156,10 +156,13 @@ extension XBDisplayRealStateView: UICollectionViewDataSource {
             view.removeFromSuperview()
         }
         
-        let imageView = UIImageView(frame: cell.bounds)
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
-        imageView.image = datas[indexPath.row]
+        imageView.width = collectionView.width
+        imageView.height = cell.height
+        imageView.image = #imageLiteral(resourceName: "nobodyR")
+        cell.clipsToBounds = true
         cell.contentView.addSubview(imageView)
         
         return cell

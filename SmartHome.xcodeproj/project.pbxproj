@@ -62,6 +62,7 @@
 		1A9BCAE01E2B37D70001A880 /* XBOperateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCADF1E2B37D70001A880 /* XBOperateUtils.swift */; };
 		1A9BCAE61E2B5D280001A880 /* XBProductMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCAE51E2B5D280001A880 /* XBProductMainView.swift */; };
 		1A9BCAE81E2B5FB90001A880 /* XBProductMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9BCAE71E2B5FB90001A880 /* XBProductMainController.swift */; };
+		1AAF140B1EAF21B800FB7453 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AAF140D1EAF21B800FB7453 /* InfoPlist.strings */; };
 		1AAF1E0C1E2C9EE400B1792E /* XBProductVersionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF1E0B1E2C9EE400B1792E /* XBProductVersionController.swift */; };
 		1ABA44BC1E83A3AD009AED65 /* XBMultiReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44BB1E83A3AD009AED65 /* XBMultiReportViewController.swift */; };
 		1ABA44BE1E83A57C009AED65 /* XBMultiReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA44BD1E83A57C009AED65 /* XBMultiReportView.swift */; };
@@ -202,6 +203,9 @@
 		1A9BCADF1E2B37D70001A880 /* XBOperateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBOperateUtils.swift; sourceTree = "<group>"; };
 		1A9BCAE51E2B5D280001A880 /* XBProductMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBProductMainView.swift; sourceTree = "<group>"; };
 		1A9BCAE71E2B5FB90001A880 /* XBProductMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBProductMainController.swift; sourceTree = "<group>"; };
+		1AAF140C1EAF21B800FB7453 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1AAF140E1EAF21BA00FB7453 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		1AAF140F1EAF224500FB7453 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1AAF1E0B1E2C9EE400B1792E /* XBProductVersionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBProductVersionController.swift; sourceTree = "<group>"; };
 		1ABA44BB1E83A3AD009AED65 /* XBMultiReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBMultiReportViewController.swift; sourceTree = "<group>"; };
 		1ABA44BD1E83A57C009AED65 /* XBMultiReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBMultiReportView.swift; sourceTree = "<group>"; };
@@ -216,12 +220,10 @@
 		1ABA91341EAC7C7B00EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBLoginViewController.xib; sourceTree = "<group>"; };
 		1ABA91361EAC7EDC00EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBRegisterViewController.xib; sourceTree = "<group>"; };
 		1ABA91391EAC7EE300EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBRegisterViewController.strings; sourceTree = "<group>"; };
-		1ABA913B1EAC7EE800EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBRegisterViewController.strings"; sourceTree = "<group>"; };
 		1ABA913D1EAC7FDD00EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBFindPasswordController.xib; sourceTree = "<group>"; };
 		1ABA91421EAC7FE000EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBFindPasswordController.strings"; sourceTree = "<group>"; };
 		1ABA91441EAC806200EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBEditUserInfoViewController.xib; sourceTree = "<group>"; };
 		1ABA91471EAC806400EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBEditUserInfoViewController.strings; sourceTree = "<group>"; };
-		1ABA91491EAC806600EA9F3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XBEditUserInfoViewController.strings"; sourceTree = "<group>"; };
 		1ABA914A1EAC80C400EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBLoginViewController.strings; sourceTree = "<group>"; };
 		1ABA914C1EAC86E200EA9F3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/XBAddDeviceViewController.xib; sourceTree = "<group>"; };
 		1ABA914F1EAC86E400EA9F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XBAddDeviceViewController.strings; sourceTree = "<group>"; };
@@ -241,6 +243,8 @@
 		1AC7B5BF1E5A889A0080BABD /* XBMyConcernViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBMyConcernViewController.swift; sourceTree = "<group>"; };
 		1AC7B5C11E5AB0900080BABD /* XBTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBTextField.swift; sourceTree = "<group>"; };
 		1AC7B5C31E5AF1F70080BABD /* XBRoundedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBRoundedTextField.swift; sourceTree = "<group>"; };
+		1AD9802F1EAE459F00B09FC7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/XBRegisterViewController.xib"; sourceTree = "<group>"; };
+		1AD980301EAE4FD700B09FC7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/XBEditUserInfoViewController.xib"; sourceTree = "<group>"; };
 		1AEC2C6F1E6081F3005E181D /* XBTableViewHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBTableViewHeaderFooterView.swift; sourceTree = "<group>"; };
 		1AEC2C711E60A521005E181D /* XBCheckProductView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBCheckProductView.swift; sourceTree = "<group>"; };
 		1AEC2C731E611415005E181D /* XBBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XBBaseViewController.swift; sourceTree = "<group>"; };
@@ -417,6 +421,7 @@
 				1A31D5911DE5698000B9BB33 /* Classes */,
 				1A31D5971DE5698000B9BB33 /* Common */,
 				1A31D57F1DE440F900B9BB33 /* AppDelegate.swift */,
+				1AAF140D1EAF21B800FB7453 /* InfoPlist.strings */,
 				1ABA915F1EACA2F100EA9F3D /* Localizable.strings */,
 				1A31D5861DE440F900B9BB33 /* Assets.xcassets */,
 				1A31D5881DE440F900B9BB33 /* LaunchScreen.storyboard */,
@@ -897,6 +902,7 @@
 				1ABA914B1EAC86E200EA9F3D /* XBAddDeviceViewController.xib in Resources */,
 				1ABA91431EAC806200EA9F3D /* XBEditUserInfoViewController.xib in Resources */,
 				1AECDDA21E752EAD00294A3F /* XBReportViewController.storyboard in Resources */,
+				1AAF140B1EAF21B800FB7453 /* InfoPlist.strings in Resources */,
 				1ABA91351EAC7EDC00EA9F3D /* XBRegisterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1085,6 +1091,16 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		1AAF140D1EAF21B800FB7453 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1AAF140C1EAF21B800FB7453 /* en */,
+				1AAF140E1EAF21BA00FB7453 /* zh-Hans */,
+				1AAF140F1EAF224500FB7453 /* Base */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		1ABA91311EAC7BD200EA9F3D /* XBLoginViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1100,7 +1116,7 @@
 			children = (
 				1ABA91361EAC7EDC00EA9F3D /* Base */,
 				1ABA91391EAC7EE300EA9F3D /* en */,
-				1ABA913B1EAC7EE800EA9F3D /* zh-Hans */,
+				1AD9802F1EAE459F00B09FC7 /* zh-Hans */,
 			);
 			name = XBRegisterViewController.xib;
 			sourceTree = "<group>";
@@ -1119,7 +1135,7 @@
 			children = (
 				1ABA91441EAC806200EA9F3D /* Base */,
 				1ABA91471EAC806400EA9F3D /* en */,
-				1ABA91491EAC806600EA9F3D /* zh-Hans */,
+				1AD980301EAE4FD700B09FC7 /* zh-Hans */,
 			);
 			name = XBEditUserInfoViewController.xib;
 			sourceTree = "<group>";

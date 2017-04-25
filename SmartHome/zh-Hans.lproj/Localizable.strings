@@ -10,8 +10,8 @@
 "your device has no access to camera" = "你的设备没有摄像头";
 "PhotoLibrary" = "从相册中选择";
 "Camera" = "拍照";
-"you have no permission to photoLibrary" = "你的设备没有访问相册的权限";
-"you have no permission to camera" = "你的设备没有访问相机的权限";
+"This app has no permission to camera" = "此应用没有权限访问您的相机";
+"Please open the permission in Privacy Settings, otherwise the function cannot be used." = "请到“隐私设置”中启用访问，否则无法使用该功能。";
 
 "DONE" = "确定";
 
@@ -25,12 +25,14 @@
 
 "Email format error" = "邮箱格式错误";
 
-"Password can only be the combination of numbers and letters. It may not be less than 6 or more than 16 bits" =
+"Password can only be the combination of numbers and letters. It may not be less than 6 or more than 16 characters" =
 "密码只能是数字或字母组合且不能少于6位或多余16位";
 
 "Two passwords are not the same!" = "两次密码不一致";
 
 "Select one period from the list" = "请在列表中至少选择一个时间段";
+
+"The period you select is too long" = "你选择的时间段过长";
 
 //MARK: - USER INFO
 
@@ -84,9 +86,9 @@
 
 "Health Archives" = "查看健康档案";
 
-"No longer care the person?" = "确定不再关注此人？";
+"CANCEL_CARE_OTHER_TIP" = "确定不再关注%1$@？";
 
-"No longer be cared\nby the person?" = "确定不再被此人关注？";
+"CANCEL_CARED_BY_OTHER_TIP" = "确定不再被%1$@关注？";
 
 //MARK: - Product Items
 
@@ -242,11 +244,11 @@
 
 //MARK: - DEVICE
 
-"Be sure to delete this device?" = "确定删除此设备?";
+"Are you sure to delete the device?" = "是否确定删除该设备";
 
 "SN is empty" = "SN为空";
 
-"SN is less than 20 bits" = "SN长度少于20位";
+"Please enter at least 20 characters" = "请输入满20位";
 
 //MARK: - BLE
 

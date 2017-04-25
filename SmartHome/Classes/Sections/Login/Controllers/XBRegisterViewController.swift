@@ -49,7 +49,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
     
     lazy var dateFormatter:DateFormatter? = {
         let dateFmt = DateFormatter()
-        dateFmt.dateFormat = "dd/MM/yyyy"
+        dateFmt.dateFormat = "MM/dd/yyyy"
         return dateFmt
     }()
     

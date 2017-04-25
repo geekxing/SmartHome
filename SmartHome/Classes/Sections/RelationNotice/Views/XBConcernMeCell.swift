@@ -17,8 +17,10 @@ class XBConcernMeCell: XBRelationConcernCell {
 
     override func setup() {
         super.setup()
-        cancelConcernButton = UIButton.init(image: UIImage(named:"trashbin"), backImage: nil, color: nil, target: self, sel: #selector(clickCancelConcern(_:)), title: "")
-        cancelConcernButton.sizeToFit()
+        cancelConcernButton = UIButton(image: UIImage(named:"trashbin"), backImage: nil, color: nil, target: self, sel: #selector(clickCancelConcern(_:)), title: "")
+        cancelConcernButton.width = 44
+        cancelConcernButton.height = 44
+        cancelConcernButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0)
         contentView.addSubview(cancelConcernButton)
         shadowLineview.isHidden = false
     }
@@ -30,7 +32,7 @@ class XBConcernMeCell: XBRelationConcernCell {
         nameLabel.width = XBConcernMeCell.maxNameLen
         nameLabel.centerY = avatarView.centerY
         nameLabel.left = avatarView.right + 8*UIRate
-        cancelConcernButton.right = width - 21
+        cancelConcernButton.right = width
         cancelConcernButton.centerY = avatarView.centerY
         emailLabel.width = cancelConcernButton.left - nameLabel.right - 10
         emailLabel.centerY = avatarView.centerY

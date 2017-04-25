@@ -185,8 +185,9 @@ class XBConcernMeViewController: UIViewController {
     
     ///删除关注我的人
     
-    func cancelAlert(_ otherEmail:String, type:String) {
-        let title = type == "myConcern" ? NSLocalizedString("No longer care the person?", comment: "") : NSLocalizedString("No longer be cared\nby the person?", comment: "")
+    func cancelAlert(_ otherEmail:String, otherName:String?, type:String) {
+        let otherNameStr = otherName != nil ? otherName! : otherEmail
+        let title = type == "myConcern" ? String(format: NSLocalizedString("CANCEL_CARE_OTHER_TIP", comment: "") , otherNameStr) : String(format: NSLocalizedString("CANCEL_CARED_BY_OTHER_TIP", comment: "") , otherNameStr)
         let vc = XBAlertController(title:title ,message: "")
         vc.clickAction = { [weak self] index in
             switch index {
@@ -249,7 +250,7 @@ extension XBConcernMeViewController: UITableViewDelegate, UITableViewDataSource 
         case ConcernMe:
             let concernMeCell = tableView.dequeueReusableCell(withIdentifier: ConcernMe) as! XBConcernMeCell
             concernMeCell.clickCancelButton = {[weak self] user in
-                self?.cancelAlert(user.email!, type: "concernMe")
+                self?.cancelAlert(user.email!, otherName: user.name, type: "concernMe")
             }
             cell = concernMeCell
         default:break

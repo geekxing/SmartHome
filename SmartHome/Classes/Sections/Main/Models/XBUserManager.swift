@@ -50,7 +50,8 @@ class XBUser: Object {
     
     func Name() -> String {
         let middleName = self.middleName ?? ""
-        return firstName + " " + middleName + " " + lastName
+        let name = firstName.isChinese() || lastName.isChinese() ? lastName+firstName : firstName + " " + middleName + " " + lastName
+        return name
     }
     
     func Device() -> [String] {

@@ -10,6 +10,13 @@ import UIKit
 
 class XBDateSelectView: UIView {
     
+    lazy var datePck:UIDatePicker? = {
+        let dPicker = UIDatePicker()
+        dPicker.datePickerMode = .date;
+        dPicker.frame = CGRect(x: 0.0, y: 0.0, width: dPicker.width, height: 250.0)
+        return dPicker
+    }()
+    
     var labelTextColor:UIColor = UIColorHex("595757", 1.0) {
         didSet {
             yearLabel.textColor = labelTextColor
@@ -141,9 +148,9 @@ class XBDateSelectView: UIView {
     }
     
     private func showCalendar() {
-        datePicker!.minimumDate = beginDate
-        datePicker!.date = date!
-        textField.inputView = datePicker
+        self.datePck!.minimumDate = beginDate
+        datePck!.date = date!
+        textField.inputView = datePck
         textField.inputAccessoryView = self.toolbar
         textField.reloadInputViews()
     }
@@ -160,7 +167,7 @@ class XBDateSelectView: UIView {
     
     @objc private func done() {
         textField.resignFirstResponder()
-        self.date = datePicker?.date
+        self.date = datePck?.date
         if self.didPickDateBlock != nil {
             self.didPickDateBlock!(self.date!)
         }
