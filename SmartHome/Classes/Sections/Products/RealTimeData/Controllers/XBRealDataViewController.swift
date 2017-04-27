@@ -99,7 +99,7 @@ class XBRealDataViewController: XBBaseViewController {
         let params:Dictionary = ["sn":sn!]
         
         XBNetworking.share.postWithPath(path: REALDATA, paras: params,
-                                        success: {[weak self] json in
+                                        success: { [weak self] (json, message) in
                                             XBRealDataViewController.netError = 0
                                             let message = json[Message].stringValue
                                             if json[Code].intValue == 1 {

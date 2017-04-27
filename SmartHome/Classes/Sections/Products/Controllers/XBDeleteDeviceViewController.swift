@@ -64,9 +64,7 @@ class XBDeleteDeviceViewController: UIViewController {
         
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: DEVICE_DELETE, paras: params,
-                                        success: {[weak self] json in
-                                            
-                                            let message = json[Message].stringValue
+                                        success: { [weak self] (json, message) in
                                             if json[Code].intValue == normalSuccess {
                                                 self!.checkUserInfo()
                                             } else {

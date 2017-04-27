@@ -26,6 +26,8 @@ public enum XBEventType : Int {
 
 class XBRealData: NSObject {
     
+    let myProperties = XBRealData.properties_name()
+    
     var breath:Int = 0
     var heart:Int = 0
     var event:Int = 0
@@ -33,6 +35,9 @@ class XBRealData: NSObject {
     
     func add(_ json:JSON) {
         for (key,subJson):(String, JSON) in json {
+            if !myProperties.contains(key) {
+                continue
+            }
             let value = subJson.intValue
             self.setValue(value, forKey: key)
         }

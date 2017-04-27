@@ -51,7 +51,7 @@ class XBNetworking: NSObject {
     }
     
     // MARK:- POST
-    func postWithPath(path: String,paras: Dictionary<String,Any>?,success: @escaping ((_ result: JSON) -> ()),failure: @escaping ((_ error: Error) -> ())) {
+    func postWithPath(path: String,paras: Dictionary<String,Any>?,success: @escaping ((_ result: JSON, _ msg:String) -> ()),failure: @escaping ((_ error: Error) -> ())) {
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         session!.request(path, method: .post, parameters: paras)
@@ -61,9 +61,10 @@ class XBNetworking: NSObject {
                 case .success(let value):
                     SVProgressHUD.dismiss()
                     let json = JSON(value)
+                    let message = errorMsg(path, code: json[Code].intValue)
                     //LogInfo(message: json.stringValue)
                     print(json)
-                    success(json)
+                    success(json, message)
                 case .failure(let error):
                     failure(error)
                 }

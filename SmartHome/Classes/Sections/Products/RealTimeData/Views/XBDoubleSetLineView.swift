@@ -19,10 +19,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
     var datasB = [0.0] {
         didSet {
             if datasB.count != 0 {
-                for value in datasB {
-                    let newValue = value - Double(beginValue)
-                    pointYsB.append(newValue)
-                }
+                pointYsB = datasB
                 setChartDataB()
             }
         }
@@ -77,6 +74,7 @@ class XBDoubleSetLineView:XBSingleReportView  {
         
         let leftAxis = lineChart.leftAxis
         leftAxis.enabled = true
+        leftAxis.drawAxisLineEnabled = true
         leftAxis.axisLineColor = XB_DARK_TEXT
         leftAxis.axisLineWidth = 1
         leftAxis.axisMaximum = 12

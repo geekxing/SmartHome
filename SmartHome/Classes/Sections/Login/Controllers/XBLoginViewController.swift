@@ -84,11 +84,11 @@ class XBLoginViewController: UIViewController, UITextFieldDelegate, XBRegisterVi
         SVProgressHUD.show()
         let params = ["token":token]
         XBNetworking.share.postWithPath(path: CHECK_TOKEN, paras: params,
-                                        success: {[weak self] json in
-                                            let message = json[Message].stringValue
+                                        success: {[weak self] (json, message) in
                                             if json[Code].intValue == 1 {
                                                 XBUserManager.shared.fetchUserFromServer(token: token, handler: { (user, error) in
                                                     if error == nil {
+                                                        Bugly.setUserIdentifier(user!.email)
                                                         self!.navigationController!.pushViewController(XBMainViewController(), animated: true)
                                                     }
                                                 })

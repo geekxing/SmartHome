@@ -14,6 +14,9 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     
     let token = XBLoginManager.shared.currentLoginData!.token
     let cellSelectedColor = UIColor(white: 0.82, alpha: 1)
+    var needSort:Bool {
+        return true
+    }
     
     fileprivate let reuseIdentifier = "sleepCellID"
     
@@ -131,8 +134,7 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     private func makeData() {
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: url, paras: params,
-                                        success: {[weak self] json in
-                                            let message = json[Message].stringValue
+                                        success: { [weak self] (json, message) in
                                             if json[Code].intValue == 1 {
                                                 self?.group.removeAll()
                                                 self?.selItemIdxSet.removeAll()
@@ -142,7 +144,9 @@ class XBSingleSelectHealthHistoryController: UIViewController {
                                                     model.add(subJson)
                                                     models.append(model)
                                                 }
-                                                self!.sort(models)
+                                                if self!.needSort {
+                                                    self!.sort(&models)
+                                                }
                                                 self?.group = models
                                                 SVProgressHUD.dismiss()
                                                 if self!.group.count > 0 {
@@ -166,13 +170,11 @@ class XBSingleSelectHealthHistoryController: UIViewController {
     
     //MARK: - Private
     
-    private func sort(_ array:[XBSleepData]) {
+    private func sort(_ array:inout [XBSleepData]) {
         
-        if self.group.count > 0 {
-            self.group.sort(by: { (obj1, obj2) -> Bool in
-                
+        if array.count > 0 {
+            array.sort(by: { (obj1, obj2) -> Bool in
                 return obj1.creatTime > obj2.creatTime
-                
             })
         }
         

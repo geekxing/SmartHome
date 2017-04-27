@@ -8,7 +8,7 @@
 
 
 #import "BLECentralManager.h"
-
+#import "SmartHome-Swift.h"
 
 @interface BLECentralManager ()<CBCentralManagerDelegate>{
     
@@ -74,7 +74,15 @@
     else
     {
         //弹框提示，请去系统中打开蓝牙
-        //[[TKAlertCenter defaultCenter]postAlertWithMessage:NSLocalizedString(@"Please open the Bluetooth on system settings", @"请到系统设置中打开蓝牙")];
+        LGAlertView *alert =
+        [LGAlertView alertViewWithTitle:NSLocalizedString(@"Please open the Bluetooth on system settings", @"请到系统设置中打开蓝牙")
+                                message:nil
+                                  style:LGAlertViewStyleAlert
+                           buttonTitles:nil
+                      cancelButtonTitle:NSLocalizedString(@"DONE", @"")
+                 destructiveButtonTitle:nil
+                               delegate:nil];
+        [alert showAnimated];
     }
     
     

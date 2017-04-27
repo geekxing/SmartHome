@@ -54,11 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DropDown.startListeningToKeyboard()
         
         SVProgressHUD.setDefaultStyle(.dark)
-        SVProgressHUD.setMaximumDismissTimeInterval(2.0)
-        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+        SVProgressHUD.setMaximumDismissTimeInterval(3.0)
+        SVProgressHUD.setMinimumDismissTimeInterval(3.0)
         SVProgressHUD.setDefaultAnimationType(.native)
         
         XBLog.configDDLog()
+        
+        Bugly.start(withAppId: "86e9c0d8d0")
         
         setupMainViewController()
         commenInitListenEvents()

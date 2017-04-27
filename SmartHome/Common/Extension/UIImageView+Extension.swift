@@ -18,7 +18,12 @@ extension UIImageView {
                              options: .retryFailed,
                              completed: { (image, err, _, _) in
                                 if (image != nil && err == nil) {
-                                    self.image = image?.circleImage()
+                                    DispatchQueue.global().async(execute: {
+                                        let headerImage = image?.circleImage()
+                                        DispatchQueue.main.async(execute: {
+                                            self.image = headerImage
+                                        })
+                                    })
                                 }
             })
         }

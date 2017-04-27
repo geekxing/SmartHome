@@ -57,6 +57,8 @@ class XBApplyConcernViewController: UIViewController {
         searchBar = XBRoundedTextField(frame: CGRect(x: 33*UIRate, y: 152*UIRate, width: 265*UIRate, height: 29))
         searchBar.returnKeyType = .search
         searchBar.clearButtonMode = .whileEditing
+        searchBar.autocapitalizationType = .none
+        searchBar.keyboardType = .emailAddress
         searchBar.delegate = self
         scrollView.addSubview(searchBar)
         
@@ -96,8 +98,7 @@ class XBApplyConcernViewController: UIViewController {
             return
         }
         let params:Dictionary = ["email":email]
-        XBNetworking.share.postWithPath(path: QUERY, paras: params, success: { [weak self] json in
-            let message = json[Message].stringValue
+        XBNetworking.share.postWithPath(path: QUERY, paras: params, success: { [weak self] (json, message) in
             if json[Code] == 1 {
                 if email != self!.loginUser!.email {
                     let userData = json[XBData]
@@ -115,10 +116,8 @@ class XBApplyConcernViewController: UIViewController {
     func apply(email:String) {
         let params:Dictionary = ["token":token,
                                  "email":email]
-        XBNetworking.share.postWithPath(path: APPLY, paras: params, success: {[weak self] json in
-            let message = json[Message].stringValue
+        XBNetworking.share.postWithPath(path: APPLY, paras: params, success: { (json, message) in
             if json[Code].intValue == normalSuccess {
-                self?.view.makeToast(message, duration: 1.0, position: .center)
             } else {
                 SVProgressHUD.showError(withStatus: message)
             }

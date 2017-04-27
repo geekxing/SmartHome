@@ -11,6 +11,10 @@ import SVProgressHUD
 
 class XBMultiSelectHealthHistoryController: XBSingleSelectHealthHistoryController {
     
+    override var needSort:Bool {
+        return false
+    }
+    
     override var group: [XBSleepData] {
         didSet {
             if group.count >= 1 {

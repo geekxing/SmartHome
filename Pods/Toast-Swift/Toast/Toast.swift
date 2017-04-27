@@ -756,7 +756,7 @@ public class ToastManager {
      `showToast` methods that don't require an explicit duration.
      Default is 3.0.
      */
-    public var duration: TimeInterval = 1.0
+    public var duration: TimeInterval = 3.0
     
     /**
      Sets the default position. Used for the `makeToast` and

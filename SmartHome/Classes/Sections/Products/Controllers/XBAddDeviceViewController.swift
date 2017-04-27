@@ -86,9 +86,8 @@ class XBAddDeviceViewController: UIViewController {
         
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: DEVICE_ADD, paras: params,
-                                        success: {[weak self] json in
+                                        success: {[weak self] (json, message) in
     
-                                            let message = json[Message].stringValue
                                             let code = json[Code].intValue
                                             if code == normalSuccess || code == 1002 {
                                                 self!.checkUserInfo(self!.token)

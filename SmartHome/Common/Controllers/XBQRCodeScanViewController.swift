@@ -161,7 +161,7 @@ UIAlertViewDelegate {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFontSize(15*UIRate)
-        label.text = "将二维码置于扫描区域"
+        label.text = NSLocalizedString("Put the QR code in the scan area", comment: "")
         return label
     }()
     

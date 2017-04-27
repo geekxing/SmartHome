@@ -1,6 +1,6 @@
 
-/* Class = "UILabel"; text = "添加或更换设备"; ObjectID = "Coj-Pa-ITA"; */
-"Coj-Pa-ITA.text" = "添加或更换设备";
+/* Class = "UILabel"; text = "添加设备"; ObjectID = "Coj-Pa-ITA"; */
+"Coj-Pa-ITA.text" = "添加设备";
 
 /* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "Dks-oo-hLU"; */
 "Dks-oo-hLU.normalTitle" = "提交";

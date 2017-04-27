@@ -10,6 +10,8 @@ import UIKit
 
 class XBDisplayRealStateView: UIView {
     
+    static let gapTime:Int = 10
+    
     let cellId = "cell"
     var timer:DispatchSourceTimer?
     var xScale:CGFloat = 0
@@ -19,8 +21,9 @@ class XBDisplayRealStateView: UIView {
     var lastEvent = 0
     var offset:CGFloat = 0.0
     var now = Date()
-    var halfHour = Date().add(components: [.minute:30])
+    var quarterHour = Date().add(components: [.minute:XBDisplayRealStateView.gapTime])
     var motivateCounter = 0
+    var firstComin = true
     
     var event:Int = 0 {
     
@@ -31,6 +34,8 @@ class XBDisplayRealStateView: UIView {
                 if motivateCounter == 3 || motivateCounter == 4 {
                     event = 2  // modify data to onBed
                 }
+            } else {
+                motivateCounter = 0
             }
             
             if let eventType = XBEventType(rawValue: event) {
@@ -52,8 +57,8 @@ class XBDisplayRealStateView: UIView {
         }
     }
     
+    var timeLineLayer:CALayer!
     var collection:UICollectionView!
-    var timeline:UIImageView!
     var begin:UILabel!
     var end:UILabel!
     
@@ -89,8 +94,6 @@ class XBDisplayRealStateView: UIView {
         collection.register(UICollectionViewCell.self, forCellWithReuseIdentifier:cellId )
         addSubview(collection)
         
-        timeline = UIImageView(image: #imageLiteral(resourceName: "dashLine"))
-        addSubview(timeline)
         
         begin = UILabel()
         begin.font = UIFontSize(14)
@@ -105,26 +108,58 @@ class XBDisplayRealStateView: UIView {
         addSubview(end)
         
         setupTimer()
+
+    }
+    
+    func drawTimeLine() {
+
+        let r = CAReplicatorLayer()
+        r.bounds = CGRect(x: 0.0, y: 0.0, width: self.width, height: 12.0)
+        
+        self.layer.addSublayer(r)
+        
+        let nrDots: Int = 26
+        let gap = (r.bounds.width) / CGFloat(nrDots)
+        
+        for i in 1 ... 5 {
+            let dotWH:CGFloat = i % 5 == 1 ? 6 : 2
+            let dot = CALayer()
+            dot.bounds = CGRect(x: 0.0, y: 0.0, width: dotWH, height: dotWH)
+            dot.position = CGPoint(x: 3 + CGFloat(i-1)*gap, y: r.frame.height / 2)
+            dot.backgroundColor = UIColor.darkGray.cgColor
+            dot.cornerRadius = dot.bounds.height/2
+            
+            r.addSublayer(dot)
+        }
+        r.instanceCount = 6
+        r.instanceTransform = CATransform3DMakeTranslation(CGFloat(5 * gap), 0.0, 0.0)
+        r.masksToBounds = true
+        
+        timeLineLayer = r
     }
     
     private func setupTimer()  {
         timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.main)
         timer?.setEventHandler( handler: {
+            if !self.firstComin {
+                self.viewController()?.navigationController?.popViewController(animated: true)
+            }
             self.refreshTimeRange()
+            self.firstComin = false
         })
-        timer?.scheduleRepeating(deadline: .now(), interval: .seconds(30*60))
+        timer?.scheduleRepeating(deadline: .now(), interval: .seconds(XBDisplayRealStateView.gapTime*60))
         timer?.resume()
     }
     
     private func refreshTimeRange() {
         
         now = Date()
-        halfHour = Date().add(components: [.minute:30])
+        quarterHour = Date().add(components: [.minute:XBDisplayRealStateView.gapTime])
         datas.removeAll()
         dataWidth.removeAll()
         
         begin.text = String(format: "%.2zd:%.2zd", now.hour, now.minute)
-        end.text = String(format: "%.2zd:%.2zd", halfHour.hour, halfHour.minute)
+        end.text = String(format: "%.2zd:%.2zd", quarterHour.hour, quarterHour.minute)
         begin.sizeToFit()
         end.sizeToFit()
         
@@ -132,13 +167,17 @@ class XBDisplayRealStateView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        xScale = width / CGFloat(180) // 30 * 6
+        xScale = width / CGFloat(XBDisplayRealStateView.gapTime*6) // gapTime * 6
         collection.frame = CGRect(x: 0, y: 0, width: width, height: height * 2/3)
-        timeline.frame = CGRect(x: 0, y: collection.bottom + 12, width: width, height: timeline.height)
-        begin.left = timeline.left
-        begin.top = timeline.bottom + 10
-        end.right = timeline.right
-        end.top = timeline.bottom + 10
+        if timeLineLayer == nil {
+            drawTimeLine()
+        }
+        timeLineLayer.position = CGPoint(x: self.width * 0.5, y: collection.bottom + 12 + timeLineLayer.bounds.height/2)
+        let anchorPoint = timeLineLayer.position
+        begin.left = 0
+        begin.top = anchorPoint.y + 16
+        end.right = collection.width
+        end.top = anchorPoint.y + 16
     }
 
 }
@@ -161,7 +200,7 @@ extension XBDisplayRealStateView: UICollectionViewDataSource {
         imageView.layer.masksToBounds = true
         imageView.width = collectionView.width
         imageView.height = cell.height
-        imageView.image = #imageLiteral(resourceName: "nobodyR")
+        imageView.image = datas[indexPath.row]
         cell.clipsToBounds = true
         cell.contentView.addSubview(imageView)
         

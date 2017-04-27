@@ -30,27 +30,89 @@ func errorMsg(_ url:String, code:Int) -> String {
     if url == LOGIN {
         switch code {
         case 1001:
-            errorMsg = "Email not exsits"
+            errorMsg = NSLocalizedString("Email does not exist", comment: "")
         case 1000:
-            errorMsg = "Invalid Email or Password"
+            errorMsg = NSLocalizedString("Invalid Email or Password", comment: "")
         default:break
         }
     } else if url == REGIST {
         switch code {
         case 1002:
-            errorMsg = "Email already exsits"
+            errorMsg = NSLocalizedString("Email already exists", comment: "")
         case 0, 1005:
-            errorMsg = "Server Error"
+            errorMsg = NSLocalizedString("Server Error", comment: "")
         default:break
         }
     } else if url == MODIFY {
         switch code {
         case 3005:
-            errorMsg = "Server Error"
+            errorMsg = NSLocalizedString("Server Error", comment: "")
         default:break
         }
+    } else if url == FORGET {
+        if code == 1001 {
+            errorMsg = NSLocalizedString("Email does not exist", comment: "")
+        }
+    } else if url == VERIFY_CODE {
+        switch code {
+        case 1006:
+            errorMsg = NSLocalizedString("Verification failed", comment: "")
+        case 1007:
+            errorMsg = NSLocalizedString("Too many verification errors", comment: "")
+        case 1008:
+            errorMsg = NSLocalizedString("Verification expired", comment: "")
+        default:break
+        }
+    } else if url == MODIFY_PWD {
+        if code == 3005 {
+            errorMsg = NSLocalizedString("Server Error", comment: "")
+        }
+    } else if url == CHECK_TOKEN {
+        if code == 1006 {
+            errorMsg = NSLocalizedString("invalid token", comment: "")
+        }
+    } else if url == QUERY {
+        switch code {
+        case 2:
+            errorMsg = NSLocalizedString("search failed", comment: "")
+        case 1001:
+            errorMsg = NSLocalizedString("User does not exist", comment: "")
+        default:break
+        }
+    } else if url == APPLY {
+        switch code {
+        case 1001:
+            errorMsg = NSLocalizedString("User does not exist", comment: "")
+        case 1002:
+            errorMsg = NSLocalizedString("Already applied", comment: "")
+        case 1003:
+            errorMsg = NSLocalizedString("You can't concern yourself", comment: "")
+        default:break
+        }
+    } else if url == HANDLE {
+        if code == 0  {
+            errorMsg = NSLocalizedString("operation failed", comment: "")
+        }
+    } else if url == CANCEL {
+        if code == 0 {
+            errorMsg = NSLocalizedString("operation failed", comment: "")
+        }
+    } else if url == DEVICE_ADD {
+        switch code {
+        case 1001:
+            errorMsg = NSLocalizedString("SN does not exist", comment: "")
+        case 1009:
+            errorMsg = NSLocalizedString("you can't bind the same type device", comment: "")
+        case 0:
+            errorMsg = NSLocalizedString("bind failed", comment: "")
+        default:break
+        }
+    } else if url == DEVICE_DELETE {
+        if code == 0 {
+            errorMsg = NSLocalizedString("unbind failed", comment: "")
+        }
     }
-    return NSLocalizedString(errorMsg, comment: "")
+    return errorMsg
     
 }
 

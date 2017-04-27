@@ -141,7 +141,7 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
         
         if !XBOperateUtils.validateEmail(usernameTextField.text!) {
-            SVProgressHUD.showError(withStatus: "邮箱格式错误!")
+            SVProgressHUD.showError(withStatus: NSLocalizedString("Email format error", comment: ""))
             return
         }
         if !XBOperateUtils.validatePassword(passwordField.text!, confirmPwd: retypePasswordField.text!) {
@@ -166,9 +166,8 @@ class XBRegisterViewController: UIViewController, UITextFieldDelegate {
 
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: REGIST, paras: params,
-            success: {[weak self] json in
-                
-                let message = json[Message].stringValue
+            success: {[weak self] (json, message) in
+
                 if json[Code].intValue == 1 {
                     SVProgressHUD.showSuccess(withStatus: message)
                     self!.delegate?.regisDidComplete(account: self?.usernameTextField.text, password: self?.passwordField.text)

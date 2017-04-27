@@ -35,8 +35,7 @@ class XBVerifyCodeViewController: XBFindPasswordController {
         
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: VERIFY_CODE, paras: params,
-                                        success: {[weak self] json in
-                                            let message = json[Message].stringValue
+                                        success: { [weak self] (json, message) in
                                             if json[Code].intValue == normalSuccess {
                                                 let modifyPwd = XBModifyPasswordViewController(nibName: "XBFindPasswordController", bundle: nil)
                                                 modifyPwd.email = self?.email

@@ -20,4 +20,5 @@ target ‘SmartHome’ do
     pod 'MJRefresh'
     pod 'CocoaLumberjack/Swift'
     pod 'RealmSwift'
+    pod 'Bugly'
 end

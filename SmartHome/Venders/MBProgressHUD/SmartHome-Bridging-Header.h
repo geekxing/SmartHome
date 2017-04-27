@@ -4,4 +4,5 @@
 
 #import "MBProgressHUD.h"
 #import "BLEHeaders.h"
+#import <Bugly/Bugly.h>
 

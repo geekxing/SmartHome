@@ -10,9 +10,12 @@ import UIKit
 import SwiftyJSON
 
 class XBSleepData: NSObject {
+    
+    let myProperties = XBSleepData.properties_name()
 
     var id:String = ""
     var user:String = ""
+    var deviceSN:String = ""
     var creatTime:Double = 0
     var date:Double = 0
     var goToBed:Double = 0
@@ -32,6 +35,9 @@ class XBSleepData: NSObject {
     func add(_ json:JSON) {
         let timeGroup = timeIntevalProperties()
         for (key,subJson):(String, JSON) in json {
+            if !myProperties.contains(key) {
+                continue
+            }
             var value:Any?
             if timeGroup.contains(key) {
                 value = (subJson.rawValue as! Double) / 1000.0
@@ -61,8 +67,7 @@ class XBSleepData: NSObject {
     override var debugDescription: String {
         
         var des = ""
-        let properties = XBSleepData.properties_name()
-        for property in properties {
+        for property in myProperties {
             des += " \(property) : \(String(describing: self.value(forKey: property))) "
         }
         return des

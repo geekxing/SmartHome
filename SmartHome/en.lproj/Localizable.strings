@@ -30,4 +30,10 @@
 
 "DATA_ANALYSIS_TOTAL_REPORTS" = "Total Reports:%1$zd";
 
+//MARK: - BLE
+
+"BLE_MODIFY_SUCESS" = "modify success";
+
+"BLE_MODIFY_FAIL" = "modify fail";
+
 

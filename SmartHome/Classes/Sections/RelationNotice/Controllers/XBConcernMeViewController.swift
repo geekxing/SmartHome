@@ -171,8 +171,8 @@ class XBConcernMeViewController: UIViewController {
         let params:Dictionary = ["token":token,
                                  "email":otherEmail,
                                  "handle":handle]
-        XBNetworking.share.postWithPath(path: HANDLE, paras: params, success: { [weak self] (json) in
-            let message = json[Message].stringValue
+        SVProgressHUD.show()
+        XBNetworking.share.postWithPath(path: HANDLE, paras: params, success: { [weak self] (json, message) in
             if json[Code].intValue == normalSuccess {
                 self?.loadData()
             } else {
@@ -202,8 +202,7 @@ class XBConcernMeViewController: UIViewController {
         let params:Dictionary = ["token":token,
                                  "email":otherEmail,
                                  "type":type ]
-        XBNetworking.share.postWithPath(path: CANCEL, paras: params, success: { [weak self](json) in
-            let message = json[Message].stringValue
+        XBNetworking.share.postWithPath(path: CANCEL, paras: params, success: {[weak self] (json, message) in
             if json[Code].intValue == normalSuccess {
                 self?.loadData()
             } else {

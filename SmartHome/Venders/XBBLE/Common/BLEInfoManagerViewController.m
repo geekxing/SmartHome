@@ -99,6 +99,8 @@
     wifiPwdLabel.numberOfLines = 0;
     wifiPwdLabel.tag = 13;
     wifiPwdLabel.font = [UIFont systemFontOfSize:14];
+    wifiPwdLabel.adjustsFontSizeToFitWidth = YES;
+    wifiPwdLabel.minimumScaleFactor = 0.5;
     wifiPwdLabel.text = NSLocalizedString(@"Wifi Password", @"");
     [self.view addSubview:wifiPwdLabel];
     
@@ -148,7 +150,7 @@
         cellIndex ++;
         if (cellIndex == 2) {
             cellIndex = 0;
-            [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"hk_modify_success",nil)];
+            [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"BLE_MODIFY_SUCESS",nil)];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 NSInteger index = [self.navigationController.childViewControllers indexOfObject:self];
                 [self.navigationController popToViewController:self.navigationController.childViewControllers[index - 3] animated:YES];
@@ -157,9 +159,9 @@
             [self sendText:_secInfo andScript:BLE_SET_CODE_WIFI_PWD];
         }
     }else if ([str isEqualToString:@"<01>"]) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_modify_fail",nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"BLE_MODIFY_FAIL",nil)];
     }else if ([str isEqualToString:@"<02>"]) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_modify_fail",nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"BLE_MODIFY_FAIL",nil)];
     }
 }
 
@@ -219,17 +221,17 @@
     
     NSString * content = info;
     if ( [content length] == 0 ) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_no_empty",nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"no_empty",nil)];
         return;
     }
 
     if ( [BLECentralManager shareInstance].bluetoothState != BluetoothStateOpen)  {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_donot_open",nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"ble_donot_open",nil)];
         return;
     }
 
     if ( ![[BLECentralManager shareInstance].getFirstConnector isConnected] ) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_dis_connect",nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"ble_dis_connect",nil)];
         return;
     }
     NSData * sendData=[info dataUsingEncoding:NSUTF8StringEncoding];
@@ -307,7 +309,7 @@
         //解析收到的数据
         _receiveDataModel=[UEBaseData decodeWithData:receiveData];
         if (_receiveDataModel == nil) {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_modify_fail",nil)];
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"BLE_MODIFY_FAIL",nil)];
         }
         return;
     }

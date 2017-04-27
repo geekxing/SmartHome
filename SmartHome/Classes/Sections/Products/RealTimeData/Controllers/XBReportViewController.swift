@@ -186,11 +186,11 @@ class XBReportViewController: XBBaseViewController {
             self.qiyeButton.subTitleLabel.attributedText = self.makeScoreAttributeString(score:"\(model.outNum)", text: NSLocalizedString("times", comment: ""))
             
             let gotoBed = Date(timeIntervalSince1970: model.goToBed)
-            let gotoBedStr = gotoBed.string(format: .custom("hh:mm"))
+            let gotoBedStr = String(format: "%02zd:%02zd", gotoBed.hour, gotoBed.minute)
             let getup = Date(timeIntervalSince1970: model.outOfBed)
-            let getupStr = getup.string(format: .custom("hh:mm"))
+            let getupStr = String(format: "%02zd:%02zd", getup.hour, getup.minute)
             let sleep = Date(timeIntervalSince1970: model.sleepStart)
-            let sleepStr = sleep.string(format: .custom("hh:mm"))
+            let sleepStr = String(format: "%02zd:%02zd", sleep.hour, sleep.minute)
             
             let timeGap = model.outOfBed - model.goToBed ///上床->起床
             let fallSleepGap = model.sleepStart - model.goToBed ///上床->睡眠

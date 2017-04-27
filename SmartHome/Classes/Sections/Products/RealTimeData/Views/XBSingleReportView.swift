@@ -43,19 +43,24 @@ class XBSingleReportView: UIView {
             if datas.count != 0 {
                 
                 xScale = (self.width-90)/CGFloat(datas.count) //比例：宽度/x轴分度
+                
+                ///计算最大值
                 maxPoint = maxOf(numbers: datas)
+                ///计算平均值
                 avgPoint = averageOf(numbers: datas)
+                if self.rightYLabelFormat == "%.0f" {  ///需要取整的数值平均值做四舍五入
+                    avgPoint = round(avgPoint)
+                }
+                ///计算最小值
                 lowPoint = minOf(numbers: datas)
                 if beginValue == -1 {
                     beginValue = lowPoint
                 }
-                //算出y轴最值
-                let maxY = max(lineChart.leftAxis.axisMaximum, lineChart.rightAxis.axisMaximum, maxPoint)
+                //算出y轴最值，并赋给y轴
+                let maxY = max(lineChart.leftAxis.axisMaximum, maxPoint)
+                
                 yScale = maxY-beginValue == 0 ? 0 : drawHeight / CGFloat(maxY-beginValue) //比例：高度/y轴分度
-                for value in datas {
-                    let newValue = value - beginValue
-                    pointYs.append(newValue)
-                }
+                pointYs = datas
                 setChartData()
                 drawLimitLine()
                 
@@ -105,6 +110,18 @@ class XBSingleReportView: UIView {
         avgButton.centerY = padding - CGFloat(avgPoint-beginValue) * yScale
         maxButton.left = lineChart.right
         maxButton.centerY = padding - CGFloat(maxPoint-beginValue) * yScale
+        
+        if avgPoint != maxPoint && avgPoint != lowPoint {
+            if minButton.frame.intersects(avgButton.frame) {
+                minButton.top = avgButton.bottom
+            }
+            if maxButton.frame.intersects(avgButton.frame) {
+                maxButton.bottom = avgButton.top
+            }
+        } else { //如果平均线有重叠的就不画了
+            avgButton.isHidden = true
+        }
+     
     }
     
     //MARK: - Setup
@@ -138,39 +155,39 @@ class XBSingleReportView: UIView {
         lineChart.doubleTapToZoomEnabled = false
         lineChart.dragEnabled = false
         lineChart.xAxis.enabled = false
-        lineChart.rightAxis.enabled = true
-        lineChart.rightAxis.drawAxisLineEnabled = false
-        lineChart.rightAxis.drawLabelsEnabled = false
-        lineChart.leftAxis.enabled = false
+        lineChart.rightAxis.enabled = false
+        lineChart.leftAxis.enabled = true
+        lineChart.leftAxis.drawGridLinesEnabled = false
+        lineChart.leftAxis.drawAxisLineEnabled = false
+        lineChart.leftAxis.drawLabelsEnabled = false
         lineChart.chartDescription?.text = "" //描述
         lineChart.legend.enabled = false  //图例说明
         lineChart.animate(yAxisDuration: 1.0)
     }
     
     func drawLimitLine() {
-        let ll1 = ChartLimitLine(limit: Double(maxPoint-beginValue))
+        let ll1 = ChartLimitLine(limit: maxPoint)
         ll1.lineDashLengths = [1,3]
         ll1.lineColor = UIColorHex("343434", 1)
         
-        let ll2 = ChartLimitLine(limit: Double(avgPoint-beginValue))
+        let ll2 = ChartLimitLine(limit: avgPoint)
         ll2.lineDashLengths = [1,3]
         ll2.lineColor = UIColorHex("343434", 1)
         
-        let ll3 = ChartLimitLine(limit: Double(lowPoint - beginValue))
+        let ll3 = ChartLimitLine(limit: lowPoint)
         ll3.lineDashLengths = [1,3]
         ll3.lineColor = UIColorHex("343434", 1)
-        
-        let rightYAxis = lineChart.rightAxis
+
         let leftYAxis = lineChart.leftAxis
-        let yAxis = leftYAxis.isEnabled ? leftYAxis : rightYAxis
-        yAxis.removeAllLimitLines()
-        yAxis.addLimitLine(ll1)
-        yAxis.addLimitLine(ll2)
-        yAxis.addLimitLine(ll3)
-        rightYAxis.axisMaximum = ll1.limit
-        rightYAxis.axisMinimum = ll3.limit
-        rightYAxis.drawZeroLineEnabled = false
-        rightYAxis.drawGridLinesEnabled = false
+        leftYAxis.removeAllLimitLines()
+        leftYAxis.addLimitLine(ll1)
+        if avgPoint != maxPoint && avgPoint != lowPoint {
+            leftYAxis.addLimitLine(ll2)
+        }
+        leftYAxis.addLimitLine(ll3)
+        
+        leftYAxis.axisMaximum = max(leftYAxis.axisMaximum, maxPoint)
+        leftYAxis.axisMinimum = min(leftYAxis.axisMinimum, lowPoint)
     }
     
     //MARK: - 图表数据
@@ -185,6 +202,7 @@ class XBSingleReportView: UIView {
         dataSet.mode = .cubicBezier
         dataSet.drawCirclesEnabled = false
         dataSet.setColor(UIColor.black)
+        
         lineDataSet = dataSet
         
         lineData = LineChartData(dataSet: dataSet)

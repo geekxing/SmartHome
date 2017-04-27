@@ -14,7 +14,7 @@ class XBProductMainView: XBMainView {
         let btnTitles =
             [NSLocalizedString("Real-time\nData", comment: ""),
              NSLocalizedString("Health\nArchives", comment: ""),
-             NSLocalizedString("Add/Change\nDevice", comment: ""),
+             NSLocalizedString("Add Device", comment: ""),
              NSLocalizedString("Delete\nDevice", comment: "")]
         let btnImages = ["RealTimeData", "HealthReport", "AddDevice", "DeleteDevice"]
         let itemEnables = [true, true, true, true]

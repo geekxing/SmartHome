@@ -25,7 +25,7 @@ class XBOperateUtils: NSObject {
     func login(email:String, pwd:String, success:@escaping (_ result:Any)->(), failure:@escaping (_ error:Error)->()) {
         
         if !XBOperateUtils.validateEmail(email) {
-            SVProgressHUD.showError(withStatus: "邮箱格式错误!")
+            SVProgressHUD.showError(withStatus: NSLocalizedString("Email format error", comment: ""))
             return
         }
         let params = [
@@ -35,12 +35,12 @@ class XBOperateUtils: NSObject {
         
         SVProgressHUD.show()
         XBNetworking.share.postWithPath(path: LOGIN, paras: params,
-                                        success: { json in
-                                            let message = errorMsg(LOGIN, code: json[Code].intValue)
+                                        success: { (json, message) in
                                             let tk = json[XBData]["token"].stringValue
                                             if json[Code].intValue == 1 {  //登录成功
                                                 //登录信息本地缓存
                                                 let loginData = LoginData(account: email, password:pwd, token: tk)
+                                                Bugly.setUserIdentifier(email)
                                                 XBLoginManager.shared.currentLoginData = loginData
                                                 //用户信息本地缓存
                                                 XBUserManager.shared.addUser(userJson: json[XBData]["userInfo"])

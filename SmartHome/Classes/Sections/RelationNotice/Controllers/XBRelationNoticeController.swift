@@ -57,8 +57,7 @@ class XBRelationNoticeController: XBBaseViewController {
     func getConcern(_ url:String , complete:@escaping ((_ data:JSON?, _ error:Error?)->())) {
         let params:Dictionary = ["token":token]
         
-        XBNetworking.share.postWithPath(path: url, paras: params, success: {(json) in
-            let message = json[Message].stringValue
+        XBNetworking.share.postWithPath(path: url, paras: params, success: { (json, message) in
             if json[Code] != 1 {
                 SVProgressHUD.showError(withStatus: message)
             }
@@ -133,6 +132,11 @@ class XBRelationNoticeController: XBBaseViewController {
 }
 
 extension XBRelationNoticeController: UITableViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+    
     //UIScrollViewDelegate
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         self.addChildViews()

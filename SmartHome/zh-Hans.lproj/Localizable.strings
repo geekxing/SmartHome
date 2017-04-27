@@ -19,6 +19,8 @@
 
 "ALERTCANCEL" = "取消";
 
+"Put the QR code in the scan area" = "将二维码置于扫描区域";
+
 //MARK: - TIPS
 
 "No Data" = "暂无数据";
@@ -96,7 +98,7 @@
 
 "Health\nArchives" = "健康档案";
 
-"Add/Change\nDevice" = "更换设备";
+"Add Device" = "添加设备";
 
 "Delete\nDevice" = "删除设备";
 
@@ -259,4 +261,50 @@
 "Wifi Password" = "Wifi密码";
 
 "Enter Wifi Password" = "输入Wifi密码";
+
+"reconnect" = "重连";
+
+"set up" = "设置";
+
+"BLE_MODIFY_SUCESS" = "修改成功";
+
+"BLE_MODIFY_FAIL" = "修改失败";
+
+//MARK: - Err Msg
+
+"Email does not exist" = "邮箱不存在";
+
+"User does not exist" = "用户不存在";
+
+"Invalid Email or Password" = "邮箱或者密码错误";
+
+"Email already exists" = "邮箱已存在";
+
+"Server Error" = "服务器错误";
+
+"Verification failed" = "验证失败";
+
+"Too many verification errors" = "验证次数过多";
+
+"Verification expired" = "验证码已过期";
+
+"invalid token" = "登录口令已失效，请手动登录";
+
+"search failed" = "查询失败";
+
+"Already applied" = "已经申请过关注";
+
+"You can't concern yourself" = "不能关注你自己";
+
+"operation failed" = "操作失败";
+
+"SN does not exist" = "SN不存在";
+
+"you can't bind the same type device" = "不能绑定同类型设备";
+
+"bind failed" = "绑定失败";
+
+"unbind failed" = "解绑失败";
+
+
 

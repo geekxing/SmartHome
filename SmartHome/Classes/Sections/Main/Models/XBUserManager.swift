@@ -177,7 +177,7 @@ class XBUserManager: NSObject {
         let params = ["token":token]
         var usr:XBUser?
         XBNetworking.share.postWithPath(path: GET_INFO, paras: params,
-                                        success: { json in
+                                        success: { (json, _) in
                                             if json[Code].intValue == 1 {
                                                 let userData = json[XBData]
                                                 let email = userData["email"].stringValue

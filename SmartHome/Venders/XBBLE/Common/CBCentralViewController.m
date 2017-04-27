@@ -63,12 +63,12 @@
     }else if (manager.bluetoothState == BluetoothStateUnknown) {
         NSLog(@"蓝牙状态未知");
     }else if (manager.bluetoothState == BluetoothStateClose) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_not_reachable",nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"ble_not_reachable",nil)];
     }
     //蓝牙状态
     [BLECentralManager shareInstance].BluetoothInitCompletedBlock=^(BOOL isCan){
         if (!isCan) {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_not_reachable",nil)];
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"ble_not_reachable",nil)];
         }
     };
     //表示蓝牙已连接
@@ -88,7 +88,7 @@
                 }
             });
         }else{
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_connect_fail",nil)];
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"ble_connect_fail",nil)];
             NSLog(@"蓝牙连接失败=%@",error);
         }
     };
@@ -105,14 +105,14 @@
     if (_isShowing == YES) {
         
         [[BLECentralManager shareInstance] cancelAllConnect];
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_connect_out_of_time",nil)];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"ble_connect_out_of_time",nil)];
     }
     
 }
 
 -(void)getTargetDev:(NSNotification *)notification {
 
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_connect_success",nil)];
+    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"ble_connect_success",nil)];
     //连接成功后跳转到新界面
     
 }
@@ -173,12 +173,12 @@
         [[BLECentralManager shareInstance] beginConnectWithPeripheral:info.peripheral connectCompleted:^(CBPeripheral *peripheral, BOOL success, NSError *error) {
             [SVProgressHUD show];
             if (success) {
-                [SVProgressHUD showSuccessWithStatus:@"hk_ble_connect_success"];
+                [SVProgressHUD showSuccessWithStatus:@"ble_connect_success"];
                 BLEInfoManagerViewController * bleInfoManager = [[BLEInfoManagerViewController alloc] init];
                 bleInfoManager.numOfVCNeedPop = 2;
                 [self.navigationController pushViewController:bleInfoManager animated:YES];
             }else{
-                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"hk_ble_connect_fail",nil)];
+                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"ble_connect_fail",nil)];
                 NSLog(@"蓝牙连接失败=%@",error);
             }
         }];
