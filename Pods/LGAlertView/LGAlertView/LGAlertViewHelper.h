@@ -41,8 +41,9 @@ extern CGFloat const LGAlertViewButtonImageOffsetFromTitle;
 
 @interface LGAlertViewHelper : NSObject
 
-+ (void)animateWithAnimations:(void(^)())animations
-                   completion:(void(^)(BOOL finished))completion;
++ (void)animateWithDuration:(NSTimeInterval)duration
+                 animations:(void(^)())animations
+                 completion:(void(^)(BOOL finished))completion;
 
 + (void)keyboardAnimateWithNotificationUserInfo:(NSDictionary *)notificationUserInfo
                                      animations:(void(^)(CGFloat keyboardHeight))animations;

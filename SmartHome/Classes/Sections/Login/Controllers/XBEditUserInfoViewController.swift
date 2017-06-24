@@ -47,7 +47,8 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     
     lazy var dateFormatter:DateFormatter? = {
         let dateFmt = DateFormatter()
-        dateFmt.dateFormat = "MM/dd/yyyy"
+        
+        dateFmt.dateFormat = SYS_LANGUAGE_CHINESE ? "yyyy/MM/dd" : "MM/dd/yyyy"
         return dateFmt
     }()
     
@@ -209,7 +210,7 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
                                         })
                                     } else {
                                         let message = json[Message].stringValue
-                                        SVProgressHUD.showSuccess(withStatus: message)
+                                        SVProgressHUD.showError(withStatus: message)
                                     }
                                     
         })
@@ -235,16 +236,19 @@ class XBEditUserInfoViewController: UIViewController, UITextFieldDelegate, XBPho
     
     private func showCalendar() {
         var dateStr:String = ""
-        if birthField.text == nil {
+        if birthField.isBlank() {
             let now = Date()
-            dateStr = "\(now.day)/\(now.month)/\(now.year-50)"
+            dateStr = "\(now.month)/\(now.day)/\(now.year-50)"
         } else {
             dateStr = birthField.text!
         }
-        let date = self.dateFormatter!.date(from: dateStr)
-        datePicker!.date = date!
-        birthField.inputView = datePicker
-        birthField.reloadInputViews()
+        if let date = self.dateFormatter!.date(from: dateStr) {
+            datePicker!.date = date
+            birthField.inputView = datePicker
+            birthField.reloadInputViews()
+        } else {
+            print("日期格式转化错误！")
+        }
     }
     
     private func showGenderSelectView() {

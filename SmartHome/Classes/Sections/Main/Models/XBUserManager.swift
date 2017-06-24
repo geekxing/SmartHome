@@ -21,7 +21,7 @@ class XBUser: Object {
     dynamic var middleName:String?
     dynamic var lastName = ""
     dynamic var name:String?
-    dynamic var image = ""
+    dynamic var image:String? = ""
     dynamic var password:String?
     dynamic var mphone:String?
     dynamic var address:String?
@@ -61,6 +61,8 @@ class XBUser: Object {
         return []
     }
     
+    //MARK: - Overrides
+    
     override var debugDescription: String {
         
         var des = ""
@@ -69,7 +71,17 @@ class XBUser: Object {
             des += " \(property) : \(String(describing: self.value(forKey: property))) "
         }
         return des
-        
+       
+    }
+    
+    override func setNilValueForKey(_ key: String) {
+        if key == "follower" || key == "focus" || key == "device" {
+            self.setValue(Data(), forKey: key)
+        } else if key == "gender" || key == "createTime" {
+            self.setValue(0, forKey: key)
+        } else {
+            super.setNilValueForKey(key)
+        }
     }
     
 }

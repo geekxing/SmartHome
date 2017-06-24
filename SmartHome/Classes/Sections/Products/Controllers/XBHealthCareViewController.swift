@@ -157,6 +157,10 @@ class XBHealthCareViewController: XBBaseViewController {
 
 extension XBHealthCareViewController: UIScrollViewDelegate {
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+    
     //UIScrollViewDelegate
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         self.addChildViews()

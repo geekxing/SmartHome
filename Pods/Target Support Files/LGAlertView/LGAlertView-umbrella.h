@@ -8,6 +8,7 @@
 #import "LGAlertViewCell.h"
 #import "LGAlertViewController.h"
 #import "LGAlertViewHelper.h"
+#import "LGAlertViewShadowView.h"
 #import "LGAlertViewShared.h"
 #import "LGAlertViewTextField.h"
 #import "LGAlertViewWindow.h"

@@ -102,7 +102,7 @@ class XBSingleReportView: UIView {
         lineChart.left = 22
         lineChart.top = 50
         
-        ///Chart最小值与绘图框的默认padding为10
+        ///Chart最小值与绘图框的padding设置为5
         let padding = height - 39
         minButton.left = lineChart.right
         minButton.centerY = padding - CGFloat(lowPoint-beginValue) * yScale
@@ -160,6 +160,9 @@ class XBSingleReportView: UIView {
         lineChart.leftAxis.drawGridLinesEnabled = false
         lineChart.leftAxis.drawAxisLineEnabled = false
         lineChart.leftAxis.drawLabelsEnabled = false
+        lineChart.leftAxis.spaceTop = 0.15
+        lineChart.leftAxis.spaceBottom = 0.15
+        lineChart.minOffset = 5
         lineChart.chartDescription?.text = "" //描述
         lineChart.legend.enabled = false  //图例说明
         lineChart.animate(yAxisDuration: 1.0)

@@ -11,8 +11,8 @@ import UIKit
 extension UIImageView {
     
     func setHeader(url:String?, uid:String) {
+        let placeholder = XBUserManager.shared.placeholderForUser(uid: uid)
         if let imageUrl = url {
-            let placeholder = XBUserManager.shared.placeholderForUser(uid: uid)
             self.sd_setImage(with: URL(string: imageUrl),
                              placeholderImage:placeholder,
                              options: .retryFailed,
@@ -26,6 +26,8 @@ extension UIImageView {
                                     })
                                 }
             })
+        } else {
+            self.image = placeholder
         }
     }
     

@@ -14,6 +14,7 @@ let SCREEN_HEIGHT = UIScreen.main.bounds.height
 let STATUS_BAR_HEIGHT = UIApplication.shared.statusBarFrame.height
 let UIRate = SCREEN_WIDTH / 375
 let UIRateH = SCREEN_HEIGHT / 667
+let SYS_LANGUAGE_CHINESE = getCurLanguage() == "zh-Hans-CN"
 
 let XB_DARK_TEXT = UIColorHex("333333", 1)
 
@@ -23,6 +24,8 @@ public enum XBProductType:Int {
     case pillow
     case ring
 }
+
+///错误类型
 
 func errorMsg(_ url:String, code:Int) -> String {
     
@@ -103,6 +106,8 @@ func errorMsg(_ url:String, code:Int) -> String {
             errorMsg = NSLocalizedString("SN does not exist", comment: "")
         case 1009:
             errorMsg = NSLocalizedString("you can't bind the same type device", comment: "")
+        case 1010:
+            errorMsg = NSLocalizedString("Has been bound by the others", comment: "")
         case 0:
             errorMsg = NSLocalizedString("bind failed", comment: "")
         default:break
@@ -116,14 +121,18 @@ func errorMsg(_ url:String, code:Int) -> String {
     
 }
 
+///根据RGBA获取颜色
 func RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor{
     return UIColor (red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a)
 }
+
+///获取随机颜色
 
 func SMRandomColor() -> UIColor {
     return RGBA(r: CGFloat(arc4random_uniform(255)), g: CGFloat(arc4random_uniform(255)), b: CGFloat(arc4random_uniform(255)), a: 1)
 }
 
+///根据hex字符串获取颜色
 func UIColorHex(_ hex:String, _ alpha:CGFloat) -> UIColor {
     var cString = hex.trimmingCharacters(in:CharacterSet.whitespacesAndNewlines).uppercased()
     
@@ -152,8 +161,17 @@ func UIColorHex(_ hex:String, _ alpha:CGFloat) -> UIColor {
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
 }
 
+///输入尺寸快速获取常规字体
 func UIFontSize(_ size:CGFloat) -> UIFont {
     return UIFont.systemFont(ofSize: size)
+}
+
+///获取当前语言
+func getCurLanguage() -> String {
+    
+    let languages = UserDefaults.standard.object(forKey: "AppleLanguages") as! [String]
+    return languages[0]
+    
 }
 
 //MARK: - Notifications

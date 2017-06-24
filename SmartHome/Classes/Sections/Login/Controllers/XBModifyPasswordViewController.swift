@@ -45,7 +45,7 @@ class XBModifyPasswordViewController: XBFindPasswordController, UITextFieldDeleg
         
         emailField.top = 60
         
-        confirmPasswordField.width = 304*UIRate
+        confirmPasswordField.width = 306*UIRate
         confirmPasswordField.height = 29
         confirmPasswordField.centerX = view.centerX
         confirmPasswordField.top = emailField.bottom + 30
@@ -67,7 +67,6 @@ class XBModifyPasswordViewController: XBFindPasswordController, UITextFieldDeleg
         XBNetworking.share.postWithPath(path: MODIFY_PWD, paras: params,
                                         success: { [weak self] (json, message) in
                                             if json[Code].intValue == normalSuccess {
-                                                SVProgressHUD.showSuccess(withStatus: message)
                                                 self!.navigationController!.popToRootViewController(animated: true)
                                             } else {
                                                 SVProgressHUD.showError(withStatus: message)
